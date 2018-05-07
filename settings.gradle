@@ -1,1 +1,1 @@
-include ':app', ':steganography2', ':steganographylibrary'
+include ':app', ':steganographylibrary'
