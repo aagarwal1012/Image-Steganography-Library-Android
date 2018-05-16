@@ -1,14 +1,14 @@
-package com.ayush.steganographylibrary;
+package com.ayush.steganographylibrary.Text;
 
 import java.io.File;
 
-public class Stegnography {
+public class TextStegnography {
 
     String message;
     String secret_key;
     File bitmap;
 
-    public Stegnography(String message, String secret_key, File bitmap) {
+    public TextStegnography(String message, String secret_key, File bitmap) {
         this.message = message;
         this.secret_key = secret_key;
         this.bitmap = bitmap;
