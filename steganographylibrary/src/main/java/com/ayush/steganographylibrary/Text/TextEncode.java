@@ -14,6 +14,14 @@ public class TextEncode extends AsyncTask<TextStegnography, Integer, TextStegnog
 
     private ProgressDialog progressDialog;
 
+    public TextEncode(Activity activity) {
+        this.activity = activity;
+    }
+
+    public void setProgressDialog(ProgressDialog progressDialog) {
+        this.progressDialog = progressDialog;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -22,6 +30,11 @@ public class TextEncode extends AsyncTask<TextStegnography, Integer, TextStegnog
     @Override
     protected void onPostExecute(TextStegnography textStegnography) {
         super.onPostExecute(textStegnography);
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
     }
 
     @Override
