@@ -1,5 +1,6 @@
 package com.ayush.steganographylibrary.Utils;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -14,11 +15,17 @@ public class Crypto {
     String message;
     String secret_key;
     String encrypted_message;
+    byte[] encrypted_zip;
 
     public Crypto(String message, String secret_key) {
         this.message = message;
         this.secret_key = secret_key;
         this.encrypted_message = encryptMessage(message, secret_key);
+        try {
+            this.encrypted_zip = Zipping.compress(encrypted_message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String encryptMessage(String message, String secret_key) {
@@ -88,6 +95,14 @@ public class Crypto {
 
     public String getEncrypted_message() {
         return encrypted_message;
+    }
+
+    public byte[] getEncrypted_zip() {
+        return encrypted_zip;
+    }
+
+    public void setEncrypted_zip(byte[] encrypted_zip) {
+        this.encrypted_zip = encrypted_zip;
     }
 
 }
