@@ -1,5 +1,7 @@
 package com.ayush.steganographylibrary.Utils;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -12,26 +14,40 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Crypto {
+    private static String TAG = Crypto.class.getName();
+
     String message;
     String secret_key;
     String encrypted_message;
     byte[] encrypted_zip;
 
+    //Constructor
     public Crypto(String message, String secret_key) {
+
+        //Initilization
         this.message = message;
         this.secret_key = secret_key;
         this.encrypted_message = encryptMessage(message, secret_key);
+
         try {
             this.encrypted_zip = Zipping.compress(encrypted_message);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(TAG, "Error : " + e);
         }
     }
 
+    //Encryption Method
+    /*
+    @parameter : Message {String}, Secret key {String}
+    @return : Encrypted Message {String}
+     */
     private String encryptMessage(String message, String secret_key) {
-        // Create key and cipher
+
+        // Creating key and cipher
         Key aesKey = new SecretKeySpec(secret_key.getBytes(), "AES");
         Cipher cipher = null;
+
+        //AES cipher
         try {
             cipher = Cipher.getInstance("AES");
         } catch (NoSuchAlgorithmException e) {
@@ -39,13 +55,16 @@ public class Crypto {
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
         }
+
         // encrypt the text
         try {
             cipher.init(Cipher.ENCRYPT_MODE, aesKey);
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
+
         byte[] encrypted = new byte[0];
+
         try {
             encrypted = cipher.doFinal(message.getBytes());
         } catch (IllegalBlockSizeException e) {
@@ -57,9 +76,17 @@ public class Crypto {
         return encrypted.toString();
     }
 
+    //Decryption Method
+    /*
+    @parameter : Encrypted Message {String}, Secret key {String}
+    @return : Message {String}
+     */
     private String decryptMessage(String encrypted_message, String secret_key) {
+        // Creating key and cipher
         Key aesKey = new SecretKeySpec(secret_key.getBytes(), "AES");
         Cipher cipher = null;
+
+        //AES cipher
         try {
             cipher = Cipher.getInstance("AES");
         } catch (NoSuchAlgorithmException e) {
@@ -67,7 +94,8 @@ public class Crypto {
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
         }
-        // decrypt the text
+
+        // decrypting the text
         try {
             cipher.init(Cipher.DECRYPT_MODE, aesKey);
         } catch (InvalidKeyException e) {
@@ -82,9 +110,11 @@ public class Crypto {
             e.printStackTrace();
         }
 
+        //returning decrypted text
         return decrypted;
     }
 
+    //Getters and Setters
     public void setMessage(String message) {
         this.message = message;
     }
