@@ -17,56 +17,76 @@ public class EncodeDecode {
     private static int[] binary = {16, 8, 0};
     private static byte[] andByte = {(byte) 0xC0, 0x30, 0x0C, 0x03};
     private static int[] toShift = {6, 4, 2, 0};
+
+    //start and end message constants
     public static String END_MESSAGE_COSTANT = "#!@";
     public static String START_MESSAGE_COSTANT = "@!#";
 
     /**
-     * This method represent the core of LSB on 2 bit (Encoding).
+     * This method represent the core of 2 bit Encoding
      *
-     * @param oneDPix The <b>rgb</b> array.
-     * @param imgCols Image width.
-     * @param imgRows Image height.
-     * @param message Message to encode.
-     * @param hand    A handler interface, for the progress bar.
-     * @return Encoded message image.
+     * @parameter :  integer_pixel_array {The integer RGB array}
+     * @parameter : image_columns {Image width}
+     * @parameter : image_rows {Image height}
+     * @parameter : messageEncodingStatus {object}
+     * @parameter : progressHandler {A handler interface, for the progress bar}
+     * @return : byte encoded pixel array
      */
 
-    private static byte[] encodeMessage(int[] oneDPix, int imgCols, int imgRows,
-                                        MessageEncodingStatus message, ProgressHandler hand) {
+    private static byte[] encodeMessage(int[] integer_pixel_array, int image_columns, int image_rows,
+                                        MessageEncodingStatus messageEncodingStatus, ProgressHandler progressHandler) {
 
+        //denotes RGB channels
         int channels = 3;
-        int shiftIndex = 4;
-        //Array.newInstance(Byte.class, imgRows * imgCols * channels);
-        byte[] result = new byte[imgRows * imgCols * channels];
 
+        int shiftIndex = 4;
+
+        //creating result byte_array
+        byte[] result = new byte[image_rows * image_columns * channels];
 
         int resultIndex = 0;
 
-        for (int row = 0; row < imgRows; row++) {
+        for (int row = 0; row < image_rows; row++) {
 
-            for (int col = 0; col < imgCols; col++) {
-                int element = row * imgCols + col;
+            for (int col = 0; col < image_columns; col++) {
+
+                //2D matrix in 1D
+                int element = row * image_columns + col;
+
                 byte tmp = 0;
 
                 for (int channelIndex = 0; channelIndex < channels; channelIndex++) {
-                    if (!message.isMessageEncoded()) {
-                        tmp = (byte) ((((oneDPix[element] >> binary[channelIndex]) & 0xFF) & 0xFC) | ((message.getByteArrayMessage()[message.getCurrentMessageIndex()] >> toShift[(shiftIndex++)
+
+                    if (!messageEncodingStatus.isMessageEncoded()) {
+
+                        // Shifting integer value by 2 in left and replacing the two least significant digits with the message_byte_array values..
+                        tmp = (byte) ((((integer_pixel_array[element] >> binary[channelIndex]) & 0xFF) & 0xFC) | ((messageEncodingStatus.getByteArrayMessage()[messageEncodingStatus.getCurrentMessageIndex()] >> toShift[(shiftIndex++)
                                 % toShift.length]) & 0x3));// 6
+
                         if (shiftIndex % toShift.length == 0) {
-                            message.incrementMessageIndex();
-                            if (hand != null)
-                                hand.increment(1);
+
+                            messageEncodingStatus.incrementMessageIndex();
+
+                            if (progressHandler != null)
+                                progressHandler.increment(1);
+
                         }
-                        if (message.getCurrentMessageIndex() == message.getByteArrayMessage().length) {
-                            message.setMessageEncoded(true);
-                            if (hand != null)
-                                hand.finished();
+
+                        if (messageEncodingStatus.getCurrentMessageIndex() == messageEncodingStatus.getByteArrayMessage().length) {
+
+                            messageEncodingStatus.setMessageEncoded(true);
+
+                            if (progressHandler != null)
+                                progressHandler.finished();
+
                         }
                     }
                     else
                     {
-                        tmp = (byte) ((((oneDPix[element] >> binary[channelIndex]) & 0xFF)));
+                        //Simply copy the integer to result array
+                        tmp = (byte) ((((integer_pixel_array[element] >> binary[channelIndex]) & 0xFF)));
                     }
+
                     result[resultIndex++] = tmp;
 
                 }
@@ -80,56 +100,149 @@ public class EncodeDecode {
 
     }
 
-    public static List<Bitmap> encodeMessage(List<Bitmap> splittedImages,
-                                             String str, ProgressHandler hand) {
-        List<Bitmap> result = new ArrayList<Bitmap>(splittedImages.size());
-        str += END_MESSAGE_COSTANT;
-        str = START_MESSAGE_COSTANT + str;
-        byte[] msg = str.getBytes(Charset.forName("UTF-8"));
+    /**
+     * This method implements the above method on the list of chunk image list.
+     *
+     * @parameter : splitted_images {list of chunk images}
+     * @parameter : encrypted_message {string}
+     * @parameter : progressHandler {Progress bar handler}
+     * @return : Encoded list of chunk images
+     */
+    public static List<Bitmap> encodeMessage(List<Bitmap> splitted_images,
+                                             String encrypted_message, ProgressHandler progressHandler) {
+        //Making result method
+        List<Bitmap> result = new ArrayList<Bitmap>(splitted_images.size());
 
+        //Adding start and end message constants to the encrypted message
+        encrypted_message += END_MESSAGE_COSTANT;
+        encrypted_message = START_MESSAGE_COSTANT + encrypted_message;
+
+        //getting byte array from string
+        byte[] byte_encrypted_message = encrypted_message.getBytes(Charset.forName("UTF-8"));
+
+        //Message Encoding Status
         MessageEncodingStatus message = new MessageEncodingStatus();
-        message.setMessage(str);
-        message.setByteArrayMessage(msg);
+        message.setMessage(encrypted_message);
+        message.setByteArrayMessage(byte_encrypted_message);
         message.setCurrentMessageIndex(0);
         message.setMessageEncoded(false);
-        if (hand != null) {
-            hand.setTotal(str.getBytes(Charset.forName("UTF-8")).length);
+
+        //Progress Handler
+        if (progressHandler != null) {
+            progressHandler.setTotal(encrypted_message.getBytes(Charset.forName("UTF-8")).length);
         }
-        Log.i(TAG, "Message length " + msg.length);
-        for (Bitmap bitm : splittedImages) {
+
+        //Just a log to get the byte message length
+        Log.i(TAG, "Message length " + byte_encrypted_message.length);
+
+        for (Bitmap bitmap : splitted_images) {
+
             if (!message.isMessageEncoded()) {
-                int width = bitm.getWidth();
-                int height = bitm.getHeight();
 
+                //getting bitmap height and width
+                int width = bitmap.getWidth();
+                int height = bitmap.getHeight();
+
+                //Making 1D integer pixel array
                 int[] oneD = new int[width * height];
-                bitm.getPixels(oneD, 0, width, 0, 0, width, height);
-                int density = bitm.getDensity();
-                byte[] encodedImage = encodeMessage(oneD, width, height, message, hand);
+                bitmap.getPixels(oneD, 0, width, 0, 0, width, height);
 
+                //getting bitmap density
+                int density = bitmap.getDensity();
+
+                //encoding image
+                byte[] encodedImage = encodeMessage(oneD, width, height, message, progressHandler);
+
+                //converting byte_image_array to integer_array
                 int[] oneDMod = Utility.byteArrayToIntArray(encodedImage);
 
-                Bitmap destBitmap = Bitmap.createBitmap(width, height,
+                //creating bitmap from encrypted_image_array
+                Bitmap encoded_Bitmap = Bitmap.createBitmap(width, height,
                         Bitmap.Config.ARGB_8888);
+                encoded_Bitmap.setDensity(density);
 
-                destBitmap.setDensity(density);
                 int masterIndex = 0;
+
+                //setting pixel values of above bitmap
                 for (int j = 0; j < height; j++)
                     for (int i = 0; i < width; i++) {
 
-                        destBitmap.setPixel(i, j, Color.argb(0xFF,
+                        encoded_Bitmap.setPixel(i, j, Color.argb(0xFF,
                                 oneDMod[masterIndex] >> 16 & 0xFF,
                                 oneDMod[masterIndex] >> 8 & 0xFF,
                                 oneDMod[masterIndex++] & 0xFF));
-                    /*if(masterIndex%partialProgr==0)
-                        handler.post(mIncrementProgress);*/
+
                     }
-                result.add(destBitmap);
-            } else
-                result.add(bitm.copy(bitm.getConfig(), false));
+
+                result.add(encoded_Bitmap);
+
+            }
+            else {
+                //Just add the image chunk to the result
+                result.add(bitmap.copy(bitmap.getConfig(), false));
+            }
         }
-        Log.d(TAG, "Message current index " + message.getCurrentMessageIndex());
 
         return result;
+    }
+
+    /**
+     * This is the decoding method of 2 bit encoding.
+     *
+     * @parameter : byte_pixel_array {The byte array image}
+     * @parameter : image_columns {Image width}
+     * @parameter : image_rows {Image height}
+     * @parameter : messageDecodingStatus {object}
+     * @return : Void
+     */
+    private static void decodeMessage(byte[] byte_pixel_array, int image_columns,
+                                      int image_rows, MessageDecodingStatus messageDecodingStatus) {
+
+        Vector<Byte> v = new Vector<Byte>();
+
+
+        int shiftIndex = 4;
+        byte tmp = 0x00;
+        for (int i = 0; i < byte_pixel_array.length; i++) {
+            tmp = (byte) (tmp | ((byte_pixel_array[i] << toShift[shiftIndex
+                    % toShift.length]) & andByte[shiftIndex++ % toShift.length]));
+            if (shiftIndex % toShift.length == 0) {
+                v.addElement(Byte.valueOf(tmp));
+                byte[] nonso = {(v.elementAt(v.size() - 1)).byteValue()};
+                String str = new String(nonso, Charset.forName("UTF-8"));
+                // if (END_MESSAGE_COSTANT.equals(str)) {
+                if (messageDecodingStatus.getMessage().endsWith(END_MESSAGE_COSTANT)) {
+                    Log.i("TEST", "Decoding ended");
+                    //fix utf-8 decoding
+                    byte[] temp = new byte[v.size()];
+                    for (int index = 0; index < temp.length; index++)
+                        temp[index] = v.get(index);
+
+                    String stra = new String(temp, Charset.forName("UTF-8"));
+                    messageDecodingStatus.setMessage(stra.substring(0, stra.length() - 1));
+                    //end fix
+                    messageDecodingStatus.setEnded(true);
+                    break;
+                } else {
+                    messageDecodingStatus.setMessage(messageDecodingStatus.getMessage() + str);
+                    if (messageDecodingStatus.getMessage().length() == START_MESSAGE_COSTANT.length()
+                            && !START_MESSAGE_COSTANT.equals(messageDecodingStatus.getMessage())) {
+                        messageDecodingStatus.setMessage(null);
+                        messageDecodingStatus.setEnded(true);
+                        break;
+                    }
+                }
+
+                tmp = 0x00;
+            }
+
+        }
+        if (messageDecodingStatus.getMessage() != null)
+            messageDecodingStatus.setMessage(messageDecodingStatus.getMessage().substring(START_MESSAGE_COSTANT.length(), messageDecodingStatus.getMessage()
+                    .length()
+                    - END_MESSAGE_COSTANT.length()));
+
+
     }
 
     public static String decodeMessage(List<Bitmap> encodedImages) {
@@ -148,64 +261,6 @@ public class EncodeDecode {
                 break;
         }
         return mesgDecoded.getMessage();
-    }
-
-    /**
-     * This is the decoding method of LSB on 2 bit.
-     *
-     * @param oneDPix The byte array image.
-     * @param imgCols Image width.
-     * @param imgRows Image height.
-     * @param mesg    The decoded message.
-     */
-    private static void decodeMessage(byte[] oneDPix, int imgCols,
-                                      int imgRows, MessageDecodingStatus mesg) {
-
-        Vector<Byte> v = new Vector<Byte>();
-
-
-        int shiftIndex = 4;
-        byte tmp = 0x00;
-        for (int i = 0; i < oneDPix.length; i++) {
-            tmp = (byte) (tmp | ((oneDPix[i] << toShift[shiftIndex
-                    % toShift.length]) & andByte[shiftIndex++ % toShift.length]));
-            if (shiftIndex % toShift.length == 0) {
-                v.addElement(Byte.valueOf(tmp));
-                byte[] nonso = {(v.elementAt(v.size() - 1)).byteValue()};
-                String str = new String(nonso, Charset.forName("UTF-8"));
-                // if (END_MESSAGE_COSTANT.equals(str)) {
-                if (mesg.getMessage().endsWith(END_MESSAGE_COSTANT)) {
-                    Log.i("TEST", "Decoding ended");
-                    //fix utf-8 decoding
-                    byte[] temp = new byte[v.size()];
-                    for (int index = 0; index < temp.length; index++)
-                        temp[index] = v.get(index);
-
-                    String stra = new String(temp, Charset.forName("UTF-8"));
-                    mesg.setMessage(stra.substring(0, stra.length() - 1));
-                    //end fix
-                    mesg.setEnded(true);
-                    break;
-                } else {
-                    mesg.setMessage(mesg.getMessage() + str);
-                    if (mesg.getMessage().length() == START_MESSAGE_COSTANT.length()
-                            && !START_MESSAGE_COSTANT.equals(mesg.getMessage())) {
-                        mesg.setMessage(null);
-                        mesg.setEnded(true);
-                        break;
-                    }
-                }
-
-                tmp = 0x00;
-            }
-
-        }
-        if (mesg.getMessage() != null)
-            mesg.setMessage(mesg.getMessage().substring(START_MESSAGE_COSTANT.length(), mesg.getMessage()
-                    .length()
-                    - END_MESSAGE_COSTANT.length()));
-
-
     }
 
     /**

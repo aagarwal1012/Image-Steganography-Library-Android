@@ -235,7 +235,7 @@ public class Utility {
     public static boolean isStringEmpty(String str)
     {
         boolean result=true;
-        
+
         if(str==null);
         else
         {
