@@ -198,37 +198,58 @@ public class EncodeDecode {
     private static void decodeMessage(byte[] byte_pixel_array, int image_columns,
                                       int image_rows, MessageDecodingStatus messageDecodingStatus) {
 
-        Vector<Byte> v = new Vector<Byte>();
-
+        //encrypted message
+        Vector<Byte> byte_encrypted_message = new Vector<Byte>();
 
         int shiftIndex = 4;
+
         byte tmp = 0x00;
+
         for (int i = 0; i < byte_pixel_array.length; i++) {
+
+            //get last two bits from byte_pixel_array
             tmp = (byte) (tmp | ((byte_pixel_array[i] << toShift[shiftIndex
                     % toShift.length]) & andByte[shiftIndex++ % toShift.length]));
+
             if (shiftIndex % toShift.length == 0) {
-                v.addElement(Byte.valueOf(tmp));
-                byte[] nonso = {(v.elementAt(v.size() - 1)).byteValue()};
+
+                //adding temp byte value
+                byte_encrypted_message.addElement(Byte.valueOf(tmp));
+
+                //converting byte value to string
+                byte[] nonso = {(byte_encrypted_message.elementAt(byte_encrypted_message.size() - 1)).byteValue()};
                 String str = new String(nonso, Charset.forName("UTF-8"));
-                // if (END_MESSAGE_COSTANT.equals(str)) {
+
                 if (messageDecodingStatus.getMessage().endsWith(END_MESSAGE_COSTANT)) {
+
                     Log.i("TEST", "Decoding ended");
-                    //fix utf-8 decoding
-                    byte[] temp = new byte[v.size()];
+
+                    //fixing utf-8 decoding
+                    byte[] temp = new byte[byte_encrypted_message.size()];
+
                     for (int index = 0; index < temp.length; index++)
-                        temp[index] = v.get(index);
+                        temp[index] = byte_encrypted_message.get(index);
 
                     String stra = new String(temp, Charset.forName("UTF-8"));
                     messageDecodingStatus.setMessage(stra.substring(0, stra.length() - 1));
-                    //end fix
+                    //end fixing
+
                     messageDecodingStatus.setEnded(true);
+
                     break;
-                } else {
+                }
+                else
+                {
+                    //just add the decoded message to the original message
                     messageDecodingStatus.setMessage(messageDecodingStatus.getMessage() + str);
+
+                    //If there was no message there and only start and end message constant was there
                     if (messageDecodingStatus.getMessage().length() == START_MESSAGE_COSTANT.length()
                             && !START_MESSAGE_COSTANT.equals(messageDecodingStatus.getMessage())) {
+
                         messageDecodingStatus.setMessage(null);
                         messageDecodingStatus.setEnded(true);
+
                         break;
                     }
                 }
@@ -238,6 +259,7 @@ public class EncodeDecode {
 
         }
         if (messageDecodingStatus.getMessage() != null)
+            //removing start and end constants form message
             messageDecodingStatus.setMessage(messageDecodingStatus.getMessage().substring(START_MESSAGE_COSTANT.length(), messageDecodingStatus.getMessage()
                     .length()
                     - END_MESSAGE_COSTANT.length()));
@@ -245,29 +267,43 @@ public class EncodeDecode {
 
     }
 
+    /**
+     * This method takes the list of encoded chunk images and decodes it.
+     *
+     * @parameter : encodedImages {list of encode chunk images}
+     * @return : encrypted message {String}
+     */
+
     public static String decodeMessage(List<Bitmap> encodedImages) {
 
-
-        MessageDecodingStatus mesgDecoded = new MessageDecodingStatus();
+        //Creating object
+        MessageDecodingStatus messageDecodingStatus = new MessageDecodingStatus();
 
         for (Bitmap bit : encodedImages) {
+
             int[] pixels = new int[bit.getWidth() * bit.getHeight()];
+
             bit.getPixels(pixels, 0, bit.getWidth(), 0, 0, bit.getWidth(),
                     bit.getHeight());
+            
             byte[] b = null;
+
             b = Utility.convertArray(pixels);
-            decodeMessage(b, bit.getWidth(), bit.getHeight(), mesgDecoded);
-            if (mesgDecoded.isEnded())
+
+            decodeMessage(b, bit.getWidth(), bit.getHeight(), messageDecodingStatus);
+
+            if (messageDecodingStatus.isEnded())
                 break;
         }
-        return mesgDecoded.getMessage();
+
+        return messageDecodingStatus.getMessage();
     }
 
     /**
      * Calculate the numbers of pixel needed
      *
-     * @param message Message to encode
-     * @return The number of pixel
+     * @parameter : message {Message to encode}
+     * @return : The number of pixel {integer}
      */
     public static int numberOfPixelForMessage(String message) {
         int result = -1;
@@ -280,7 +316,7 @@ public class EncodeDecode {
         return result;
     }
 
-
+    //Progress handler class
     public interface ProgressHandler {
 
         public void setTotal(int tot);
@@ -314,7 +350,6 @@ public class EncodeDecode {
 
         public void setMessage(String message) {
             this.message = message;
-//            Log.i("TEST",message);
         }
 
 
