@@ -1,5 +1,7 @@
 package com.ayush.steganographylibrary.Text;
 
+import android.graphics.Bitmap;
+
 import java.io.File;
 
 public class TextStegnography {
@@ -7,12 +9,21 @@ public class TextStegnography {
     String message;
     String secret_key;
     File bitmap;
+    Bitmap encrypted_image;
     byte[] encrypted_zip;
 
     public TextStegnography(String message, String secret_key, File bitmap) {
         this.message = message;
         this.secret_key = secret_key;
         this.bitmap = bitmap;
+    }
+
+    public Bitmap getEncrypted_image() {
+        return encrypted_image;
+    }
+
+    public void setEncrypted_image(Bitmap encrypted_image) {
+        this.encrypted_image = encrypted_image;
     }
 
     public String getMessage() {
