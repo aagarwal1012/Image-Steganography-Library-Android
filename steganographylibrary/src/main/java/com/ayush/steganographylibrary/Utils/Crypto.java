@@ -14,7 +14,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Crypto {
-    private static String TAG = Crypto.class.getName();
+    private final static String TAG = Crypto.class.getName();
 
     String message;
     String secret_key;

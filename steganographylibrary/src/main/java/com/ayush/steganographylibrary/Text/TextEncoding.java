@@ -83,7 +83,7 @@ public class TextEncoding extends AsyncTask<TextStegnography, Integer, TextStegn
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
-            int sample = calculateInSampleSize(options, square_blocks_needed * Utility.SQUARE_BLOCK, square_blocks_needed * Utility.SQUARE_BLOCK);
+            int sample = calculateInSampleSize(options, square_blocks_needed * Utility.SQUARE_BLOCK_SIZE, square_blocks_needed * Utility.SQUARE_BLOCK_SIZE);
             options.inJustDecodeBounds = false;
             options.inSampleSize = sample;
 
