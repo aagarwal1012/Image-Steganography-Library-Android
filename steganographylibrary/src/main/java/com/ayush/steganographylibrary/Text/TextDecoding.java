@@ -7,10 +7,8 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 import com.ayush.steganographylibrary.Utils.Utility;
-import com.ayush.steganographylibrary.Utils.Zipping;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 public class TextDecoding extends AsyncTask<File, Void, TextStegnography> {
@@ -29,7 +27,7 @@ public class TextDecoding extends AsyncTask<File, Void, TextStegnography> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog = new ProgressDialog(activity); //Here I get an error: The constructor ProgressDialog(PFragment) is undefined
+        progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage("Loading, Please Wait...");
         progressDialog.setTitle("Decoding Message");
         progressDialog.setIndeterminate(true);
