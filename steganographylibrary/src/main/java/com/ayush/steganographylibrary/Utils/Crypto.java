@@ -81,7 +81,7 @@ public class Crypto {
     @parameter : Encrypted Message {String}, Secret key {String}
     @return : Message {String}
      */
-    private String decryptMessage(String encrypted_message, String secret_key) {
+    public static String decryptMessage(String encrypted_message, String secret_key) {
         // Creating key and cipher
         Key aesKey = new SecretKeySpec(secret_key.getBytes(), "AES");
         Cipher cipher = null;

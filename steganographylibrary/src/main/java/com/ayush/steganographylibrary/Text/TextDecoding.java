@@ -4,31 +4,42 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 
+import com.ayush.steganographylibrary.Utils.Crypto;
 import com.ayush.steganographylibrary.Utils.Utility;
+import com.ayush.steganographylibrary.Utils.Zipping;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
-public class TextDecoding extends AsyncTask<File, Void, TextSteganography> {
+/**
+ * In this class all those method in EncodeDecode class are used to decode secret message in image.
+ * All the tasks will run in background.
+ */
+public class TextDecoding extends AsyncTask<TextSteganography, Void, TextSteganography> {
 
+    //Tag for Log
     private final static String TAG = TextDecoding.class.getName();
+
     private ProgressDialog progressDialog;
-    private boolean isImageDecoded;
 
     public TextDecoding() {
         super();
-        isImageDecoded = false;
     }
 
+    //setting progress dialog if wanted
     public void setProgressDialog(ProgressDialog progressDialog) {
         this.progressDialog = progressDialog;
     }
 
+    //pre execution of method
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
 
+        //setting parameters of progress dialog
         if (progressDialog != null){
             progressDialog.setMessage("Loading, Please Wait...");
             progressDialog.setTitle("Decoding Message");
@@ -41,6 +52,7 @@ public class TextDecoding extends AsyncTask<File, Void, TextSteganography> {
     protected void onPostExecute(TextSteganography textSteganography) {
         super.onPostExecute(textSteganography);
 
+        //dismiss progress dialog
         if(progressDialog != null)
             progressDialog.dismiss();
     }
@@ -48,35 +60,71 @@ public class TextDecoding extends AsyncTask<File, Void, TextSteganography> {
     @Override
     protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
+
+        //Updating progress dialog
         if(progressDialog != null) {
             progressDialog.show();
         }
     }
 
     @Override
-    protected TextSteganography doInBackground(File... files) {
+    protected TextSteganography doInBackground(TextSteganography... textSteganographies) {
+
+        //making result object
         TextSteganography result = null;
+
         publishProgress();
-        Bitmap bitmap = BitmapFactory.decodeFile(files[0].getAbsolutePath());
-        if (bitmap == null)
-            return result;
-        List<Bitmap> srcEncodedList = Utility.splitImage(bitmap);
-        String decoded = EncodeDecode.decodeMessage(srcEncodedList);
 
-        //free memory
-        for (Bitmap bitm : srcEncodedList)
-            bitm.recycle();
+        if (textSteganographies.length > 0){
 
-        if (Utility.isStringEmpty(decoded)) {
+            TextSteganography textSteganography = textSteganographies[0];
+
+            //getting bitmap image from file
+            Bitmap bitmap = BitmapFactory.decodeFile(textSteganography.getBitmap().getAbsolutePath());
+
+            //return null if bitmap is null
+            if (bitmap == null)
+                return result;
+
+            //splitting images
+            List<Bitmap> srcEncodedList = Utility.splitImage(bitmap);
+
+            //decoding encrypted zipped message
+            String decoded_message = EncodeDecode.decodeMessage(srcEncodedList);
+
+            //decompressing decoded_message
+            String encrypted_message = null;
             try {
-                isImageDecoded = true;
-                result.setEncrypted_zip(decoded.getBytes());
-            } catch (Exception e) {
-                e.printStackTrace();
+                encrypted_message = Zipping.decompress(decoded_message.getBytes());
+            } catch (IOException e) {
+                Log.d("Error : " , e.getMessage());
             }
+
+            //decrypting message
+            String message = null;
+            if (encrypted_message != null){
+                message = Crypto.decryptMessage(encrypted_message, textSteganography.getSecret_key());
+            }
+
+            if (Utility.isStringEmpty(message)) {
+                try {
+                    result.setMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            //free memory
+            for (Bitmap bitm : srcEncodedList)
+                bitm.recycle();
+            textSteganography = null;
+            bitmap = null;
+
+            //Java Garbage Collector
+            System.gc();
+
         }
-
-
+        
         return result;
     }
 }

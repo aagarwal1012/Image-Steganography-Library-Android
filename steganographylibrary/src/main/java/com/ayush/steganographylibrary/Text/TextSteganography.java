@@ -18,6 +18,11 @@ public class TextSteganography {
         this.bitmap = bitmap;
     }
 
+    public TextSteganography(String secret_key, File bitmap) {
+        this.secret_key = secret_key;
+        this.bitmap = bitmap;
+    }
+
     public Bitmap getEncrypted_image() {
         return encrypted_image;
     }
