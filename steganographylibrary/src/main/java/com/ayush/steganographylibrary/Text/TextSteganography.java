@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 
 import java.io.File;
 
+/**
+ * This main class of the text steganography
+ */
 public class TextSteganography {
 
     String message;

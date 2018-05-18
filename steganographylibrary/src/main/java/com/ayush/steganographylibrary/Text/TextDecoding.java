@@ -124,7 +124,7 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
             System.gc();
 
         }
-        
+
         return result;
     }
 }
