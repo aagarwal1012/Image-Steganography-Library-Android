@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 import java.io.File;
 
-public class TextStegnography {
+public class TextSteganography {
 
     String message;
     String secret_key;
@@ -12,7 +12,7 @@ public class TextStegnography {
     Bitmap encrypted_image;
     byte[] encrypted_zip;
 
-    public TextStegnography(String message, String secret_key, File bitmap) {
+    public TextSteganography(String message, String secret_key, File bitmap) {
         this.message = message;
         this.secret_key = secret_key;
         this.bitmap = bitmap;

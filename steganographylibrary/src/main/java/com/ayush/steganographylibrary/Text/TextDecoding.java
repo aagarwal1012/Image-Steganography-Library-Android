@@ -1,6 +1,5 @@
 package com.ayush.steganographylibrary.Text;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,7 +10,7 @@ import com.ayush.steganographylibrary.Utils.Utility;
 import java.io.File;
 import java.util.List;
 
-public class TextDecoding extends AsyncTask<File, Void, TextStegnography> {
+public class TextDecoding extends AsyncTask<File, Void, TextSteganography> {
 
     private final static String TAG = TextDecoding.class.getName();
     private ProgressDialog progressDialog;
@@ -39,8 +38,8 @@ public class TextDecoding extends AsyncTask<File, Void, TextStegnography> {
     }
 
     @Override
-    protected void onPostExecute(TextStegnography textStegnography) {
-        super.onPostExecute(textStegnography);
+    protected void onPostExecute(TextSteganography textSteganography) {
+        super.onPostExecute(textSteganography);
 
         if(progressDialog != null)
             progressDialog.dismiss();
@@ -49,13 +48,14 @@ public class TextDecoding extends AsyncTask<File, Void, TextStegnography> {
     @Override
     protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
-        if(progressDialog != null)
-           progressDialog.show();
+        if(progressDialog != null) {
+            progressDialog.show();
+        }
     }
 
     @Override
-    protected TextStegnography doInBackground(File... files) {
-        TextStegnography result = null;
+    protected TextSteganography doInBackground(File... files) {
+        TextSteganography result = null;
         publishProgress();
         Bitmap bitmap = BitmapFactory.decodeFile(files[0].getAbsolutePath());
         if (bitmap == null)

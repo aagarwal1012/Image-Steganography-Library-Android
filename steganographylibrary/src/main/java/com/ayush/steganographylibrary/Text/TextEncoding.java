@@ -1,6 +1,5 @@
 package com.ayush.steganographylibrary.Text;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,8 +11,13 @@ import com.ayush.steganographylibrary.Utils.Utility;
 
 import java.util.List;
 
-public class TextEncoding extends AsyncTask<TextStegnography, Integer, TextStegnography> {
+/**
+ * In this class all those method in EncodeDecode class are used to encode secret message in image.
+ * All the tasks will run in background.
+ */
+public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteganography> {
 
+    //Tag for Log
     private static String TAG = TextEncoding.class.getName();
 
     private int maximumProgress;
@@ -24,14 +28,17 @@ public class TextEncoding extends AsyncTask<TextStegnography, Integer, TextStegn
         super();
     }
 
+    //setting progress dialog if wanted
     public void setProgressDialog(ProgressDialog progressDialog) {
         this.progressDialog = progressDialog;
     }
 
+    //pre execution of method
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
 
+        //setting parameters of progress dialog
         if (progressDialog != null){
             progressDialog.setMessage("Loading, Please Wait...");
             progressDialog.setTitle("Encoding Message");
@@ -41,8 +48,10 @@ public class TextEncoding extends AsyncTask<TextStegnography, Integer, TextStegn
     }
 
     @Override
-    protected void onPostExecute(TextStegnography textStegnography) {
+    protected void onPostExecute(TextSteganography textStegnography) {
         super.onPostExecute(textStegnography);
+
+        //dismiss progress dialog
         if (progressDialog != null){
             progressDialog.dismiss();
         }
@@ -51,23 +60,24 @@ public class TextEncoding extends AsyncTask<TextStegnography, Integer, TextStegn
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
+
+        //Updating progress dialog
         if (progressDialog != null){
             progressDialog.show();
             progressDialog.incrementProgressBy(values[0]);
         }
-        Log.d(TAG, "Progress : " + values[0]);
     }
 
     @Override
-    protected TextStegnography doInBackground(TextStegnography... textStegnographies) {
+    protected TextSteganography doInBackground(TextSteganography... textSteganographies) {
 
-        TextStegnography result = null;
+        TextSteganography result = null;
 
         maximumProgress = 0;
 
-        if (textStegnographies.length > 0){
+        if (textSteganographies.length > 0){
 
-            TextStegnography textStegnography = textStegnographies[0];
+            TextSteganography textStegnography = textSteganographies[0];
 
             //Encrypt
             if (Utility.isStringEmpty(textStegnography.getSecret_key()))
