@@ -18,41 +18,43 @@ public class TextEncoding extends AsyncTask<TextStegnography, Integer, TextStegn
 
     private int maximumProgress;
 
-    private Activity activity;
-
     private ProgressDialog progressDialog;
 
-    public TextEncoding(Activity activity) {
+    public TextEncoding() {
         super();
-        this.activity = activity;
     }
 
-    public ProgressDialog getProgressDialog() {
-        return progressDialog;
+    public void setProgressDialog(ProgressDialog progressDialog) {
+        this.progressDialog = progressDialog;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
 
-        progressDialog = new ProgressDialog(activity);
-        progressDialog.setMessage("Loading, Please Wait...");
-        progressDialog.setTitle("Encoding Message");
-        progressDialog.setIndeterminate(false);
-        progressDialog.setCancelable(false);
+        if (progressDialog != null){
+            progressDialog.setMessage("Loading, Please Wait...");
+            progressDialog.setTitle("Encoding Message");
+            progressDialog.setIndeterminate(false);
+            progressDialog.setCancelable(false);
+        }
     }
 
     @Override
     protected void onPostExecute(TextStegnography textStegnography) {
         super.onPostExecute(textStegnography);
-        progressDialog.dismiss();
+        if (progressDialog != null){
+            progressDialog.dismiss();
+        }
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
-        progressDialog.show();
-        progressDialog.incrementProgressBy(values[0]);
+        if (progressDialog != null){
+            progressDialog.show();
+            progressDialog.incrementProgressBy(values[0]);
+        }
         Log.d(TAG, "Progress : " + values[0]);
     }
 

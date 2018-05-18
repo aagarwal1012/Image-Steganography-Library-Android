@@ -285,7 +285,7 @@ public class EncodeDecode {
 
             bit.getPixels(pixels, 0, bit.getWidth(), 0, 0, bit.getWidth(),
                     bit.getHeight());
-            
+
             byte[] b = null;
 
             b = Utility.convertArray(pixels);

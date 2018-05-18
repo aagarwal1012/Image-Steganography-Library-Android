@@ -13,37 +13,44 @@ import java.util.List;
 
 public class TextDecoding extends AsyncTask<File, Void, TextStegnography> {
 
-    private final static String TAG=TextDecoding.class.getName();
-    private Activity activity;
+    private final static String TAG = TextDecoding.class.getName();
     private ProgressDialog progressDialog;
     private boolean isImageDecoded;
 
-    public TextDecoding(Activity activity) {
+    public TextDecoding() {
         super();
-        this.activity = activity;
         isImageDecoded = false;
+    }
+
+    public void setProgressDialog(ProgressDialog progressDialog) {
+        this.progressDialog = progressDialog;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog = new ProgressDialog(activity);
-        progressDialog.setMessage("Loading, Please Wait...");
-        progressDialog.setTitle("Decoding Message");
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
+
+        if (progressDialog != null){
+            progressDialog.setMessage("Loading, Please Wait...");
+            progressDialog.setTitle("Decoding Message");
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+        }
     }
 
     @Override
     protected void onPostExecute(TextStegnography textStegnography) {
         super.onPostExecute(textStegnography);
-        progressDialog.dismiss();
+
+        if(progressDialog != null)
+            progressDialog.dismiss();
     }
 
     @Override
     protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
-        progressDialog.show();
+        if(progressDialog != null)
+           progressDialog.show();
     }
 
     @Override
