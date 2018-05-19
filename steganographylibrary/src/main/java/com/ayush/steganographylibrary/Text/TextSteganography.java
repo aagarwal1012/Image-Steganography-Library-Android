@@ -1,6 +1,7 @@
 package com.ayush.steganographylibrary.Text;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import java.io.File;
 
@@ -11,9 +12,13 @@ public class TextSteganography {
 
     String message;
     String secret_key;
+    Uri filepath;
     File bitmap;
     Bitmap encrypted_image;
     byte[] encrypted_zip;
+
+    public TextSteganography() {
+    }
 
     public TextSteganography(String message, String secret_key, File bitmap) {
         this.message = message;
@@ -64,5 +69,13 @@ public class TextSteganography {
 
     public void setEncrypted_zip(byte[] encrypted_zip) {
         this.encrypted_zip = encrypted_zip;
+    }
+
+    public Uri getFilepath() {
+        return filepath;
+    }
+
+    public void setFilepath(Uri filepath) {
+        this.filepath = filepath;
     }
 }

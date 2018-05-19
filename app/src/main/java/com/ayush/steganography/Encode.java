@@ -72,9 +72,11 @@ public class Encode extends AppCompatActivity {
                         TextSteganography textSteganography = new TextSteganography(message.getText().toString(),
                                 secret_key.getText().toString(),
                                 new File(filepath.getPath()));
-                        TextEncoding textEncoding = new TextEncoding();
+                        textSteganography.setFilepath(filepath);
+                        textSteganography.setEncrypted_image(original_image);
+                        TextEncoding textEncoding = new TextEncoding(Encode.this);
                         ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
-                        textEncoding.setProgressDialog(progressDialog);
+                        //textEncoding.setProgressDialog(progressDialog);
                         textEncoding.execute(textSteganography);
 
                         TextSteganography result = null;
@@ -119,7 +121,7 @@ public class Encode extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    
+
                 }
 
                 if (original_image != null){

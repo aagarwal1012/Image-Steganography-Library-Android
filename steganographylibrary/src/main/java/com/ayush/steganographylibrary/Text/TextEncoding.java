@@ -1,5 +1,6 @@
 package com.ayush.steganographylibrary.Text;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,7 +9,9 @@ import android.util.Log;
 
 import com.ayush.steganographylibrary.Utils.Crypto;
 import com.ayush.steganographylibrary.Utils.Utility;
+import com.ayush.steganographylibrary.Utils.Zipping;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,12 +23,16 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
     //Tag for Log
     private static String TAG = TextEncoding.class.getName();
 
+    Activity activity;
+
     private int maximumProgress;
 
     private ProgressDialog progressDialog;
 
-    public TextEncoding() {
+    public TextEncoding(Activity activity) {
         super();
+        this.activity = activity;
+        this.progressDialog = new ProgressDialog(activity);
     }
 
     //setting progress dialog if wanted
@@ -72,7 +79,9 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
     protected TextSteganography doInBackground(TextSteganography... textSteganographies) {
 
         //making result object
-        TextSteganography result = null;
+        TextSteganography result = new TextSteganography();
+
+        Crypto encryption = null;
 
         maximumProgress = 0;
 
@@ -83,16 +92,25 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
             //Encrypting and compressing the message with the secret key
             if (Utility.isStringEmpty(textStegnography.getSecret_key()))
             {
-                try{
-                    Crypto encryption = new Crypto(textStegnography.getMessage(), textStegnography.getSecret_key());
-                    textStegnography.setEncrypted_zip(encryption.getEncrypted_zip());
+                    encryption = new Crypto(textStegnography.getMessage(), textStegnography.getSecret_key());
+            }
 
-                    //free encryption
-                    encryption = null;
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+            //compressing the encrypted text
+            if (encryption != null){
+//                try {
+//                    textStegnography.setEncrypted_zip(Zipping.compress(encryption.getEncrypted_message()));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+                textStegnography.setEncrypted_zip(encryption.getEncrypted_message().getBytes());
+            }
+            else {
+//                try {
+//                    textStegnography.setEncrypted_zip(Zipping.compress(textStegnography.getMessage()));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+                textStegnography.setEncrypted_zip(textStegnography.getMessage().getBytes());
             }
 
             //calculating square blocks needed
@@ -106,8 +124,11 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
             options.inJustDecodeBounds = false;
             options.inSampleSize = sample;
 
+            Log.d(TAG, "File absolute path : " + textStegnography.getFilepath().getPath());
+
             //decoding image file to bitmap
-            Bitmap bitmap = BitmapFactory.decodeFile(textStegnography.getBitmap().getAbsolutePath(), options);
+            //Bitmap bitmap = BitmapFactory.decodeFile(textStegnography.getFilepath().getPath(), options);
+            Bitmap bitmap = textStegnography.getEncrypted_image();
             int originalHeight = bitmap.getHeight();
             int originalWidth = bitmap.getWidth();
 
@@ -139,7 +160,6 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
             });
 
             //free Memory
-            bitmap.recycle();
             for (Bitmap bitm : src_list)
                 bitm.recycle();
 
@@ -148,7 +168,7 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
 
             //merging the split encoded image
             Bitmap srcEncoded = Utility.mergeImage(encoded_list, originalHeight, originalWidth);
-            result.setEncrypted_image(bitmap);
+            result.setEncrypted_image(srcEncoded);
         }
 
         return result;
