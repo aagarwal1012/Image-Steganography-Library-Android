@@ -3,6 +3,10 @@ package com.ayush.steganographylibrary.Text;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import com.ayush.steganographylibrary.Utils.Crypto;
+import com.ayush.steganographylibrary.Utils.Utility;
+import com.ayush.steganographylibrary.Utils.Zipping;
+
 import java.io.File;
 
 /**
@@ -12,6 +16,7 @@ public class TextSteganography {
 
     String message;
     String secret_key;
+    String encrypted_message;
     Uri filepath;
     File bitmap;
     Bitmap encrypted_image;
@@ -21,13 +26,20 @@ public class TextSteganography {
     }
 
     public TextSteganography(String message, String secret_key, File bitmap) {
+
         this.message = message;
-        this.secret_key = secret_key;
+        this.secret_key = convertKeyTo128bit(secret_key);
         this.bitmap = bitmap;
+        this.encrypted_message = encryptMessage(message, secret_key);
+        try {
+            this.encrypted_zip = Zipping.compress(encrypted_message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public TextSteganography(String secret_key, File bitmap) {
-        this.secret_key = secret_key;
+        this.secret_key = convertKeyTo128bit(secret_key);
         this.bitmap = bitmap;
     }
 
@@ -71,11 +83,68 @@ public class TextSteganography {
         this.encrypted_zip = encrypted_zip;
     }
 
+    public String getEncrypted_message() {
+        return encrypted_message;
+    }
+
+    public void setEncrypted_message(String encrypted_message) {
+        this.encrypted_message = encrypted_message;
+    }
+
     public Uri getFilepath() {
         return filepath;
     }
 
     public void setFilepath(Uri filepath) {
         this.filepath = filepath;
+    }
+
+    public static String encryptMessage(String message, String secret_key){
+        String encrypted_message = null;
+        if (message != null){
+            if (!Utility.isStringEmpty(secret_key)){
+                try {
+                    encrypted_message = Crypto.encryptMessage(message, secret_key);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                encrypted_message = message;
+            }
+        }
+        return encrypted_message;
+    }
+
+    public static String decryptMessage(String message, String secret_key){
+        String decrypted_message = null;
+        if (message != null){
+            if (!Utility.isStringEmpty(secret_key)){
+                try {
+                    decrypted_message = Crypto.decryptMessage(message, secret_key);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                decrypted_message = message;
+            }
+        }
+        return decrypted_message;
+    }
+
+    public static String convertKeyTo128bit(String secret_key){
+
+        String result = secret_key;
+
+        if (secret_key.length() <= 16){
+            for (int i = 0; i < (secret_key.length() - 16); i++){
+                result += "#";
+            }
+        }
+        else {
+            result = result.substring(0, 15);
+        }
+        return result;
     }
 }

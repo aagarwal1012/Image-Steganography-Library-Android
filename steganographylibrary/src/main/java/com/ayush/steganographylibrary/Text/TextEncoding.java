@@ -90,28 +90,28 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
             TextSteganography textStegnography = textSteganographies[0];
 
             //Encrypting and compressing the message with the secret key
-            if (Utility.isStringEmpty(textStegnography.getSecret_key()))
-            {
-                    encryption = new Crypto(textStegnography.getMessage(), textStegnography.getSecret_key());
-            }
+//            if (Utility.isStringEmpty(textStegnography.getSecret_key()))
+//            {
+//                    encryption = new Crypto(textStegnography.getMessage(), textStegnography.getSecret_key());
+//            }
 
-            //compressing the encrypted text
-            if (encryption != null){
-//                try {
-//                    textStegnography.setEncrypted_zip(Zipping.compress(encryption.getEncrypted_message()));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-                textStegnography.setEncrypted_zip(encryption.getEncrypted_message().getBytes());
-            }
-            else {
-//                try {
-//                    textStegnography.setEncrypted_zip(Zipping.compress(textStegnography.getMessage()));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-                textStegnography.setEncrypted_zip(textStegnography.getMessage().getBytes());
-            }
+//            //compressing the encrypted text
+//            if (encryption != null){
+////                try {
+////                    textStegnography.setEncrypted_zip(Zipping.compress(encryption.getEncrypted_message()));
+////                } catch (IOException e) {
+////                    e.printStackTrace();
+////                }
+//                textStegnography.setEncrypted_zip(encryption.getEncrypted_message().getBytes());
+//            }
+//            else {
+////                try {
+////                    textStegnography.setEncrypted_zip(Zipping.compress(textStegnography.getMessage()));
+////                } catch (IOException e) {
+////                    e.printStackTrace();
+////                }
+//                textStegnography.setEncrypted_zip(textStegnography.getMessage().getBytes());
+//            }
 
             //calculating square blocks needed
             int pixels_needed = EncodeDecode.numberOfPixelForMessage(textStegnography.getEncrypted_zip().toString());
