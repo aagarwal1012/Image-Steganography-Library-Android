@@ -73,9 +73,9 @@ public class Encode extends AppCompatActivity {
                                 secret_key.getText().toString(),
                                 new File(filepath.getPath()));
                         textSteganography.setFilepath(filepath);
-                        textSteganography.setEncrypted_image(original_image);
+                        textSteganography.setImage(original_image);
                         TextEncoding textEncoding = new TextEncoding(Encode.this);
-                        ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
+                        //ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
                         //textEncoding.setProgressDialog(progressDialog);
                         textEncoding.execute(textSteganography);
 

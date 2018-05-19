@@ -2,6 +2,7 @@ package com.ayush.steganographylibrary.Text;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
 import com.ayush.steganographylibrary.Utils.Crypto;
 import com.ayush.steganographylibrary.Utils.Utility;
@@ -31,7 +32,7 @@ public class TextSteganography {
         this.message = message;
         this.secret_key = convertKeyTo128bit(secret_key);
         this.bitmap = bitmap;
-        this.encrypted_message = encryptMessage(message, secret_key);
+        this.encrypted_message = encryptMessage(message, this.secret_key);
         try {
             this.encrypted_zip = Zipping.compress(encrypted_message);
         } catch (Exception e) {
@@ -147,13 +148,16 @@ public class TextSteganography {
         String result = secret_key;
 
         if (secret_key.length() <= 16){
-            for (int i = 0; i < (secret_key.length() - 16); i++){
+            for (int i = 0; i < (16 - secret_key.length()); i++){
                 result += "#";
             }
         }
         else {
             result = result.substring(0, 15);
         }
+
+        Log.d("Secret key length", "" + result.getBytes().length);
+
         return result;
     }
 }

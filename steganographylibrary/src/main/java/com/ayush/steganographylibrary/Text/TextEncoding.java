@@ -104,7 +104,7 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
 
             //decoding image file to bitmap
             //Bitmap bitmap = BitmapFactory.decodeFile(textStegnography.getFilepath().getPath(), options);
-            Bitmap bitmap = textStegnography.getEncrypted_image();
+            Bitmap bitmap = textStegnography.getImage();
             int originalHeight = bitmap.getHeight();
             int originalWidth = bitmap.getWidth();
 
