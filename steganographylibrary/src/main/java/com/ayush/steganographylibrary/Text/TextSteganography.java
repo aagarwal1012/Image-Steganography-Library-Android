@@ -19,6 +19,7 @@ public class TextSteganography {
     String encrypted_message;
     Uri filepath;
     File bitmap;
+    Bitmap image;
     Bitmap encrypted_image;
     byte[] encrypted_zip;
 
@@ -97,6 +98,14 @@ public class TextSteganography {
 
     public void setFilepath(Uri filepath) {
         this.filepath = filepath;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 
     public static String encryptMessage(String message, String secret_key){
