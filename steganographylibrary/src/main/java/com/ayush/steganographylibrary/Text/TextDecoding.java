@@ -80,7 +80,7 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
             TextSteganography textSteganography = textSteganographies[0];
 
             //getting bitmap image from file
-            Bitmap bitmap = BitmapFactory.decodeFile(textSteganography.getBitmap().getAbsolutePath());
+            Bitmap bitmap = textSteganography.getImage();
 
             //return null if bitmap is null
             if (bitmap == null)
@@ -121,8 +121,6 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
             //free memory
             for (Bitmap bitm : srcEncodedList)
                 bitm.recycle();
-            textSteganography = null;
-            bitmap = null;
 
             //Java Garbage Collector
             System.gc();

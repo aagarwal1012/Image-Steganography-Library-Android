@@ -27,11 +27,11 @@ public class TextSteganography {
     public TextSteganography() {
     }
 
-    public TextSteganography(String message, String secret_key, File bitmap) {
+    public TextSteganography(String message, String secret_key, Bitmap image) {
 
         this.message = message;
         this.secret_key = convertKeyTo128bit(secret_key);
-        this.bitmap = bitmap;
+        this.image = image;
         this.encrypted_message = encryptMessage(message, this.secret_key);
         try {
             this.encrypted_zip = Zipping.compress(encrypted_message);
@@ -40,9 +40,9 @@ public class TextSteganography {
         }
     }
 
-    public TextSteganography(String secret_key, File bitmap) {
+    public TextSteganography(String secret_key, Bitmap image) {
         this.secret_key = convertKeyTo128bit(secret_key);
-        this.bitmap = bitmap;
+        this.image = image;
     }
 
     public Bitmap getEncrypted_image() {

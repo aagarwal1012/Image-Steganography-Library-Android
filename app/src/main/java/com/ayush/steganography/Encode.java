@@ -68,12 +68,10 @@ public class Encode extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (filepath != null){
-                    if (message.getText() != null && filepath != null ){
+                    if (message.getText() != null ){
                         TextSteganography textSteganography = new TextSteganography(message.getText().toString(),
                                 secret_key.getText().toString(),
-                                new File(filepath.getPath()));
-                        textSteganography.setFilepath(filepath);
-                        textSteganography.setImage(original_image);
+                                original_image);
                         TextEncoding textEncoding = new TextEncoding(Encode.this);
                         //ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
                         //textEncoding.setProgressDialog(progressDialog);
