@@ -13,6 +13,7 @@ import com.ayush.steganographylibrary.Utils.Zipping;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -98,10 +99,18 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
             //decoding encrypted zipped message
             String decoded_message = EncodeDecode.decodeMessage(srcEncodedList);
 
+            //Getting byte array from decoded_message
+            byte[] byte_array = null;
+            try {
+                byte_array = decoded_message.getBytes("UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
             //decompressing decoded_message
             String encrypted_message = null;
             try {
-                encrypted_message = Zipping.decompress(decoded_message.getBytes());
+                encrypted_message = Zipping.decompress(byte_array);
             } catch (Exception e) {
                 Log.d("Error : " , e.getMessage());
             }

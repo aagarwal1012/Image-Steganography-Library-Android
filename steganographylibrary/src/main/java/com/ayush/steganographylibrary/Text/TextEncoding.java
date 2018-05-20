@@ -12,6 +12,7 @@ import com.ayush.steganographylibrary.Utils.Utility;
 import com.ayush.steganographylibrary.Utils.Zipping;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -111,8 +112,16 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
             //splitting bitmap
             List<Bitmap> src_list = Utility.splitImage(bitmap);
 
+            //Converting byte array to string
+            String message = null;
+            try {
+                message = new String(textStegnography.getEncrypted_zip(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
             //encoding encrypted compressed message into image
-            List<Bitmap> encoded_list = EncodeDecode.encodeMessage(src_list, textStegnography.getEncrypted_zip().toString(), new EncodeDecode.ProgressHandler() {
+            List<Bitmap> encoded_list = EncodeDecode.encodeMessage(src_list, message, new EncodeDecode.ProgressHandler() {
 
                 //Progress Handler
                 @Override
