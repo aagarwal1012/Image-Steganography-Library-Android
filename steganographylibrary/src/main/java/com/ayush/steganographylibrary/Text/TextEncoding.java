@@ -100,7 +100,7 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
             options.inJustDecodeBounds = false;
             options.inSampleSize = sample;
 
-            Log.d(TAG, "File absolute path : " + textStegnography.getFilepath().getPath());
+            //Log.d(TAG, "File absolute path : " + textStegnography.getFilepath().getPath());
 
             //decoding image file to bitmap
             //Bitmap bitmap = BitmapFactory.decodeFile(textStegnography.getFilepath().getPath(), options);

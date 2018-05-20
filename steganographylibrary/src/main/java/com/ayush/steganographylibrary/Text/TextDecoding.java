@@ -1,5 +1,6 @@
 package com.ayush.steganographylibrary.Text;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,10 +24,13 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
     //Tag for Log
     private final static String TAG = TextDecoding.class.getName();
 
+    Activity activity;
+
     private ProgressDialog progressDialog;
 
-    public TextDecoding() {
+    public TextDecoding(Activity activity) {
         super();
+        this.activity = activity;
     }
 
     //setting progress dialog if wanted
@@ -38,6 +42,8 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
+        progressDialog = new ProgressDialog(activity);
 
         //setting parameters of progress dialog
         if (progressDialog != null){

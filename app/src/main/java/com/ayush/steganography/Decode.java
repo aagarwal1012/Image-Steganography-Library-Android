@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ayush.steganographylibrary.Text.TextDecoding;
 import com.ayush.steganographylibrary.Text.TextEncoding;
 import com.ayush.steganographylibrary.Text.TextSteganography;
 
@@ -62,13 +63,13 @@ public class Decode extends AppCompatActivity {
                 if (filepath != null){
                     TextSteganography textSteganography = new TextSteganography(secret_key.getText().toString(),
                             original_image);
-                    TextEncoding textEncoding = new TextEncoding(Decode.this);
+                    TextDecoding textDecoding = new TextDecoding(Decode.this);
 
-                    textEncoding.execute(textSteganography);
+                    textDecoding.execute(textSteganography);
 
                     TextSteganography result = null;
                     try {
-                        result = textEncoding.get();
+                        result = textDecoding.get();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
