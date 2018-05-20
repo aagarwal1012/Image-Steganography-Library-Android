@@ -1,8 +1,10 @@
 package com.ayush.steganographylibrary.Utils;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -39,25 +41,25 @@ public class Zipping {
      */
     public static String decompress(byte[] compressed) throws Exception {
 
-        final int BUFFER_SIZE = 32;
+        ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
 
-        ByteArrayInputStream is = new ByteArrayInputStream(compressed);
+        GZIPInputStream gis = new GZIPInputStream(bis);
 
-        GZIPInputStream gis = new GZIPInputStream(is, BUFFER_SIZE);
+        BufferedReader br = new BufferedReader(new InputStreamReader(gis, "UTF-8"));
 
-        StringBuilder string = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-        byte[] data = new byte[BUFFER_SIZE];
+        String line;
 
-        int bytesRead;
-        while ((bytesRead = gis.read(data)) != -1) {
-            string.append(new String(data, 0, bytesRead));
+        while((line = br.readLine()) != null) {
+            sb.append(line);
         }
 
+        br.close();
         gis.close();
-        is.close();
+        bis.close();
 
-        return string.toString();
+        return sb.toString();
     }
 
 }

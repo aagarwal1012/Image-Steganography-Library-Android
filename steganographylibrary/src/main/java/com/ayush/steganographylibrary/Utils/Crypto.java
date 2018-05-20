@@ -1,5 +1,6 @@
 package com.ayush.steganographylibrary.Utils;
 
+import java.nio.charset.Charset;
 import java.security.Key;
 
 import javax.crypto.Cipher;
@@ -50,7 +51,7 @@ public class Crypto {
 
         String decrypted;
 
-        decrypted = new String(cipher.doFinal(encrypted_message.getBytes()));
+        decrypted = new String(cipher.doFinal(encrypted_message.getBytes(Charset.forName("UTF-8"))));
 
         //returning decrypted text
         return decrypted;

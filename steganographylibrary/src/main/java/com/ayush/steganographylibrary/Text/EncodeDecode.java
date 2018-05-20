@@ -258,6 +258,7 @@ public class EncodeDecode {
             }
 
         }
+
         if (messageDecodingStatus.getMessage() != null)
             //removing start and end constants form message
             messageDecodingStatus.setMessage(messageDecodingStatus.getMessage().substring(START_MESSAGE_COSTANT.length(), messageDecodingStatus.getMessage()
