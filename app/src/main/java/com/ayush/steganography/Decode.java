@@ -76,9 +76,13 @@ public class Decode extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    if (result != null){
+                    if (result != null && result.isDecoded() ){
                         whether_decoded.setText("Decoded");
                         message.setText("" + result.getMessage());
+                    }
+
+                    if (result != null && result.isSecretKeyWrong() != null && result.isSecretKeyWrong()){
+                        whether_decoded.setText("Wrong secret key");
                     }
                 }
             }

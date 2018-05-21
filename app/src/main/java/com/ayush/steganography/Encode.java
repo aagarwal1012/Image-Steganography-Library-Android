@@ -86,7 +86,7 @@ public class Encode extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        if (result != null){
+                        if (result != null && result.isEncoded()){
                             encoded_image = result.getEncrypted_image();
                             whether_encoded.setText("Encoded");
                             imageView.setImageBitmap(encoded_image);

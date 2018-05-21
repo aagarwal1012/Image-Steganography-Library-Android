@@ -82,47 +82,64 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
 
         publishProgress();
 
+        //If it is not already decoded
         if (textSteganographies.length > 0){
 
             TextSteganography textSteganography = textSteganographies[0];
 
-            //getting bitmap image from file
-            Bitmap bitmap = textSteganography.getImage();
+            if (!textSteganography.isDecoded()){
+                //getting bitmap image from file
+                Bitmap bitmap = textSteganography.getImage();
 
-            //return null if bitmap is null
-            if (bitmap == null)
-                return result;
+                //return null if bitmap is null
+                if (bitmap == null)
+                    return result;
 
-            //splitting images
-            List<Bitmap> srcEncodedList = Utility.splitImage(bitmap);
+                //splitting images
+                List<Bitmap> srcEncodedList = Utility.splitImage(bitmap);
 
-            //decoding encrypted zipped message
-            String decoded_message = EncodeDecode.decodeMessage(srcEncodedList);
+                //decoding encrypted zipped message
+                String decoded_message = EncodeDecode.decodeMessage(srcEncodedList);
 
-            Log.d("TextDecoding" , "Decoded_Message : " + decoded_message);
+                Log.d(TAG , "Decoded_Message : " + decoded_message);
 
-            String message = textSteganography.decryptMessage(decoded_message, textSteganography.getSecret_key());
+                //decrypting the message
+                String message = textSteganography.decryptMessage(decoded_message, textSteganography.getSecret_key());
 
-            try {
-                message = Zipping.decompress(message.getBytes("ISO-8859-1"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                //If message is null it means that the secret key is wrong otherwise secret key is right.
+                if (message != null){
+                    //decompressing the message
+                    try {
+                        message = Zipping.decompress(message.getBytes("ISO-8859-1"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-            if (message != null && Utility.isStringEmpty(message)) {
-                try {
-                    result.setMessage(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    if (message != null && Utility.isStringEmpty(message)) {
+                        try {
+                            //Setting message to result and decoded = true
+                            result.setMessage(message);
+                            result.setDecoded(true);
+                            textSteganography.setDecoded(true);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    //free memory
+                    for (Bitmap bitm : srcEncodedList)
+                        bitm.recycle();
+
+                    //Java Garbage Collector
+                    System.gc();
+                }
+                else {
+                    //secret key provided is wrong
+                    textSteganography.setSecretKeyWrong(true);
                 }
             }
-
-            //free memory
-            for (Bitmap bitm : srcEncodedList)
-                bitm.recycle();
-
-            //Java Garbage Collector
-            System.gc();
+            else
+                Log.d(TAG , "Already Decoded");
 
         }
 

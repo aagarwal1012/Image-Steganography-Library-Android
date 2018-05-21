@@ -90,104 +90,64 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
 
             TextSteganography textStegnography = textSteganographies[0];
 
-            //calculating square blocks needed
-            int pixels_needed = EncodeDecode.numberOfPixelForMessage(textStegnography.getEncrypted_zip().toString());
-            int square_blocks_needed = Utility.squareBlockNeeded(pixels_needed);
+            //If it is not already encoded
 
-            //making bitmap factory options for decoding file
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            int sample = calculateInSampleSize(options, square_blocks_needed * Utility.SQUARE_BLOCK_SIZE, square_blocks_needed * Utility.SQUARE_BLOCK_SIZE);
-            options.inJustDecodeBounds = false;
-            options.inSampleSize = sample;
+            if (!textStegnography.isEncoded()){
+                //getting image bitmap
+                Bitmap bitmap = textStegnography.getImage();
 
-            //Log.d(TAG, "File absolute path : " + textStegnography.getFilepath().getPath());
+                //getting height and width of original image
+                int originalHeight = bitmap.getHeight();
+                int originalWidth = bitmap.getWidth();
 
-            //decoding image file to bitmap
-            //Bitmap bitmap = BitmapFactory.decodeFile(textStegnography.getFilepath().getPath(), options);
-            Bitmap bitmap = textStegnography.getImage();
-            int originalHeight = bitmap.getHeight();
-            int originalWidth = bitmap.getWidth();
+                //splitting bitmap
+                List<Bitmap> src_list = Utility.splitImage(bitmap);
 
-            //splitting bitmap
-            List<Bitmap> src_list = Utility.splitImage(bitmap);
+                //encoding encrypted compressed message into image
+                List<Bitmap> encoded_list = EncodeDecode.encodeMessage(src_list, textStegnography.getEncrypted_message(), new EncodeDecode.ProgressHandler() {
 
-            //Converting byte array to string
-            String message = null;
-            try {
-                message = new String(textStegnography.getEncrypted_zip(), "ISO-8859-1");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                    //Progress Handler
+                    @Override
+                    public void setTotal(int tot) {
+                        maximumProgress = tot;
+                        progressDialog.setMax(maximumProgress);
+                        Log.d(TAG, "Total Length : " + tot);
+                    }
+
+                    @Override
+                    public void increment(int inc) {
+                        publishProgress(inc);
+                    }
+
+                    @Override
+                    public void finished() {
+                        Log.d(TAG, "Message Encoding end....");
+                        progressDialog.setIndeterminate(true);
+                        progressDialog.setTitle("Merging images...");
+                    }
+                });
+
+                //free Memory
+                for (Bitmap bitm : src_list)
+                    bitm.recycle();
+
+                //Java Garbage collector
+                System.gc();
+
+                //merging the split encoded image
+                Bitmap srcEncoded = Utility.mergeImage(encoded_list, originalHeight, originalWidth);
+
+                //Image encoded = true
+                textStegnography.setEncoded(true);
+
+                //Setting encrypted image to result
+                result.setEncrypted_image(srcEncoded);
+                result.setEncoded(true);
             }
-
-            Log.d("TextEncoding ", "Message to encode : " + message);
-
-            //encoding encrypted compressed message into image
-            List<Bitmap> encoded_list = EncodeDecode.encodeMessage(src_list, textStegnography.getEncrypted_message(), new EncodeDecode.ProgressHandler() {
-
-                //Progress Handler
-                @Override
-                public void setTotal(int tot) {
-                    maximumProgress = tot;
-                    progressDialog.setMax(maximumProgress);
-                    Log.d(TAG, "Total Length : " + tot);
-                }
-
-                @Override
-                public void increment(int inc) {
-                    publishProgress(inc);
-                }
-
-                @Override
-                public void finished() {
-                    Log.d(TAG, "Message Encoding end....");
-                    progressDialog.setIndeterminate(true);
-                    progressDialog.setTitle("Merging images...");
-                }
-            });
-
-            //free Memory
-            for (Bitmap bitm : src_list)
-                bitm.recycle();
-
-            //Java Garbage collector
-            System.gc();
-
-            //merging the split encoded image
-            Bitmap srcEncoded = Utility.mergeImage(encoded_list, originalHeight, originalWidth);
-            result.setEncrypted_image(srcEncoded);
+            else
+                Log.d(TAG, "Already Encoded");
         }
 
         return result;
-    }
-
-    /**
-     * This method is used to calculate sample size.
-     * @parameter : options {BitmapFactory options}
-     * @parameter : required_width {Integer}
-     * @parameter : required_height {Integer}
-     * @return : inSamplesize {Integer}
-     */
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int required_width, int required_height) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > required_height || width > required_width) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > required_height
-                    && (halfWidth / inSampleSize) > required_width) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
     }
 }

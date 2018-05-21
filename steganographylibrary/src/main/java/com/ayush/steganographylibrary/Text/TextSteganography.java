@@ -16,14 +16,18 @@ import java.io.UnsupportedEncodingException;
  */
 public class TextSteganography {
 
+    //Tag for Log
+    private static String TAG = TextSteganography.class.getName();
+
     String message;
     String secret_key;
     String encrypted_message;
-    Uri filepath;
-    File bitmap;
     Bitmap image;
     Bitmap encrypted_image;
     byte[] encrypted_zip;
+    Boolean encoded;
+    Boolean decoded;
+    Boolean secretKeyWrong;
 
     public TextSteganography() {
     }
@@ -44,11 +48,14 @@ public class TextSteganography {
             e.printStackTrace();
         }
 
+        encoded = false;
+
     }
 
     public TextSteganography(String secret_key, Bitmap image) {
         this.secret_key = convertKeyTo128bit(secret_key);
         this.image = image;
+        decoded = false;
     }
 
     public Bitmap getEncrypted_image() {
@@ -75,14 +82,6 @@ public class TextSteganography {
         this.secret_key = secret_key;
     }
 
-    public File getBitmap() {
-        return bitmap;
-    }
-
-    public void setBitmap(File bitmap) {
-        this.bitmap = bitmap;
-    }
-
     public byte[] getEncrypted_zip() {
         return encrypted_zip;
     }
@@ -99,14 +98,6 @@ public class TextSteganography {
         this.encrypted_message = encrypted_message;
     }
 
-    public Uri getFilepath() {
-        return filepath;
-    }
-
-    public void setFilepath(Uri filepath) {
-        this.filepath = filepath;
-    }
-
     public Bitmap getImage() {
         return image;
     }
@@ -115,9 +106,33 @@ public class TextSteganography {
         this.image = image;
     }
 
+    public Boolean isEncoded() {
+        return encoded;
+    }
+
+    public void setEncoded(Boolean encoded) {
+        this.encoded = encoded;
+    }
+
+    public Boolean isDecoded() {
+        return decoded;
+    }
+
+    public void setDecoded(Boolean decoded) {
+        this.decoded = decoded;
+    }
+
+    public Boolean isSecretKeyWrong() {
+        return secretKeyWrong;
+    }
+
+    public void setSecretKeyWrong(Boolean secretKeyWrong) {
+        this.secretKeyWrong = secretKeyWrong;
+    }
+
     public static String encryptMessage(String message, String secret_key){
 
-        Log.d("TextSteganography ", "Message : " + message );
+        Log.d(TAG, "Message : " + message );
 
         String encrypted_message = null;
         if (message != null){
@@ -133,7 +148,7 @@ public class TextSteganography {
             }
         }
 
-        Log.d("TextSteganography ", "Encrypted_message : " + encrypted_message );
+        Log.d(TAG, "Encrypted_message : " + encrypted_message );
 
         return encrypted_message;
     }
@@ -153,7 +168,7 @@ public class TextSteganography {
             }
         }
 
-        Log.d("TextSteganography" , "Decrypted Message : " + message);
+        Log.d(TAG , "Decrypted Message : " + decrypted_message);
 
         return decrypted_message;
     }
@@ -171,7 +186,7 @@ public class TextSteganography {
             result = result.substring(0, 15);
         }
 
-        Log.d("Secret key length", "" + result.getBytes().length);
+        Log.d(TAG, "Secret Key Length : " + result.getBytes().length);
 
         return result;
     }
