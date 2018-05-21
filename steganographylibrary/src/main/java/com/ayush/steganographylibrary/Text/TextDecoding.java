@@ -118,16 +118,16 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
             //decrypting message
             String message = null;
             //if (encrypted_message != null){
-                try {
-                    message = Crypto.decryptMessage(decoded_message, textSteganography.getSecret_key());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    message = Crypto.decryptMessage(decoded_message, textSteganography.getSecret_key());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             //}
 
-            if (Utility.isStringEmpty(message)) {
+            if (Utility.isStringEmpty(decoded_message)) {
                 try {
-                    result.setMessage(message);
+                    result.setMessage(decoded_message);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

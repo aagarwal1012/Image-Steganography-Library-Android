@@ -29,7 +29,7 @@ public class Crypto {
 
         encrypted = cipher.doFinal(message.getBytes());
 
-        return encrypted.toString();
+        return new String(encrypted, "UTF-8");
     }
 
     //Decryption Method
