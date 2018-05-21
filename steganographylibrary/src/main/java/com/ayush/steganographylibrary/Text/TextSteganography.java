@@ -9,6 +9,7 @@ import com.ayush.steganographylibrary.Utils.Utility;
 import com.ayush.steganographylibrary.Utils.Zipping;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 
 /**
  * This main class of the text steganography
@@ -32,12 +33,17 @@ public class TextSteganography {
         this.message = message;
         this.secret_key = convertKeyTo128bit(secret_key);
         this.image = image;
-        this.encrypted_message = encryptMessage(message, this.secret_key);
         try {
-            this.encrypted_zip = Zipping.compress(encrypted_message);
+            this.encrypted_zip = Zipping.compress(message);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        try {
+            this.encrypted_message = encryptMessage(new String(getEncrypted_zip(), "ISO-8859-1"), this.secret_key);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public TextSteganography(String secret_key, Bitmap image) {
@@ -110,6 +116,9 @@ public class TextSteganography {
     }
 
     public static String encryptMessage(String message, String secret_key){
+
+        Log.d("TextSteganography ", "Message : " + message );
+
         String encrypted_message = null;
         if (message != null){
             if (!Utility.isStringEmpty(secret_key)){
@@ -123,6 +132,9 @@ public class TextSteganography {
                 encrypted_message = message;
             }
         }
+
+        Log.d("TextSteganography ", "Encrypted_message : " + encrypted_message );
+
         return encrypted_message;
     }
 
@@ -140,6 +152,9 @@ public class TextSteganography {
                 decrypted_message = message;
             }
         }
+
+        Log.d("TextSteganography" , "Decrypted Message : " + message);
+
         return decrypted_message;
     }
 

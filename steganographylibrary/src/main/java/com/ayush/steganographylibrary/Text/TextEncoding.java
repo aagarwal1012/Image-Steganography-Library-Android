@@ -120,8 +120,10 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
                 e.printStackTrace();
             }
 
+            Log.d("TextEncoding ", "Message to encode : " + message);
+
             //encoding encrypted compressed message into image
-            List<Bitmap> encoded_list = EncodeDecode.encodeMessage(src_list, message, new EncodeDecode.ProgressHandler() {
+            List<Bitmap> encoded_list = EncodeDecode.encodeMessage(src_list, textStegnography.getEncrypted_message(), new EncodeDecode.ProgressHandler() {
 
                 //Progress Handler
                 @Override
