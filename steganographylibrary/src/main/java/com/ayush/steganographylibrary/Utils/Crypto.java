@@ -16,7 +16,7 @@ public class Crypto {
     public static String encryptMessage(String message, String secret_key) throws Exception {
 
         // Creating key and cipher
-        Key aesKey = new SecretKeySpec(secret_key.getBytes(), "AES");
+        SecretKeySpec aesKey = new SecretKeySpec(secret_key.getBytes(), "AES");
         Cipher cipher;
 
         //AES cipher
@@ -29,7 +29,7 @@ public class Crypto {
 
         encrypted = cipher.doFinal(message.getBytes());
 
-        return new String(encrypted, "UTF-8");
+        return new String(encrypted, "ISO-8859-1");
     }
 
     //Decryption Method
@@ -40,7 +40,7 @@ public class Crypto {
     public static String decryptMessage(String encrypted_message, String secret_key) throws Exception {
 
         // Creating key and cipher
-        Key aesKey = new SecretKeySpec(secret_key.getBytes(), "AES");
+        SecretKeySpec aesKey = new SecretKeySpec(secret_key.getBytes(), "AES");
         Cipher cipher;
 
         //AES cipher
@@ -51,7 +51,7 @@ public class Crypto {
 
         String decrypted;
 
-        decrypted = new String(cipher.doFinal(encrypted_message.getBytes(Charset.forName("UTF-8"))));
+        decrypted = new String(cipher.doFinal(encrypted_message.getBytes(Charset.forName("ISO-8859-1"))));
 
         //returning decrypted text
         return decrypted;

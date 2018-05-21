@@ -118,7 +118,7 @@ public class EncodeDecode {
         encrypted_message = START_MESSAGE_COSTANT + encrypted_message;
 
         //getting byte array from string
-        byte[] byte_encrypted_message = encrypted_message.getBytes(Charset.forName("UTF-8"));
+        byte[] byte_encrypted_message = encrypted_message.getBytes(Charset.forName("ISO-8859-1"));
 
         //Message Encoding Status
         MessageEncodingStatus message = new MessageEncodingStatus();
@@ -129,7 +129,7 @@ public class EncodeDecode {
 
         //Progress Handler
         if (progressHandler != null) {
-            progressHandler.setTotal(encrypted_message.getBytes(Charset.forName("UTF-8")).length);
+            progressHandler.setTotal(encrypted_message.getBytes(Charset.forName("ISO-8859-1")).length);
         }
 
         //Just a log to get the byte message length
@@ -218,19 +218,19 @@ public class EncodeDecode {
 
                 //converting byte value to string
                 byte[] nonso = {(byte_encrypted_message.elementAt(byte_encrypted_message.size() - 1)).byteValue()};
-                String str = new String(nonso, Charset.forName("UTF-8"));
+                String str = new String(nonso, Charset.forName("ISO-8859-1"));
 
                 if (messageDecodingStatus.getMessage().endsWith(END_MESSAGE_COSTANT)) {
 
                     Log.i("TEST", "Decoding ended");
 
-                    //fixing utf-8 decoding
+                    //fixing ISO-8859-1 decoding
                     byte[] temp = new byte[byte_encrypted_message.size()];
 
                     for (int index = 0; index < temp.length; index++)
                         temp[index] = byte_encrypted_message.get(index);
 
-                    String stra = new String(temp, Charset.forName("UTF-8"));
+                    String stra = new String(temp, Charset.forName("ISO-8859-1"));
                     messageDecodingStatus.setMessage(stra.substring(0, stra.length() - 1));
                     //end fixing
 
@@ -311,7 +311,7 @@ public class EncodeDecode {
         if (message != null) {
             message += END_MESSAGE_COSTANT;
             message = START_MESSAGE_COSTANT + message;
-            result = message.getBytes(Charset.forName("UTF-8")).length * 4 / 3;
+            result = message.getBytes(Charset.forName("ISO-8859-1")).length * 4 / 3;
         }
 
         return result;

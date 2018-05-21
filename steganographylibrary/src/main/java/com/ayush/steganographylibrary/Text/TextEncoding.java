@@ -115,13 +115,13 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
             //Converting byte array to string
             String message = null;
             try {
-                message = new String(textStegnography.getEncrypted_zip(), "UTF-8");
+                message = new String(textStegnography.getEncrypted_zip(), "ISO-8859-1");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
 
             //encoding encrypted compressed message into image
-            List<Bitmap> encoded_list = EncodeDecode.encodeMessage(src_list, textStegnography.getMessage(), new EncodeDecode.ProgressHandler() {
+            List<Bitmap> encoded_list = EncodeDecode.encodeMessage(src_list, message, new EncodeDecode.ProgressHandler() {
 
                 //Progress Handler
                 @Override

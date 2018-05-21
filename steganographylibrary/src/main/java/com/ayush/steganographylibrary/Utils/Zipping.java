@@ -45,7 +45,7 @@ public class Zipping {
 
         GZIPInputStream gis = new GZIPInputStream(bis);
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(gis, "UTF-8"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(gis, "ISO-8859-1"));
 
         StringBuilder sb = new StringBuilder();
 

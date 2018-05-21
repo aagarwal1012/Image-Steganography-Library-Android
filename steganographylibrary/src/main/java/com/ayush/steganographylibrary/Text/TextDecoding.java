@@ -99,35 +99,39 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
             //decoding encrypted zipped message
             String decoded_message = EncodeDecode.decodeMessage(srcEncodedList);
 
+            Log.d("TextDecoding" , "Decoded_Message : " + decoded_message);
+
             //Getting byte array from decoded_message
             byte[] byte_array = null;
             try {
-                byte_array = decoded_message.getBytes("UTF-8");
+                byte_array = decoded_message.getBytes("ISO-8859-1");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
 
             //decompressing decoded_message
-//            String encrypted_message = null;
-//            try {
-//                encrypted_message = Zipping.decompress(byte_array);
-//            } catch (Exception e) {
-//                Log.d("Error : " , "" + e);
-//            }
+            String encrypted_message = null;
+            try {
+                encrypted_message = Zipping.decompress(byte_array);
+            } catch (Exception e) {
+                Log.d("Error : " , "" + e);
+            }
 
             //decrypting message
             String message = null;
-            //if (encrypted_message != null){
-//                try {
-//                    message = Crypto.decryptMessage(decoded_message, textSteganography.getSecret_key());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-            //}
+            if (encrypted_message != null){
+                try {
+                    message = Crypto.decryptMessage(decoded_message, textSteganography.getSecret_key());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            Log.d("TextDecoding" , "Message : " + message);
 
             if (Utility.isStringEmpty(decoded_message)) {
                 try {
-                    result.setMessage(decoded_message);
+                    result.setMessage(message);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
