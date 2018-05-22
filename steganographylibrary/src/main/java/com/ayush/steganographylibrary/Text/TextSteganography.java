@@ -48,7 +48,9 @@ public class TextSteganography {
             e.printStackTrace();
         }
 
-        encoded = false;
+        this.encoded = false;
+        this.decoded = false;
+        this.secretKeyWrong = true;
 
     }
 
@@ -160,7 +162,7 @@ public class TextSteganography {
                 try {
                     decrypted_message = Crypto.decryptMessage(message, secret_key);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.d(TAG, "Error : " + e.getMessage() + " , may be due to wrong key.");
                 }
             }
             else {

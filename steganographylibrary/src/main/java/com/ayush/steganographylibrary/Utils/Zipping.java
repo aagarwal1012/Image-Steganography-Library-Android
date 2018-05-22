@@ -5,7 +5,6 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -15,6 +14,8 @@ This class has methods used to compress and decompress encrypted message.
  */
 
 public class Zipping {
+
+    final static String TAG = Zipping.class.getName();
 
     /*
     @parameter : Encrypted message {String}
@@ -61,7 +62,7 @@ public class Zipping {
         gis.close();
         bis.close();
 
-        Log.d("Zipping ", "Decompressed message : " + sb.toString());
+        Log.d(TAG, "Decompressed message : " + sb.toString());
 
         return sb.toString();
     }

@@ -3,10 +3,10 @@ package com.ayush.steganographylibrary.Text.AsyncTaskCallback;
 import com.ayush.steganographylibrary.Text.TextSteganography;
 
 /**
- * This the callback interface for TextEncoding AsyncTask.
+ * This the callback interface for TextDecoding AsyncTask.
  */
 
-public interface TextEncodingCallback {
+public interface TextDecodingCallback {
 
     public void onStartTextEncoding();
 

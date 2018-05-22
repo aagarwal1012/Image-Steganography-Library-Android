@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.ayush.steganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
 import com.ayush.steganographylibrary.Utils.Utility;
 import com.ayush.steganographylibrary.Utils.Zipping;
 
@@ -24,10 +25,16 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
 
     private ProgressDialog progressDialog;
 
-    public TextDecoding(Activity activity) {
+    TextSteganography result;
+
+    //Callback interface for AsyncTask
+    TextDecodingCallback textDecodingCallback;
+
+    public TextDecoding(Activity activity, TextDecodingCallback textDecodingCallback) {
         super();
         this.activity = activity;
         this.progressDialog = new ProgressDialog(activity);
+        this.textDecodingCallback = textDecodingCallback;
     }
 
     //setting progress dialog if wanted
@@ -58,73 +65,88 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
         //dismiss progress dialog
         if(progressDialog != null)
             progressDialog.dismiss();
+
+        //sending result to callback
+        textDecodingCallback.onCompleteTextEncoding(result);
     }
 
     @Override
     protected TextSteganography doInBackground(TextSteganography... textSteganographies) {
 
         //making result object
-        TextSteganography result = null;
+        result = null;
 
         //If it is not already decoded
         if (textSteganographies.length > 0){
 
             TextSteganography textSteganography = textSteganographies[0];
 
-            if (!textSteganography.isDecoded()){
-                //getting bitmap image from file
-                Bitmap bitmap = textSteganography.getImage();
+            //getting bitmap image from file
+            Bitmap bitmap = textSteganography.getImage();
 
-                //return null if bitmap is null
-                if (bitmap == null)
-                    return result;
+            //return null if bitmap is null
+            if (bitmap == null)
+                return result;
 
-                //splitting images
-                List<Bitmap> srcEncodedList = Utility.splitImage(bitmap);
+            //splitting images
+            List<Bitmap> srcEncodedList = Utility.splitImage(bitmap);
 
-                //decoding encrypted zipped message
-                String decoded_message = EncodeDecode.decodeMessage(srcEncodedList);
+            //decoding encrypted zipped message
+            String decoded_message = EncodeDecode.decodeMessage(srcEncodedList);
 
-                Log.d(TAG , "Decoded_Message : " + decoded_message);
+            Log.d(TAG , "Decoded_Message : " + decoded_message);
 
-                //decrypting the message
-                String message = textSteganography.decryptMessage(decoded_message, textSteganography.getSecret_key());
+            //text decoded = true
+            if (decoded_message != null){
+                result = new TextSteganography();
+                result.setDecoded(true);
+            }
+            else {
+                result = null;
+            }
 
-                //If message is null it means that the secret key is wrong otherwise secret key is right.
-                if (message != null){
-                    //decompressing the message
+            //decrypting the encoded message
+            String decrypted_message = textSteganography.decryptMessage(decoded_message, textSteganography.getSecret_key());
+            Log.d(TAG, "Decrypted message : " + decrypted_message);
+
+            String decompressed_message = null;
+
+            //If decrypted_message is null it means that the secret key is wrong otherwise secret key is right.
+            if (decrypted_message != null){
+
+                //secret key was right
+                result.setSecretKeyWrong(false);
+
+                //decompressing the decrypted_message
+                try {
+                    decompressed_message = Zipping.decompress(decrypted_message.getBytes("ISO-8859-1"));
+                    Log.d(TAG, "Original Message : " + decompressed_message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (!Utility.isStringEmpty(decompressed_message)) {
                     try {
-                        message = Zipping.decompress(message.getBytes("ISO-8859-1"));
+                        //Setting message to result
+                        if (result != null && result.isDecoded())
+                            result.setMessage(decompressed_message);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    if (message != null && Utility.isStringEmpty(message)) {
-                        try {
-                            //Setting message to result and decoded = true
-                            result.setMessage(message);
-                            result.setDecoded(true);
-                            textSteganography.setDecoded(true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    //free memory
-                    for (Bitmap bitm : srcEncodedList)
-                        bitm.recycle();
-
-                    //Java Garbage Collector
-                    System.gc();
                 }
-                else {
-                    //secret key provided is wrong
-                    textSteganography.setSecretKeyWrong(true);
-                }
+
+                //free memory
+                for (Bitmap bitm : srcEncodedList)
+                    bitm.recycle();
+
+                //Java Garbage Collector
+                System.gc();
             }
-            else
-                Log.d(TAG , "Already Decoded");
-
+            else {
+                //secret key provided is wrong
+                textSteganography.setSecretKeyWrong(true);
+            }
         }
 
         return result;

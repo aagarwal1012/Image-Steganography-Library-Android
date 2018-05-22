@@ -13,13 +13,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ayush.steganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
 import com.ayush.steganographylibrary.Text.TextDecoding;
 import com.ayush.steganographylibrary.Text.TextSteganography;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-public class Decode extends AppCompatActivity {
+public class Decode extends AppCompatActivity implements TextDecodingCallback {
 
     private static final int SELECT_PICTURE = 100;
     private static final String TAG = "Decode Class";
@@ -32,6 +33,8 @@ public class Decode extends AppCompatActivity {
     ImageView imageView;
     EditText message, secret_key;
     Button choose_image_button, decode_button;
+
+    TextSteganography result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +64,10 @@ public class Decode extends AppCompatActivity {
                 if (filepath != null){
                     TextSteganography textSteganography = new TextSteganography(secret_key.getText().toString(),
                             original_image);
-                    TextDecoding textDecoding = new TextDecoding(Decode.this);
+                    TextDecoding textDecoding = new TextDecoding(Decode.this, Decode.this);
 
                     textDecoding.execute(textSteganography);
 
-                    TextSteganography result = null;
                     try {
                         result = textDecoding.get();
                     } catch (InterruptedException e) {
@@ -74,14 +76,7 @@ public class Decode extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    if (result != null && result.isDecoded() ){
-                        whether_decoded.setText("Decoded");
-                        message.setText("" + result.getMessage());
-                    }
 
-                    if (result != null && result.isSecretKeyWrong() != null && result.isSecretKeyWrong()){
-                        whether_decoded.setText("Wrong secret key");
-                    }
                 }
             }
         });
@@ -113,6 +108,29 @@ public class Decode extends AppCompatActivity {
                 Log.d(TAG, "Error : " + e);
             }
         }
+
+    }
+
+    @Override
+    public void onStartTextEncoding() {
+
+    }
+
+    @Override
+    public void onCompleteTextEncoding(TextSteganography result) {
+        this.result = result;
+        if (result == null)
+            whether_decoded.setText("No message found");
+        else{
+            if (result != null && result.isDecoded() && !result.isSecretKeyWrong()){
+                whether_decoded.setText("Decoded");
+                message.setText("" + result.getMessage());
+            }
+            else {
+                whether_decoded.setText("Wrong secret key");
+            }
+        }
+
 
     }
 }
