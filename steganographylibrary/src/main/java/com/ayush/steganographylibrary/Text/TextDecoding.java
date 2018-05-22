@@ -15,16 +15,16 @@ import java.util.List;
  * In this class all those method in EncodeDecode class are used to decode secret message in image.
  * All the tasks will run in background.
  */
-public class TextDecodingClass extends AsyncTask<TextSteganography, Void, TextSteganography> {
+public class TextDecoding extends AsyncTask<TextSteganography, Void, TextSteganography> {
 
     //Tag for Log
-    private final static String TAG = TextDecodingClass.class.getName();
+    private final static String TAG = TextDecoding.class.getName();
 
     Activity activity;
 
     private ProgressDialog progressDialog;
 
-    public TextDecodingClass(Activity activity) {
+    public TextDecoding(Activity activity) {
         super();
         this.activity = activity;
         this.progressDialog = new ProgressDialog(activity);

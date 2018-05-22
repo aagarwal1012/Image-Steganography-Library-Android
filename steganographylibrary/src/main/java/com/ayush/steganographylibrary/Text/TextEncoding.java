@@ -6,22 +6,20 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.ayush.steganographylibrary.Text.AsyncTaskCallback.CallbackInterface;
-import com.ayush.steganographylibrary.Text.Class.TextEncoding;
+import com.ayush.steganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
 import com.ayush.steganographylibrary.Utils.Crypto;
 import com.ayush.steganographylibrary.Utils.Utility;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
  * In this class all those method in EncodeDecode class are used to encode secret message in image.
  * All the tasks will run in background.
  */
-public class TextEncodingClass extends AsyncTask<TextSteganography, Integer, TextSteganography> {
+public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteganography> {
 
     //Tag for Log
-    private static String TAG = TextEncodingClass.class.getName();
+    private static String TAG = TextEncoding.class.getName();
 
     Activity activity;
 
@@ -29,9 +27,12 @@ public class TextEncodingClass extends AsyncTask<TextSteganography, Integer, Tex
 
     private ProgressDialog progressDialog;
 
-    CallbackInterface<TextSteganography> callbackInterface;
+    TextSteganography result;
 
-    public TextEncodingClass(Activity activity, CallbackInterface<TextSteganography> callbackInterface) {
+    //Callback interface for AsyncTask
+    TextEncodingCallback callbackInterface;
+
+    public TextEncoding(Activity activity, TextEncodingCallback callbackInterface) {
         super();
         this.activity = activity;
         this.progressDialog = new ProgressDialog(activity);
@@ -49,7 +50,6 @@ public class TextEncodingClass extends AsyncTask<TextSteganography, Integer, Tex
             progressDialog.setTitle("Encoding Message");
             progressDialog.setIndeterminate(false);
             progressDialog.setCancelable(false);
-            //progressDialog.setMax(100);
             progressDialog.show();
         }
     }
@@ -61,8 +61,10 @@ public class TextEncodingClass extends AsyncTask<TextSteganography, Integer, Tex
         //dismiss progress dialog
         if (progressDialog != null){
             progressDialog.dismiss();
-            callbackInterface.onTaskComplete(textStegnography);
         }
+
+        //Sending result to callback interface
+        callbackInterface.onCompleteTextEncoding(result);
     }
 
     @Override
@@ -79,7 +81,7 @@ public class TextEncodingClass extends AsyncTask<TextSteganography, Integer, Tex
     protected TextSteganography doInBackground(TextSteganography... textSteganographies) {
 
         //making result object
-        TextSteganography result = new TextSteganography();
+        result = new TextSteganography();
 
         Crypto encryption = null;
 
@@ -88,12 +90,6 @@ public class TextEncodingClass extends AsyncTask<TextSteganography, Integer, Tex
         if (textSteganographies.length > 0){
 
             TextSteganography textStegnography = textSteganographies[0];
-
-//            try {
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
 
             //If it is not already encoded
 
@@ -128,7 +124,6 @@ public class TextEncodingClass extends AsyncTask<TextSteganography, Integer, Tex
                     public void finished() {
                         Log.d(TAG, "Message Encoding end....");
                         progressDialog.setIndeterminate(true);
-                        //progressDialog.setTitle("Merging images...");
                     }
                 });
 

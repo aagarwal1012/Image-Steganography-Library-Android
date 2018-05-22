@@ -1,6 +1,5 @@
 package com.ayush.steganography;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -15,17 +14,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ayush.steganographylibrary.Text.Class.TextEncoding;
-import com.ayush.steganographylibrary.Text.TextEncodingClass;
+import com.ayush.steganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
+import com.ayush.steganographylibrary.Text.TextEncoding;
 import com.ayush.steganographylibrary.Text.TextSteganography;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
-public class Encode extends AppCompatActivity {
+public class Encode extends AppCompatActivity implements TextEncodingCallback {
 
     private static final int SELECT_PICTURE = 100;
     private static final String TAG = "Encode Class";
@@ -39,6 +37,9 @@ public class Encode extends AppCompatActivity {
     ImageView imageView;
     EditText message, secret_key;
     Button choose_image_button, encode_button, save_image_button;
+
+    TextEncoding textEncoding;
+    TextSteganography textSteganography, result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,23 +67,14 @@ public class Encode extends AppCompatActivity {
         encode_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                whether_encoded.setText("");
                 if (filepath != null){
                     if (message.getText() != null ){
-                        TextSteganography textSteganography = new TextSteganography(message.getText().toString(),
+                        textSteganography = new TextSteganography(message.getText().toString(),
                                 secret_key.getText().toString(),
                                 original_image);
-                        ProgressDialog progressDialog = new ProgressDialog(Encode.this);
-                        TextEncoding textEncoding = new TextEncoding();
-                        textEncoding.launchTask(Encode.this, textSteganography);
-
-                        TextSteganography result = textEncoding.getResult();
-
-
-                        if (result != null && result.isEncoded()){
-                            encoded_image = result.getEncrypted_image();
-                            whether_encoded.setText("Encoded");
-                            imageView.setImageBitmap(encoded_image);
-                        }
+                        textEncoding = new TextEncoding(Encode.this, Encode.this);
+                        textEncoding.execute(textSteganography);
                     }
                 }
             }
@@ -161,4 +153,18 @@ public class Encode extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onStartTextEncoding() {
+
+    }
+
+    @Override
+    public void onCompleteTextEncoding(TextSteganography result) {
+        this.result = result;
+        if (result != null && result.isEncoded()){
+            encoded_image = result.getEncrypted_image();
+            whether_encoded.setText("Encoded");
+            imageView.setImageBitmap(encoded_image);
+        }
+    }
 }
