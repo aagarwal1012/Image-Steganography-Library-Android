@@ -119,15 +119,17 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
     @Override
     public void onCompleteTextEncoding(TextSteganography result) {
         this.result = result;
-        if (result == null)
-            whether_decoded.setText("No message found");
-        else{
-            if (result != null && result.isDecoded() && !result.isSecretKeyWrong()){
-                whether_decoded.setText("Decoded");
-                message.setText("" + result.getMessage());
-            }
-            else {
-                whether_decoded.setText("Wrong secret key");
+        if (result != null){
+            if (!result.isDecoded())
+                whether_decoded.setText("No message found");
+            else{
+                if (!result.isSecretKeyWrong()){
+                    whether_decoded.setText("Decoded");
+                    message.setText("" + result.getMessage());
+                }
+                else {
+                    whether_decoded.setText("Wrong secret key");
+                }
             }
         }
 

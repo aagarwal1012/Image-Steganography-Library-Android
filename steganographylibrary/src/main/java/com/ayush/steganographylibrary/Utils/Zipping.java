@@ -1,7 +1,5 @@
 package com.ayush.steganographylibrary.Utils;
 
-import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -61,8 +59,6 @@ public class Zipping {
         br.close();
         gis.close();
         bis.close();
-
-        Log.d(TAG, "Decompressed message : " + sb.toString());
 
         return sb.toString();
     }

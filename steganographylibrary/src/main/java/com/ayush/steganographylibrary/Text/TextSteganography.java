@@ -30,6 +30,9 @@ public class TextSteganography {
     Boolean secretKeyWrong;
 
     public TextSteganography() {
+        this.encoded = false;
+        this.decoded = false;
+        this.secretKeyWrong = true;
     }
 
     public TextSteganography(String message, String secret_key, Bitmap image) {
@@ -57,7 +60,10 @@ public class TextSteganography {
     public TextSteganography(String secret_key, Bitmap image) {
         this.secret_key = convertKeyTo128bit(secret_key);
         this.image = image;
-        decoded = false;
+
+        this.encoded = false;
+        this.decoded = false;
+        this.secretKeyWrong = true;
     }
 
     public Bitmap getEncrypted_image() {
@@ -169,8 +175,6 @@ public class TextSteganography {
                 decrypted_message = message;
             }
         }
-
-        Log.d(TAG , "Decrypted Message : " + decrypted_message);
 
         return decrypted_message;
     }

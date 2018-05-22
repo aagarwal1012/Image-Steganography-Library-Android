@@ -74,7 +74,7 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
     protected TextSteganography doInBackground(TextSteganography... textSteganographies) {
 
         //making result object
-        result = null;
+        result = new TextSteganography();;
 
         //If it is not already decoded
         if (textSteganographies.length > 0){
@@ -86,7 +86,7 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
 
             //return null if bitmap is null
             if (bitmap == null)
-                return result;
+                return null;
 
             //splitting images
             List<Bitmap> srcEncodedList = Utility.splitImage(bitmap);
@@ -98,11 +98,7 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
 
             //text decoded = true
             if (decoded_message != null){
-                result = new TextSteganography();
                 result.setDecoded(true);
-            }
-            else {
-                result = null;
             }
 
             //decrypting the encoded message
@@ -114,7 +110,7 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
             //If decrypted_message is null it means that the secret key is wrong otherwise secret key is right.
             if (decrypted_message != null){
 
-                //secret key was right
+                //secret key provided is right
                 result.setSecretKeyWrong(false);
 
                 //decompressing the decrypted_message
@@ -142,10 +138,6 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
 
                 //Java Garbage Collector
                 System.gc();
-            }
-            else {
-                //secret key provided is wrong
-                textSteganography.setSecretKeyWrong(true);
             }
         }
 
