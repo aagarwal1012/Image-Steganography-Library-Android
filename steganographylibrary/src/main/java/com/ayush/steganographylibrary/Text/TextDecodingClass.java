@@ -3,35 +3,31 @@ package com.ayush.steganographylibrary.Text;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.ayush.steganographylibrary.Utils.Crypto;
 import com.ayush.steganographylibrary.Utils.Utility;
 import com.ayush.steganographylibrary.Utils.Zipping;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
  * In this class all those method in EncodeDecode class are used to decode secret message in image.
  * All the tasks will run in background.
  */
-public class TextDecoding extends AsyncTask<TextSteganography, Void, TextSteganography> {
+public class TextDecodingClass extends AsyncTask<TextSteganography, Void, TextSteganography> {
 
     //Tag for Log
-    private final static String TAG = TextDecoding.class.getName();
+    private final static String TAG = TextDecodingClass.class.getName();
 
     Activity activity;
 
     private ProgressDialog progressDialog;
 
-    public TextDecoding(Activity activity) {
+    public TextDecodingClass(Activity activity) {
         super();
         this.activity = activity;
+        this.progressDialog = new ProgressDialog(activity);
     }
 
     //setting progress dialog if wanted
@@ -44,14 +40,14 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
     protected void onPreExecute() {
         super.onPreExecute();
 
-        progressDialog = new ProgressDialog(activity);
-
         //setting parameters of progress dialog
         if (progressDialog != null){
             progressDialog.setMessage("Loading, Please Wait...");
             progressDialog.setTitle("Decoding Message");
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(false);
+            progressDialog.show();
+
         }
     }
 
@@ -65,22 +61,10 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
     }
 
     @Override
-    protected void onProgressUpdate(Void... values) {
-        super.onProgressUpdate(values);
-
-        //Updating progress dialog
-        if(progressDialog != null) {
-            progressDialog.show();
-        }
-    }
-
-    @Override
     protected TextSteganography doInBackground(TextSteganography... textSteganographies) {
 
         //making result object
         TextSteganography result = null;
-
-        publishProgress();
 
         //If it is not already decoded
         if (textSteganographies.length > 0){

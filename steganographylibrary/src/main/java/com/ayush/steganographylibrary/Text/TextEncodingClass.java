@@ -3,26 +3,25 @@ package com.ayush.steganographylibrary.Text;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.ayush.steganographylibrary.Text.AsyncTaskCallback.CallbackInterface;
+import com.ayush.steganographylibrary.Text.Class.TextEncoding;
 import com.ayush.steganographylibrary.Utils.Crypto;
 import com.ayush.steganographylibrary.Utils.Utility;
-import com.ayush.steganographylibrary.Utils.Zipping;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
  * In this class all those method in EncodeDecode class are used to encode secret message in image.
  * All the tasks will run in background.
  */
-public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteganography> {
+public class TextEncodingClass extends AsyncTask<TextSteganography, Integer, TextSteganography> {
 
     //Tag for Log
-    private static String TAG = TextEncoding.class.getName();
+    private static String TAG = TextEncodingClass.class.getName();
 
     Activity activity;
 
@@ -30,15 +29,13 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
 
     private ProgressDialog progressDialog;
 
-    public TextEncoding(Activity activity) {
+    CallbackInterface<TextSteganography> callbackInterface;
+
+    public TextEncodingClass(Activity activity, CallbackInterface<TextSteganography> callbackInterface) {
         super();
         this.activity = activity;
         this.progressDialog = new ProgressDialog(activity);
-    }
-
-    //setting progress dialog if wanted
-    public void setProgressDialog(ProgressDialog progressDialog) {
-        this.progressDialog = progressDialog;
+        this.callbackInterface = callbackInterface;
     }
 
     //pre execution of method
@@ -52,6 +49,8 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
             progressDialog.setTitle("Encoding Message");
             progressDialog.setIndeterminate(false);
             progressDialog.setCancelable(false);
+            //progressDialog.setMax(100);
+            progressDialog.show();
         }
     }
 
@@ -62,6 +61,7 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
         //dismiss progress dialog
         if (progressDialog != null){
             progressDialog.dismiss();
+            callbackInterface.onTaskComplete(textStegnography);
         }
     }
 
@@ -71,7 +71,6 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
 
         //Updating progress dialog
         if (progressDialog != null){
-            progressDialog.show();
             progressDialog.incrementProgressBy(values[0]);
         }
     }
@@ -89,6 +88,12 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
         if (textSteganographies.length > 0){
 
             TextSteganography textStegnography = textSteganographies[0];
+
+//            try {
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 
             //If it is not already encoded
 
@@ -123,7 +128,7 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
                     public void finished() {
                         Log.d(TAG, "Message Encoding end....");
                         progressDialog.setIndeterminate(true);
-                        progressDialog.setTitle("Merging images...");
+                        //progressDialog.setTitle("Merging images...");
                     }
                 });
 

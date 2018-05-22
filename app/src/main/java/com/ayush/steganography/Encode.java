@@ -2,10 +2,8 @@ package com.ayush.steganography;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ayush.steganographylibrary.Text.TextEncoding;
+import com.ayush.steganographylibrary.Text.Class.TextEncoding;
+import com.ayush.steganographylibrary.Text.TextEncodingClass;
 import com.ayush.steganographylibrary.Text.TextSteganography;
 
 import java.io.File;
@@ -72,19 +71,12 @@ public class Encode extends AppCompatActivity {
                         TextSteganography textSteganography = new TextSteganography(message.getText().toString(),
                                 secret_key.getText().toString(),
                                 original_image);
-                        TextEncoding textEncoding = new TextEncoding(Encode.this);
-                        //ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
-                        //textEncoding.setProgressDialog(progressDialog);
-                        textEncoding.execute(textSteganography);
+                        ProgressDialog progressDialog = new ProgressDialog(Encode.this);
+                        TextEncoding textEncoding = new TextEncoding();
+                        textEncoding.launchTask(Encode.this, textSteganography);
 
-                        TextSteganography result = null;
-                        try {
-                            result = textEncoding.get();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
+                        TextSteganography result = textEncoding.getResult();
+
 
                         if (result != null && result.isEncoded()){
                             encoded_image = result.getEncrypted_image();
