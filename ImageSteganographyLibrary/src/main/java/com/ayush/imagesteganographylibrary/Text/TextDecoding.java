@@ -16,7 +16,7 @@ import java.util.List;
  * In this class all those method in EncodeDecode class are used to decode secret message in image.
  * All the tasks will run in background.
  */
-public class TextDecoding extends AsyncTask<TextSteganography, Void, TextSteganography> {
+public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageSteganography> {
 
     //Tag for Log
     private final static String TAG = TextDecoding.class.getName();
@@ -25,7 +25,7 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
 
     private ProgressDialog progressDialog;
 
-    TextSteganography result;
+    ImageSteganography result;
 
     //Callback interface for AsyncTask
     TextDecodingCallback textDecodingCallback;
@@ -59,8 +59,8 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
     }
 
     @Override
-    protected void onPostExecute(TextSteganography textSteganography) {
-        super.onPostExecute(textSteganography);
+    protected void onPostExecute(ImageSteganography imageSteganography) {
+        super.onPostExecute(imageSteganography);
 
         //dismiss progress dialog
         if(progressDialog != null)
@@ -71,18 +71,18 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
     }
 
     @Override
-    protected TextSteganography doInBackground(TextSteganography... textSteganographies) {
+    protected ImageSteganography doInBackground(ImageSteganography... imageSteganographies) {
 
         //making result object
-        result = new TextSteganography();;
+        result = new ImageSteganography();;
 
         //If it is not already decoded
-        if (textSteganographies.length > 0){
+        if (imageSteganographies.length > 0){
 
-            TextSteganography textSteganography = textSteganographies[0];
+            ImageSteganography imageSteganography = imageSteganographies[0];
 
             //getting bitmap image from file
-            Bitmap bitmap = textSteganography.getImage();
+            Bitmap bitmap = imageSteganography.getImage();
 
             //return null if bitmap is null
             if (bitmap == null)
@@ -102,7 +102,7 @@ public class TextDecoding extends AsyncTask<TextSteganography, Void, TextStegano
             }
 
             //decrypting the encoded message
-            String decrypted_message = textSteganography.decryptMessage(decoded_message, textSteganography.getSecret_key());
+            String decrypted_message = imageSteganography.decryptMessage(decoded_message, imageSteganography.getSecret_key());
             Log.d(TAG, "Decrypted message : " + decrypted_message);
 
             String decompressed_message = null;

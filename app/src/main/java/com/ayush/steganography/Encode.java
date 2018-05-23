@@ -1,5 +1,6 @@
 package com.ayush.steganography;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -15,8 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
+import com.ayush.imagesteganographylibrary.Text.ImageSteganography;
 import com.ayush.imagesteganographylibrary.Text.TextEncoding;
-import com.ayush.imagesteganographylibrary.Text.TextSteganography;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,7 +43,7 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
 
     //Objects needed for encoding
     TextEncoding textEncoding;
-    TextSteganography textSteganography, result;
+    ImageSteganography imageSteganography, result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +79,14 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
                 if (filepath != null){
                     if (message.getText() != null ){
 
-                        //TextSteganography Object instantiation
-                        textSteganography = new TextSteganography(message.getText().toString(),
+                        //ImageSteganography Object instantiation
+                        imageSteganography = new ImageSteganography(message.getText().toString(),
                                 secret_key.getText().toString(),
                                 original_image);
                         //TextEncoding object Instantiation
                         textEncoding = new TextEncoding(Encode.this, Encode.this);
                         //Executing the encoding
-                        textEncoding.execute(textSteganography);
+                        textEncoding.execute(imageSteganography);
                     }
                 }
             }
@@ -97,6 +98,11 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
             public void onClick(View view) {
 
                 String name = UUID.randomUUID().toString();
+
+                ProgressDialog progressDialog = new ProgressDialog(Encode.this);
+                progressDialog.setTitle("Saving Image");
+                progressDialog.setMessage("Loading Please Wait...");
+                progressDialog.show();
 
                 File file = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
                 File rootdir = new File(file, name);
@@ -133,6 +139,8 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
                     }
 
                 }
+
+                progressDialog.dismiss();
             }
         });
 
@@ -173,7 +181,7 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
     }
 
     @Override
-    public void onCompleteTextEncoding(TextSteganography result) {
+    public void onCompleteTextEncoding(ImageSteganography result) {
 
         //By the end of textEncoding
 

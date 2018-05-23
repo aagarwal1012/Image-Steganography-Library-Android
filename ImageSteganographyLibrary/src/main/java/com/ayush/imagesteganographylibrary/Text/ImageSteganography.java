@@ -12,10 +12,10 @@ import java.io.UnsupportedEncodingException;
 /**
  * This main class of the text steganography
  */
-public class TextSteganography {
+public class ImageSteganography {
 
     //Tag for Log
-    private static String TAG = TextSteganography.class.getName();
+    private static String TAG = ImageSteganography.class.getName();
 
     String message;
     String secret_key;
@@ -27,13 +27,13 @@ public class TextSteganography {
     Boolean decoded;
     Boolean secretKeyWrong;
 
-    public TextSteganography() {
+    public ImageSteganography() {
         this.encoded = false;
         this.decoded = false;
         this.secretKeyWrong = true;
     }
 
-    public TextSteganography(String message, String secret_key, Bitmap image) {
+    public ImageSteganography(String message, String secret_key, Bitmap image) {
 
         this.message = message;
         this.secret_key = convertKeyTo128bit(secret_key);
@@ -55,7 +55,7 @@ public class TextSteganography {
 
     }
 
-    public TextSteganography(String secret_key, Bitmap image) {
+    public ImageSteganography(String secret_key, Bitmap image) {
         this.secret_key = convertKeyTo128bit(secret_key);
         this.image = image;
 

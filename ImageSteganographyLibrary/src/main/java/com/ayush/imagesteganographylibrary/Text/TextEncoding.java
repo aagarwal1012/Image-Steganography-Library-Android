@@ -16,7 +16,7 @@ import java.util.List;
  * In this class all those method in EncodeDecode class are used to encode secret message in image.
  * All the tasks will run in background.
  */
-public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteganography> {
+public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSteganography> {
 
     //Tag for Log
     private static String TAG = TextEncoding.class.getName();
@@ -27,7 +27,7 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
 
     private ProgressDialog progressDialog;
 
-    TextSteganography result;
+    ImageSteganography result;
 
     //Callback interface for AsyncTask
     TextEncodingCallback callbackInterface;
@@ -55,7 +55,7 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
     }
 
     @Override
-    protected void onPostExecute(TextSteganography textStegnography) {
+    protected void onPostExecute(ImageSteganography textStegnography) {
         super.onPostExecute(textStegnography);
 
         //dismiss progress dialog
@@ -78,18 +78,18 @@ public class TextEncoding extends AsyncTask<TextSteganography, Integer, TextSteg
     }
 
     @Override
-    protected TextSteganography doInBackground(TextSteganography... textSteganographies) {
+    protected ImageSteganography doInBackground(ImageSteganography... imageSteganographies) {
 
         //making result object
-        result = new TextSteganography();
+        result = new ImageSteganography();
 
         Crypto encryption = null;
 
         maximumProgress = 0;
 
-        if (textSteganographies.length > 0){
+        if (imageSteganographies.length > 0){
 
-            TextSteganography textStegnography = textSteganographies[0];
+            ImageSteganography textStegnography = imageSteganographies[0];
 
             //getting image bitmap
             Bitmap bitmap = textStegnography.getImage();

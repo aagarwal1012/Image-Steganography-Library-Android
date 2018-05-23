@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
+import com.ayush.imagesteganographylibrary.Text.ImageSteganography;
 import com.ayush.imagesteganographylibrary.Text.TextDecoding;
-import com.ayush.imagesteganographylibrary.Text.TextSteganography;
 
 import java.io.IOException;
 
@@ -35,8 +35,8 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
     EditText message, secret_key;
     Button choose_image_button, decode_button;
 
-    //TextSteganography object
-    TextSteganography result;
+    //ImageSteganography object
+    ImageSteganography result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +68,15 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
             public void onClick(View view) {
                 if (filepath != null){
 
-                    //Making the TextSteganography object
-                    TextSteganography textSteganography = new TextSteganography(secret_key.getText().toString(),
+                    //Making the ImageSteganography object
+                    ImageSteganography imageSteganography = new ImageSteganography(secret_key.getText().toString(),
                             original_image);
 
                     //Making the TextDecoding object
                     TextDecoding textDecoding = new TextDecoding(Decode.this, Decode.this);
 
                     //Execute Task
-                    textDecoding.execute(textSteganography);
+                    textDecoding.execute(imageSteganography);
                 }
             }
         });
@@ -117,7 +117,7 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
     }
 
     @Override
-    public void onCompleteTextEncoding(TextSteganography result) {
+    public void onCompleteTextEncoding(ImageSteganography result) {
 
         //By the end of textDecoding
 
