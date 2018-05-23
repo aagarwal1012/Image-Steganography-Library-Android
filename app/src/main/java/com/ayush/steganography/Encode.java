@@ -30,14 +30,17 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
 
     private Uri filepath;
 
+    //Bitmaps
     private Bitmap original_image;
     private Bitmap encoded_image;
 
+    //Created variables for UI
     TextView whether_encoded;
     ImageView imageView;
     EditText message, secret_key;
     Button choose_image_button, encode_button, save_image_button;
 
+    //Objects needed for encoding
     TextEncoding textEncoding;
     TextSteganography textSteganography, result;
 
@@ -45,6 +48,8 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encode);
+
+        //initialized the UI components
 
         whether_encoded = (TextView) findViewById(R.id.whether_encoded);
 
@@ -57,6 +62,7 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
         encode_button = (Button) findViewById(R.id.encode_button);
         save_image_button = (Button) findViewById(R.id.save_image_button);
 
+        //Choose image button
         choose_image_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,22 +70,28 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
             }
         });
 
+        //Encode Button
         encode_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 whether_encoded.setText("");
                 if (filepath != null){
                     if (message.getText() != null ){
+
+                        //TextSteganography Object instantiation
                         textSteganography = new TextSteganography(message.getText().toString(),
                                 secret_key.getText().toString(),
                                 original_image);
+                        //TextEncoding object Instantiation
                         textEncoding = new TextEncoding(Encode.this, Encode.this);
+                        //Executing the encoding
                         textEncoding.execute(textSteganography);
                     }
                 }
             }
         });
 
+        //Save image button
         save_image_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,9 +165,11 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
 
     }
 
+    // Override method of TextEncodingCallback
+
     @Override
     public void onStartTextEncoding() {
-
+        //
     }
 
     @Override
