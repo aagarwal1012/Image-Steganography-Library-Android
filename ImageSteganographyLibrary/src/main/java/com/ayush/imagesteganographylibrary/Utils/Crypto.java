@@ -1,7 +1,6 @@
-package com.ayush.steganographylibrary.Utils;
+package com.ayush.imagesteganographylibrary.Utils;
 
 import java.nio.charset.Charset;
-import java.security.Key;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;

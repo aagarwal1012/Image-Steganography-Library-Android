@@ -14,9 +14,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ayush.steganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
-import com.ayush.steganographylibrary.Text.TextEncoding;
-import com.ayush.steganographylibrary.Text.TextSteganography;
+import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
+import com.ayush.imagesteganographylibrary.Text.TextEncoding;
+import com.ayush.imagesteganographylibrary.Text.TextSteganography;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -169,12 +169,16 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
 
     @Override
     public void onStartTextEncoding() {
-        //
+        //Whatever you want to do at the start of text encoding
     }
 
     @Override
     public void onCompleteTextEncoding(TextSteganography result) {
+
+        //By the end of textEncoding
+
         this.result = result;
+
         if (result != null && result.isEncoded()){
             encoded_image = result.getEncrypted_image();
             whether_encoded.setText("Encoded");

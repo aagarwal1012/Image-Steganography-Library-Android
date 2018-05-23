@@ -1,10 +1,10 @@
-package com.ayush.steganographylibrary.Text;
+package com.ayush.imagesteganographylibrary.Text;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 
-import com.ayush.steganographylibrary.Utils.Utility;
+import com.ayush.imagesteganographylibrary.Utils.Utility;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;

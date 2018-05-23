@@ -13,12 +13,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ayush.steganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
-import com.ayush.steganographylibrary.Text.TextDecoding;
-import com.ayush.steganographylibrary.Text.TextSteganography;
+import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
+import com.ayush.imagesteganographylibrary.Text.TextDecoding;
+import com.ayush.imagesteganographylibrary.Text.TextSteganography;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 public class Decode extends AppCompatActivity implements TextDecodingCallback {
 
@@ -27,13 +26,16 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
 
     private Uri filepath;
 
+    //Bitmap
     private Bitmap original_image;
 
-    TextView whether_decoded;
+    //Initializing the UI components
+    TextView textView;
     ImageView imageView;
     EditText message, secret_key;
     Button choose_image_button, decode_button;
 
+    //TextSteganography object
     TextSteganography result;
 
     @Override
@@ -41,7 +43,8 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_decode);
 
-        whether_decoded = (TextView) findViewById(R.id.whether_decoded);
+        //Instantiation of UI components
+        textView = (TextView) findViewById(R.id.whether_decoded);
 
         imageView = (ImageView) findViewById(R.id.imageview);
 
@@ -51,6 +54,7 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
         choose_image_button = (Button) findViewById(R.id.choose_image_button);
         decode_button = (Button) findViewById(R.id.decode_button);
 
+        //Choose Image Button
         choose_image_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,25 +62,21 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
             }
         });
 
+        //Decode Button
         decode_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (filepath != null){
+
+                    //Making the TextSteganography object
                     TextSteganography textSteganography = new TextSteganography(secret_key.getText().toString(),
                             original_image);
+
+                    //Making the TextDecoding object
                     TextDecoding textDecoding = new TextDecoding(Decode.this, Decode.this);
 
+                    //Execute Task
                     textDecoding.execute(textSteganography);
-
-                    try {
-                        result = textDecoding.get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-
-
                 }
             }
         });
@@ -113,24 +113,31 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
 
     @Override
     public void onStartTextEncoding() {
-
+        //Whatever you want to do by the start of textDecoding
     }
 
     @Override
     public void onCompleteTextEncoding(TextSteganography result) {
+
+        //By the end of textDecoding
+
         this.result = result;
+
         if (result != null){
             if (!result.isDecoded())
-                whether_decoded.setText("No message found");
+                textView.setText("No message found");
             else{
                 if (!result.isSecretKeyWrong()){
-                    whether_decoded.setText("Decoded");
+                    textView.setText("Decoded");
                     message.setText("" + result.getMessage());
                 }
                 else {
-                    whether_decoded.setText("Wrong secret key");
+                    textView.setText("Wrong secret key");
                 }
             }
+        }
+        else {
+            textView.setText("Select Image First");
         }
 
 

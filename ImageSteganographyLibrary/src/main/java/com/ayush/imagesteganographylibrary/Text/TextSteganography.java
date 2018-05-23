@@ -1,14 +1,12 @@
-package com.ayush.steganographylibrary.Text;
+package com.ayush.imagesteganographylibrary.Text;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.util.Log;
 
-import com.ayush.steganographylibrary.Utils.Crypto;
-import com.ayush.steganographylibrary.Utils.Utility;
-import com.ayush.steganographylibrary.Utils.Zipping;
+import com.ayush.imagesteganographylibrary.Utils.Crypto;
+import com.ayush.imagesteganographylibrary.Utils.Utility;
+import com.ayush.imagesteganographylibrary.Utils.Zipping;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 
 /**

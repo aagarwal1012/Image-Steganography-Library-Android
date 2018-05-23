@@ -1,4 +1,4 @@
-package com.ayush.steganographylibrary.Utils;
+package com.ayush.imagesteganographylibrary.Utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

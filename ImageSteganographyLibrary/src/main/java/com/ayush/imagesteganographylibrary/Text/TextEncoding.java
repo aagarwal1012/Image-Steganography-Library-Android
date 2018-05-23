@@ -1,4 +1,4 @@
-package com.ayush.steganographylibrary.Text;
+package com.ayush.imagesteganographylibrary.Text;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -6,9 +6,9 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.ayush.steganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
-import com.ayush.steganographylibrary.Utils.Crypto;
-import com.ayush.steganographylibrary.Utils.Utility;
+import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
+import com.ayush.imagesteganographylibrary.Utils.Crypto;
+import com.ayush.imagesteganographylibrary.Utils.Utility;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.ayush.steganographylibrary;
+package com.ayush.imagesteganographylibrary;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
