@@ -21,7 +21,7 @@ public class ImageSteganography {
     String secret_key;
     String encrypted_message;
     Bitmap image;
-    Bitmap encrypted_image;
+    Bitmap encoded_image;
     byte[] encrypted_zip;
     Boolean encoded;
     Boolean decoded;
@@ -64,12 +64,12 @@ public class ImageSteganography {
         this.secretKeyWrong = true;
     }
 
-    public Bitmap getEncrypted_image() {
-        return encrypted_image;
+    public Bitmap getEncoded_image() {
+        return encoded_image;
     }
 
-    public void setEncrypted_image(Bitmap encrypted_image) {
-        this.encrypted_image = encrypted_image;
+    public void setEncoded_image(Bitmap encoded_image) {
+        this.encoded_image = encoded_image;
     }
 
     public String getMessage() {

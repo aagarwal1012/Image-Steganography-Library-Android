@@ -188,7 +188,7 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
         this.result = result;
 
         if (result != null && result.isEncoded()){
-            encoded_image = result.getEncrypted_image();
+            encoded_image = result.getEncoded_image();
             whether_encoded.setText("Encoded");
             imageView.setImageBitmap(encoded_image);
         }

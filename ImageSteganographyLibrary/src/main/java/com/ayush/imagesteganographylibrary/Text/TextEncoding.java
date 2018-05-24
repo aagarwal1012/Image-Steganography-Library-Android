@@ -134,8 +134,8 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
             //merging the split encoded image
             Bitmap srcEncoded = Utility.mergeImage(encoded_list, originalHeight, originalWidth);
 
-            //Setting encrypted image to result
-            result.setEncrypted_image(srcEncoded);
+            //Setting encoded image to result
+            result.setEncoded_image(srcEncoded);
             result.setEncoded(true);
         }
 
