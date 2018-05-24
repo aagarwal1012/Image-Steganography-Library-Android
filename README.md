@@ -1,4 +1,4 @@
-<div align="center"><img src="cover.png"/></div>	      					[![Platform](https://img.shields.io/badge/platform-Android-yellow.svg)](https://www.android.com)[![API](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<div align="center"><img src="/images/cover.png"/></div>	      					[![Platform](https://img.shields.io/badge/platform-Android-yellow.svg)](https://www.android.com)[![API](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Image Steganography
 Steganography is the process of hiding a secret message within a larger one in such a way that someone  cannot know the presence or contents of the hidden message. Although related, Steganography is not to be confused with Encryption, which is the process of making a message unintelligible—Steganography attempts to hide the existence of communication.
@@ -16,7 +16,7 @@ The LSB is the lowest significant bit in the byte value of the image pixel.
 The  LSB  based  image  steganography  embeds  the  secret  in the  least  significant  bits  of  pixel  values  of  the  cover  image (CVR).
 The concept of LSB Embedding is simple. It exploits the fact that the level of precision in many image formats is far greater than that perceivable by average human vision. Therefore, an altered image with slight variations in its colors will be indistinguishable from the original by a human being, just by looking at it. In conventional LSB technique, which requires eight bytes of pixels to store 1byte of secret data but in proposed LSB technique, just four bytes of pixels are sufficient to hold one message byte. Rest of the bits in the pixels remains the same.
 Following shows the bit level interpretation of the algorithm :  
-<div align="center"><img src="lsb1.png"/></div>
+<div align="center"><img src="/images/lsb1.png"/></div>
 
 ## Decoding Algorithm
 - Firstly, `decode` the message from the encrypted image using LSB decoding.
@@ -26,7 +26,7 @@ Following shows the bit level interpretation of the algorithm :
 - Finally, `decompress` the message to get the original compressed message.   
 
 Consider the following encoding, it is totally undetectable by human eyes.
-<div align="center"><img src="original_encoded.png"/></div>
+<div align="center"><img src="/images/original_encoded.png"/></div>
 
 # Usage
 Just add the following dependency in your app's `build.gradle`
