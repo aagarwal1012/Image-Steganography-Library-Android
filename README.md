@@ -7,7 +7,7 @@ Steganography is the process of hiding a secret message within a larger one in s
 The main advantage of steganography algorithm is because of its simple security mechanism. Because the steganographic message is integrated invisibly and covered inside other harmless sources, it is very difficult to detect the message without knowing
 the existence and the appropriate encoding scheme .
 
-#Proposed Algorithm
+# Proposed Algorithm
 The algorithm is more dedicated towards the algorithm proposed by Rosziati Ibrahim and Teoh Suk Kuan in their [Research Paper](https://arxiv.org/ftp/arxiv/papers/1112/1112.2809.pdf) published on February 25, 2011.
 ##Encoding Algorithm
 - Firstly, the secret message that is extracted is `compressed` as the contents in the compressed string will significantly hard to detect and read, furthermore it reduces the size of string.
