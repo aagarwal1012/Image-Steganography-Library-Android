@@ -9,7 +9,7 @@ the existence and the appropriate encoding scheme .
 
 # Proposed Algorithm
 The algorithm is more dedicated towards the algorithm proposed by Rosziati Ibrahim and Teoh Suk Kuan in their [Research Paper](https://arxiv.org/ftp/arxiv/papers/1112/1112.2809.pdf) published on February 25, 2011.
-##Encoding Algorithm
+## Encoding Algorithm
 - Firstly, the secret message that is extracted is `compressed` as the contents in the compressed string will significantly hard to detect and read, furthermore it reduces the size of string.
 - Secondly, the compressed string is `encrypted` with the secret key.
 - Finally, `encoding` the encrypted message in the image. It uses `LSB steganographic embedding` to encode data into an image. Once the message is encoded the process stops.
@@ -184,6 +184,9 @@ public class MainActivity extends AppCompatActivity implements TextDecodingCallb
 | Decoded | isDecoded() | Check that the decoding is over or not. | false       |
 | SecretKeyWrong | isSecretKeyWrong() | Check that the secret key provided was right or wrong but after decoding was done. | true     |
 
+# Want to contribute !
+This is the well `documented` library. I have documented each and every method that I have used, so have a good read to the code and suggest some changes and new feature to be added in the library.  
+Feel free to <a href = "https://github.com/aagarwal1012/Image-Steganography-Library-Android/issues">open an issue</a>.
 
 # License
 **Image Steganography** is licensed under `MIT license`.
