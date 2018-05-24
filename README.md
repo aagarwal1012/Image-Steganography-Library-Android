@@ -1,6 +1,6 @@
-<div align="center"><img src="/images/cover.png"/></div>
-					      			<img src="https://img.shields.io/badge/platform-Android-brightgreen.svg?style=flat-square" alt="Platform" /> <img src="https://img.shields.io/badge/API-16%2B-blue.svg?style=flat-square" alt="API" /> <img src="https://img.shields.io/badge/License-MIT-red.svg?style=flat-square" alt="License: MIT" />
-
+<div align="center"><img src="/images/cover.png"/></div>  
+<div align= "center"><img src="https://img.shields.io/badge/platform-Android-brightgreen.svg?style=flat-square" alt="Platform" /> <img src="https://img.shields.io/badge/API-16%2B-blue.svg?style=flat-square" alt="API" /> <img src="https://img.shields.io/badge/License-MIT-red.svg?style=flat-square" alt="License: MIT" />
+</div>
 
 # Image Steganography
 Steganography is the process of hiding a secret message within a larger one in such a way that someone  cannot know the presence or contents of the hidden message. Although related, Steganography is not to be confused with Encryption, which is the process of making a message unintelligible—Steganography attempts to hide the existence of communication.
