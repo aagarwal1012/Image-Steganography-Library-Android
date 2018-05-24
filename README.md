@@ -1,4 +1,6 @@
-<div align="center"><img src="/images/cover.png"/></div>	      					[![Platform](https://img.shields.io/badge/platform-Android-yellow.svg)](https://www.android.com)[![API](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<div align="center"><img src="/images/cover.png"/></div>
+					      			<img src="https://img.shields.io/badge/platform-Android-brightgreen.svg?style=flat-square" alt="Platform" /> <img src="https://img.shields.io/badge/API-16%2B-blue.svg?style=flat-square" alt="API" /> <img src="https://img.shields.io/badge/License-MIT-red.svg?style=flat-square" alt="License: MIT" />
+
 
 # Image Steganography
 Steganography is the process of hiding a secret message within a larger one in such a way that someone  cannot know the presence or contents of the hidden message. Although related, Steganography is not to be confused with Encryption, which is the process of making a message unintelligible—Steganography attempts to hide the existence of communication.
@@ -44,14 +46,16 @@ public class MainActivity extends AppCompatActivity implements TextEncodingCallb
 - Firstly, instantiate the `ImageSteganography` object and pass the values `Message	`, `Secret Key` and `Image Bitmap` to the constructor.
 
   ```java
-  ImageSteganography imageSteganography = new ImageSteganography(message, 										 secret_key,
-                                  	    original_image);
+  ImageSteganography imageSteganography = new ImageSteganography(message, 
+                                          secret_key, 
+                                          original_image);
   ```
 
 - Secondly, instantiate the `TextEncoding` object and pass the values `Activity` and `TextEncodingCallback` object to the constructor.
 
   ```java
-  TextEncoding textEncoding = new TextEncoding(MainActivity.this, 									  MainActivity.this);
+  TextEncoding textEncoding = new TextEncoding(MainActivity.this,
+                              MainActivity.this);
   ```
 
 - Finally, execute our `encoding` task.
@@ -103,13 +107,14 @@ public class MainActivity extends AppCompatActivity implements TextDecodingCallb
 
   ```java
   ImageSteganography imageSteganography = new ImageSteganography(secret_key,
-                                  	    original_image);
+                                          original_image);
   ```
 
 - Secondly, instantiate the `TextDecoding` object and pass the values `Activity` and `TextDecodingCallback` object to the constructor.
 
   ```java
-  TextDecoding textDecoding = new TextDecoding(MainActivity.this, 									  MainActivity.this);
+  TextDecoding textDecoding = new TextDecoding(MainActivity.this, 
+                              MainActivity.this);
   ```
 
 - Finally, execute our `decoding` task.
