@@ -34,7 +34,7 @@ Consider the following encoding, it is totally undetectable by human eyes.
 Just add the following dependency in your app's `build.gradle`
 ```groovy
 dependencies {
-      implementation 'com.github.aagarwal1012:Image-Steganography-Library-Android:v1.0beta'
+      implementation 'com.github.aagarwal1012:Image-Steganography-Library-Android:v1.0'
 }
 ```
 ## How to encode message into an image ?
