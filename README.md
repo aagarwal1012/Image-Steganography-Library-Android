@@ -1,4 +1,4 @@
-<div align="center"><img src="/images/cover.png"/></div>  
+<div align="center"><img src="https://github.com/aagarwal1012/Image-Steganography-Library-Android/blob/master/images/cover.png?raw=true"/></div>  
 <div align= "center"><img src="https://img.shields.io/badge/platform-Android-brightgreen.svg?style=flat-square" alt="Platform" /> <img src="https://img.shields.io/badge/API-16%2B-blue.svg?style=flat-square" alt="API" /> <img src="https://img.shields.io/badge/License-MIT-red.svg?style=flat-square" alt="License: MIT" />
 </div>
 
@@ -184,7 +184,14 @@ public class MainActivity extends AppCompatActivity implements TextDecodingCallb
 | Decoded | isDecoded() | Check that the decoding is over or not. | false       |
 | SecretKeyWrong | isSecretKeyWrong() | Check that the secret key provided was right or wrong but after decoding was done. | true     |
 
+### Example App
+
+There are two options `Encode` and `Decode`. In the encode section you can hide a secret message into an image without making any noticeable changes. In the decode section you can extract the message from the encoded image by inserting the correct key.
+
+**Note** - After pressing the `Save` button, both the original and encoded images are saved at the location ```Android/data/com.ayush.steganography/files/Documents/<UUID>/ ```
+
 # Want to contribute !
+
 This is the well `documented` library. I have documented each and every method that I have used, so have a good read to the code and suggest some changes and new feature to be added in the library.  
 Feel free to <a href = "https://github.com/aagarwal1012/Image-Steganography-Library-Android/issues">open an issue</a>.
 
