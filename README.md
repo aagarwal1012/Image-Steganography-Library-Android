@@ -190,6 +190,9 @@ There are two options `Encode` and `Decode`. In the encode section you can hide 
 
 **Note** - After pressing the `Save` button, both the original and encoded images are saved at the location ```Android/data/com.ayush.steganography/files/Documents/<UUID>/ ```
 
+|                            Encode                            |                            Decode                            |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+| <img src="https://github.com/aagarwal1012/Image-Steganography-Library-Android/blob/master/images/encode.gif" height = "500px"/> | <img src="https://github.com/aagarwal1012/Image-Steganography-Library-Android/blob/master/images/decode.gif" height = "500px"/> |
 # Want to contribute !
 
 This is the well `documented` library. I have documented each and every method that I have used, so have a good read to the code and suggest some changes and new feature to be added in the library.  
