@@ -1,5 +1,5 @@
 <div align="center"><img src="https://github.com/aagarwal1012/Image-Steganography-Library-Android/blob/master/images/cover.png?raw=true"/></div>  
-<div align= "center"><img src="https://img.shields.io/badge/platform-Android-brightgreen.svg?style=flat-square" alt="Platform" /> <img src="https://img.shields.io/badge/API-16%2B-blue.svg?style=flat-square" alt="API" /> <img src="https://img.shields.io/badge/License-MIT-red.svg?style=flat-square" alt="License: MIT" /><img src="https://jitpack.io/v/aagarwal1012/Image-Steganography-Library-Android.svg" alt="version" />
+<div align= "center"><img src="https://img.shields.io/badge/platform-Android-brightgreen.svg" alt="Platform" /> <img src="https://img.shields.io/badge/API-16%2B-blue.svg" alt="API" /> <img src="https://img.shields.io/badge/License-MIT-red.svg" alt="License: MIT" /><img src="https://jitpack.io/v/aagarwal1012/Image-Steganography-Library-Android.svg" alt="version" />
 </div>
 
 # Image Steganography
