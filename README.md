@@ -1,5 +1,5 @@
 <div align="center"><img src="https://github.com/aagarwal1012/Image-Steganography-Library-Android/blob/master/images/cover.png?raw=true"/></div>  
-<div align= "center"><img src="https://img.shields.io/badge/platform-Android-brightgreen.svg?style=flat-square" alt="Platform" /> <img src="https://img.shields.io/badge/API-16%2B-blue.svg?style=flat-square" alt="API" /> <img src="https://img.shields.io/badge/License-MIT-red.svg?style=flat-square" alt="License: MIT" />
+<div align= "center"><img src="https://img.shields.io/badge/platform-Android-brightgreen.svg?style=flat-square" alt="Platform" /> <img src="https://img.shields.io/badge/API-16%2B-blue.svg?style=flat-square" alt="API" /> <img src="https://img.shields.io/badge/License-MIT-red.svg?style=flat-square" alt="License: MIT" /><img src="https://jitpack.io/v/aagarwal1012/Image-Steganography-Library-Android.svg" alt="version" />
 </div>
 
 # Image Steganography
@@ -31,7 +31,16 @@ Consider the following encoding, it is totally undetectable by human eyes.
 <div align="center"><img src="/images/original_encoded.png"/></div>
 
 # Usage
-Just add the following dependency in your app's `build.gradle`
+Add it in your root `build.gradle` at the end of repositories:
+```groovy
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+	}
+}
+```
+Now add the following dependency in your app's `build.gradle`
 ```groovy
 dependencies {
       implementation 'com.github.aagarwal1012:Image-Steganography-Library-Android:v1.0'
