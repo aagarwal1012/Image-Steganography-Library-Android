@@ -52,6 +52,7 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
     //Objects needed for encoding
     TextEncoding textEncoding;
     ImageSteganography imageSteganography, result;
+    ProgressDialog save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,8 +115,13 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
                         saveToInternalStorage(imgToSave,"Encoded");
                     }
                 });
+                save = new ProgressDialog(Encode.this);
+                save.setMessage("Saving, Please Wait...");
+                save.setTitle("Saving Image");
+                save.setIndeterminate(false);
+                save.setCancelable(false);
+                save.show();
                 PerformEncoding.start();
-                System.out.println(PerformEncoding.getState());
         }
         });
 
@@ -180,6 +186,12 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fOut); // saving the Bitmap to a file
             fOut.flush(); // Not really required
             fOut.close(); // do not forget to close the stream
+            whether_encoded.post(new Runnable() {
+                @Override
+                public void run() {
+                    save.dismiss();
+                }
+            });
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
