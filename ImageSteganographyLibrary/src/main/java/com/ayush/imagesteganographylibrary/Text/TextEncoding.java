@@ -102,7 +102,6 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
             List<Bitmap> src_list = Utility.splitImage(bitmap);
 
             //encoding encrypted compressed message into image
-
             List<Bitmap> encoded_list = EncodeDecode.encodeMessage(src_list, textStegnography.getEncrypted_message(), new EncodeDecode.ProgressHandler() {
 
                 //Progress Handler

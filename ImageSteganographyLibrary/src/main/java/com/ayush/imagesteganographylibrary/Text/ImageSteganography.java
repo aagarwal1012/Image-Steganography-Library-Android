@@ -38,14 +38,16 @@ public class ImageSteganography {
         this.message = message;
         this.secret_key = convertKeyTo128bit(secret_key);
         this.image = image;
-        /*try {
+        try {
             this.encrypted_zip = Zipping.compress(message);
         } catch (Exception e) {
             e.printStackTrace();
-        } */
-
-        this.encrypted_zip = message.getBytes();
-        this.encrypted_message = encryptMessage(message, this.secret_key);
+        }
+        try {
+            this.encrypted_message = encryptMessage(new String(getEncrypted_zip(), "ISO-8859-1"), this.secret_key);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         this.encoded = false;
         this.decoded = false;
@@ -135,6 +137,7 @@ public class ImageSteganography {
     }
 
     public static String encryptMessage(String message, String secret_key){
+
         Log.d(TAG, "Message : " + message );
 
         String encrypted_message = null;
