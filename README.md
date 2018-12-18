@@ -193,6 +193,10 @@ public class MainActivity extends AppCompatActivity implements TextDecodingCallb
 | Decoded | isDecoded() | Check that the decoding is over or not. | false       |
 | SecretKeyWrong | isSecretKeyWrong() | Check that the secret key provided was right or wrong but after decoding was done. | true     |
 
+#### Class Domain Diagram
+
+![](https://raw.githubusercontent.com/aagarwal1012/Image-Steganography-Library-Android/master/UML/UMLDOC.PNG)
+
 ### Example App
 
 There are two options `Encode` and `Decode`. In the encode section you can hide a secret message into an image without making any noticeable changes. In the decode section you can extract the message from the encoded image by inserting the correct key.
