@@ -74,7 +74,7 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
     protected ImageSteganography doInBackground(ImageSteganography... imageSteganographies) {
 
         //making result object
-        result = new ImageSteganography();;
+        result = new ImageSteganography();
 
         //If it is not already decoded
         if (imageSteganographies.length > 0){
@@ -113,24 +113,10 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
                 //secret key provided is right
                 result.setSecretKeyWrong(false);
 
-                //decompressing the decrypted_message
-                try {
-                    decompressed_message = Zipping.decompress(decrypted_message.getBytes("ISO-8859-1"));
-                    Log.d(TAG, "Original Message : " + decompressed_message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                // Set Results
 
-                if (!Utility.isStringEmpty(decompressed_message)) {
-                    try {
-                        //Setting message to result
-                        if (result != null && result.isDecoded())
-                            result.setMessage(decompressed_message);
+                result.setMessage(decrypted_message);
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
 
                 //free memory
                 for (Bitmap bitm : srcEncodedList)

@@ -110,12 +110,16 @@ public class EncodeDecode {
      */
     public static List<Bitmap> encodeMessage(List<Bitmap> splitted_images,
                                              String encrypted_message, ProgressHandler progressHandler) {
+
         //Making result method
+
         List<Bitmap> result = new ArrayList<Bitmap>(splitted_images.size());
 
+
         //Adding start and end message constants to the encrypted message
-        encrypted_message += END_MESSAGE_COSTANT;
+        encrypted_message = encrypted_message + END_MESSAGE_COSTANT;
         encrypted_message = START_MESSAGE_COSTANT + encrypted_message;
+
 
         //getting byte array from string
         byte[] byte_encrypted_message = encrypted_message.getBytes(Charset.forName("ISO-8859-1"));
@@ -205,16 +209,18 @@ public class EncodeDecode {
 
         byte tmp = 0x00;
 
+
         for (int i = 0; i < byte_pixel_array.length; i++) {
+
 
             //get last two bits from byte_pixel_array
             tmp = (byte) (tmp | ((byte_pixel_array[i] << toShift[shiftIndex
                     % toShift.length]) & andByte[shiftIndex++ % toShift.length]));
 
             if (shiftIndex % toShift.length == 0) {
-
                 //adding temp byte value
                 byte_encrypted_message.addElement(Byte.valueOf(tmp));
+
 
                 //converting byte value to string
                 byte[] nonso = {(byte_encrypted_message.elementAt(byte_encrypted_message.size() - 1)).byteValue()};
@@ -230,7 +236,10 @@ public class EncodeDecode {
                     for (int index = 0; index < temp.length; index++)
                         temp[index] = byte_encrypted_message.get(index);
 
+
                     String stra = new String(temp, Charset.forName("ISO-8859-1"));
+
+
                     messageDecodingStatus.setMessage(stra.substring(0, stra.length() - 1));
                     //end fixing
 
@@ -281,7 +290,6 @@ public class EncodeDecode {
         MessageDecodingStatus messageDecodingStatus = new MessageDecodingStatus();
 
         for (Bitmap bit : encodedImages) {
-
             int[] pixels = new int[bit.getWidth() * bit.getHeight()];
 
             bit.getPixels(pixels, 0, bit.getWidth(), 0, 0, bit.getWidth(),
