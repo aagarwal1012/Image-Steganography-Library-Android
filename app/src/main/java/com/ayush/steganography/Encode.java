@@ -1,11 +1,15 @@
 package com.ayush.steganography;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +24,12 @@ import com.ayush.imagesteganographylibrary.Text.ImageSteganography;
 import com.ayush.imagesteganographylibrary.Text.TextEncoding;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Encode extends AppCompatActivity implements TextEncodingCallback {
@@ -44,6 +52,7 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
     //Objects needed for encoding
     TextEncoding textEncoding;
     ImageSteganography imageSteganography, result;
+    ProgressDialog save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +71,9 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
         choose_image_button = (Button) findViewById(R.id.choose_image_button);
         encode_button = (Button) findViewById(R.id.encode_button);
         save_image_button = (Button) findViewById(R.id.save_image_button);
+
+        checkAndRequestPermissions();
+
 
         //Choose image button
         choose_image_button.setOnClickListener(new View.OnClickListener() {
@@ -96,52 +108,21 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
         save_image_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                String name = UUID.randomUUID().toString();
-
-                ProgressDialog progressDialog = new ProgressDialog(Encode.this);
-                progressDialog.setTitle("Saving Image");
-                progressDialog.setMessage("Loading Please Wait...");
-                progressDialog.show();
-
-                File file = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-                File rootdir = new File(file, name);
-                rootdir.mkdir();
-
-                if (encoded_image != null){
-
-                    String name_image = name + "_encoded" + ".png";
-                    File encoded_file = new File(rootdir, name_image);
-                    try {
-                        encoded_file.createNewFile();
-                        FileOutputStream fout_encoded_image = new FileOutputStream(encoded_file);
-                        encoded_image.compress(Bitmap.CompressFormat.PNG, 100, fout_encoded_image);
-                        fout_encoded_image.flush();
-                        fout_encoded_image.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                final Bitmap imgToSave = encoded_image;
+                Thread PerformEncoding = new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        saveToInternalStorage(imgToSave,"Encoded");
                     }
-
-                }
-
-                if (original_image != null){
-
-                    String name_image = name + "_original" + ".png";
-                    File original_file = new File(rootdir, name_image);
-                    try {
-                        original_file.createNewFile();
-                        FileOutputStream fout_original_image = new FileOutputStream(original_file);
-                        original_image.compress(Bitmap.CompressFormat.PNG, 100, fout_original_image);
-                        fout_original_image.flush();
-                        fout_original_image.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                progressDialog.dismiss();
-            }
+                });
+                save = new ProgressDialog(Encode.this);
+                save.setMessage("Saving, Please Wait...");
+                save.setTitle("Saving Image");
+                save.setIndeterminate(false);
+                save.setCancelable(false);
+                save.show();
+                PerformEncoding.start();
+        }
         });
 
     }
@@ -193,4 +174,49 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
             imageView.setImageBitmap(encoded_image);
         }
     }
+
+    private void saveToInternalStorage(Bitmap bitmapImage, String name){
+        String path = Environment.getExternalStorageDirectory().toString();
+        OutputStream fOut = null;
+        Integer counter = 0;
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS), name+".PNG"); // the File to save ,
+        try {
+            fOut = new FileOutputStream(file);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fOut); // saving the Bitmap to a file
+            fOut.flush(); // Not really required
+            fOut.close(); // do not forget to close the stream
+            whether_encoded.post(new Runnable() {
+                @Override
+                public void run() {
+                    save.dismiss();
+                }
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private  boolean checkAndRequestPermissions() {
+        int permissionWriteStorage = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int ReadPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (ReadPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+        if (permissionWriteStorage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),1);
+            return false;
+        }
+        return true;
+    }
+
+
+
 }
