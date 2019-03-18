@@ -12,17 +12,17 @@ import com.ayush.imagesteganographylibrary.Utils.Utility;
 public class ImageSteganography {
 
     //Tag for Log
-    private static String TAG = ImageSteganography.class.getName();
+    private static final String TAG = ImageSteganography.class.getName();
 
-    String message;
-    String secret_key;
-    String encrypted_message;
-    Bitmap image;
-    Bitmap encoded_image;
-    byte[] encrypted_zip;
-    Boolean encoded;
-    Boolean decoded;
-    Boolean secretKeyWrong;
+    private String message;
+    private String secret_key;
+    private String encrypted_message;
+    private Bitmap image;
+    private Bitmap encoded_image;
+    private byte[] encrypted_zip;
+    private Boolean encoded;
+    private Boolean decoded;
+    private Boolean secretKeyWrong;
 
     public ImageSteganography() {
         this.encoded = false;
@@ -72,7 +72,7 @@ public class ImageSteganography {
         this.encrypted_zip = new byte[0];
     }
 
-    public static String encryptMessage(String message, String secret_key) {
+    private static String encryptMessage(String message, String secret_key) {
         Log.d(TAG, "Message : " + message);
 
         String encrypted_message = "";
@@ -110,21 +110,21 @@ public class ImageSteganography {
         return decrypted_message;
     }
 
-    public static String convertKeyTo128bit(String secret_key) {
+    private static String convertKeyTo128bit(String secret_key) {
 
-        String result = secret_key;
+        StringBuilder result = new StringBuilder(secret_key);
 
         if (secret_key.length() <= 16) {
             for (int i = 0; i < (16 - secret_key.length()); i++) {
-                result += "#";
+                result.append("#");
             }
         } else {
-            result = result.substring(0, 15);
+            result = new StringBuilder(result.substring(0, 15));
         }
 
-        Log.d(TAG, "Secret Key Length : " + result.getBytes().length);
+        Log.d(TAG, "Secret Key Length : " + result.toString().getBytes().length);
 
-        return result;
+        return result.toString();
     }
 
     public Bitmap getEncoded_image() {

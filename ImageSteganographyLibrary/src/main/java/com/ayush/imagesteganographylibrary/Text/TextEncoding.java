@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
-import com.ayush.imagesteganographylibrary.Utils.Crypto;
 import com.ayush.imagesteganographylibrary.Utils.Utility;
 
 import java.util.List;
@@ -19,18 +18,16 @@ import java.util.List;
 public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSteganography> {
 
     //Tag for Log
-    private static String TAG = TextEncoding.class.getName();
+    private static final String TAG = TextEncoding.class.getName();
 
-    Activity activity;
-    ImageSteganography result;
+    private final ImageSteganography result;
     //Callback interface for AsyncTask
-    TextEncodingCallback callbackInterface;
+    private final TextEncodingCallback callbackInterface;
     private int maximumProgress;
-    private ProgressDialog progressDialog;
+    private final ProgressDialog progressDialog;
 
     public TextEncoding(Activity activity, TextEncodingCallback callbackInterface) {
         super();
-        this.activity = activity;
         this.progressDialog = new ProgressDialog(activity);
         this.callbackInterface = callbackInterface;
         //making result object
@@ -77,8 +74,6 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
 
     @Override
     protected ImageSteganography doInBackground(ImageSteganography... imageSteganographies) {
-
-        Crypto encryption = null;
 
         maximumProgress = 0;
 

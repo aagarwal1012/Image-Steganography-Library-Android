@@ -2,6 +2,8 @@ package com.ayush.imagesteganographylibrary.Utils;
 
 import android.util.Log;
 
+import java.util.Arrays;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -28,9 +30,9 @@ public class Crypto {
 
         encrypted = cipher.doFinal(message.getBytes());
 
-        Log.d("crypto", "Encrypted  in crypto (mine): " + encrypted + "string: " + android.util.Base64.encodeToString(cipher.doFinal(message.getBytes()), 0));
+        Log.d("crypto", "Encrypted  in crypto (mine): " + Arrays.toString(encrypted) + "string: " + android.util.Base64.encodeToString(cipher.doFinal(message.getBytes()), 0));
 
-        Log.d("crypto", "Encrypted  in crypto (theirs): " + cipher.doFinal(message.getBytes()) + "string : " + new String(encrypted));
+        Log.d("crypto", "Encrypted  in crypto (theirs): " + Arrays.toString(cipher.doFinal(message.getBytes())) + "string : " + new String(encrypted));
 
         return android.util.Base64.encodeToString(cipher.doFinal(message.getBytes()), 0);
     }

@@ -14,7 +14,7 @@ This is the Utility Class containing some useful methods
 public class Utility {
 
     //Taking the square block size constant
-    public static final int SQUARE_BLOCK_SIZE = 512;
+    private static final int SQUARE_BLOCK_SIZE = 512;
     private final static String TAG = Utility.class.getName();
 
     /**
@@ -24,7 +24,7 @@ public class Utility {
      * @parameter : number of pixels {Integer}
      */
     public static int squareBlockNeeded(int pixels) {
-        int result = 0;
+        int result;
 
         int quadratic = SQUARE_BLOCK_SIZE * SQUARE_BLOCK_SIZE;
         int divisor = pixels / (quadratic);
@@ -47,7 +47,7 @@ public class Utility {
         int chunkHeight, chunkWidth;
 
         //To store all the small image chunks in bitmap format in this list
-        ArrayList<Bitmap> chunkedImages = new ArrayList<Bitmap>();
+        ArrayList<Bitmap> chunkedImages = new ArrayList<>();
 
         // Assume like a matrix in which the element is a Small Square block
         //Rows and columns of that matrix
@@ -123,14 +123,12 @@ public class Utility {
         Canvas canvas = new Canvas(bitmap);
 
         int count = 0;
-        int chunkWidth = SQUARE_BLOCK_SIZE;
-        int chunkHeight = SQUARE_BLOCK_SIZE;
 
         for (int irows = 0; irows < rows; irows++) {
             for (int icols = 0; icols < cols; icols++) {
 
                 //Drawing all the chunk images of canvas
-                canvas.drawBitmap(images.get(count), (chunkWidth * icols), (chunkHeight * irows), new Paint());
+                canvas.drawBitmap(images.get(count), (SQUARE_BLOCK_SIZE * icols), (SQUARE_BLOCK_SIZE * irows), new Paint());
                 count++;
 
             }
@@ -190,7 +188,7 @@ public class Utility {
      * @return :  Integer
      * @parameter :  b {the byte array}, offset {integer}
      */
-    public static int byteArrayToInt(byte[] b, int offset) {
+    private static int byteArrayToInt(byte[] b, int offset) {
 
         int value = 0x00000000;
 

@@ -20,15 +20,13 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
     //Tag for Log
     private final static String TAG = TextDecoding.class.getName();
 
-    Activity activity;
-    ImageSteganography result;
+    private final ImageSteganography result;
     //Callback interface for AsyncTask
-    TextDecodingCallback textDecodingCallback;
+    private final TextDecodingCallback textDecodingCallback;
     private ProgressDialog progressDialog;
 
     public TextDecoding(Activity activity, TextDecodingCallback textDecodingCallback) {
         super();
-        this.activity = activity;
         this.progressDialog = new ProgressDialog(activity);
         this.textDecodingCallback = textDecodingCallback;
         //making result object
@@ -97,10 +95,8 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
             }
 
             //decrypting the encoded message
-            String decrypted_message = imageSteganography.decryptMessage(decoded_message, imageSteganography.getSecret_key());
+            String decrypted_message = ImageSteganography.decryptMessage(decoded_message, imageSteganography.getSecret_key());
             Log.d(TAG, "Decrypted message : " + decrypted_message);
-
-            String decompressed_message = null;
 
             //If decrypted_message is null it means that the secret key is wrong otherwise secret key is right.
             if (!Utility.isStringEmpty(decrypted_message)) {
