@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -11,7 +12,7 @@ import java.util.zip.GZIPOutputStream;
 This class has methods used to compress and decompress encrypted message.
  */
 
-public class Zipping {
+class Zipping {
 
     final static String TAG = Zipping.class.getName();
 
@@ -46,13 +47,13 @@ public class Zipping {
 
         GZIPInputStream gis = new GZIPInputStream(bis);
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(gis, "ISO-8859-1"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(gis, StandardCharsets.ISO_8859_1));
 
         StringBuilder sb = new StringBuilder();
 
         String line;
 
-        while((line = br.readLine()) != null) {
+        while ((line = br.readLine()) != null) {
             sb.append(line);
         }
 

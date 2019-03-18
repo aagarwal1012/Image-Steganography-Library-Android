@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
-import com.ayush.imagesteganographylibrary.Utils.Crypto;
 import com.ayush.imagesteganographylibrary.Utils.Utility;
 
 import java.util.List;
@@ -19,24 +18,20 @@ import java.util.List;
 public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSteganography> {
 
     //Tag for Log
-    private static String TAG = TextEncoding.class.getName();
+    private static final String TAG = TextEncoding.class.getName();
 
-    Activity activity;
-
-    private int maximumProgress;
-
-    private ProgressDialog progressDialog;
-
-    ImageSteganography result;
-
+    private final ImageSteganography result;
     //Callback interface for AsyncTask
-    TextEncodingCallback callbackInterface;
+    private final TextEncodingCallback callbackInterface;
+    private int maximumProgress;
+    private final ProgressDialog progressDialog;
 
     public TextEncoding(Activity activity, TextEncodingCallback callbackInterface) {
         super();
-        this.activity = activity;
         this.progressDialog = new ProgressDialog(activity);
         this.callbackInterface = callbackInterface;
+        //making result object
+        this.result = new ImageSteganography();
     }
 
     //pre execution of method
@@ -45,7 +40,7 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
         super.onPreExecute();
 
         //setting parameters of progress dialog
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.setMessage("Loading, Please Wait...");
             progressDialog.setTitle("Encoding Message");
             progressDialog.setIndeterminate(false);
@@ -59,7 +54,7 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
         super.onPostExecute(textStegnography);
 
         //dismiss progress dialog
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
 
@@ -72,7 +67,7 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
         super.onProgressUpdate(values);
 
         //Updating progress dialog
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.incrementProgressBy(values[0]);
         }
     }
@@ -80,14 +75,9 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
     @Override
     protected ImageSteganography doInBackground(ImageSteganography... imageSteganographies) {
 
-        //making result object
-        result = new ImageSteganography();
-
-        Crypto encryption = null;
-
         maximumProgress = 0;
 
-        if (imageSteganographies.length > 0){
+        if (imageSteganographies.length > 0) {
 
             ImageSteganography textStegnography = imageSteganographies[0];
 

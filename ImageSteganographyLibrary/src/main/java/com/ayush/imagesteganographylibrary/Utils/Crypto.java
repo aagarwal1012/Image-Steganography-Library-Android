@@ -2,7 +2,7 @@ package com.ayush.imagesteganographylibrary.Utils;
 
 import android.util.Log;
 
-import java.nio.charset.Charset;
+import java.util.Arrays;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -28,13 +28,13 @@ public class Crypto {
 
         byte[] encrypted;
 
-        encrypted =  cipher.doFinal(message.getBytes());
+        encrypted = cipher.doFinal(message.getBytes());
 
-        Log.d("crypto", "Encrypted  in crypto (mine): " + encrypted  + "string: " +android.util.Base64.encodeToString(cipher.doFinal(message.getBytes()),0) );
+        Log.d("crypto", "Encrypted  in crypto (mine): " + Arrays.toString(encrypted) + "string: " + android.util.Base64.encodeToString(cipher.doFinal(message.getBytes()), 0));
 
-        Log.d("crypto", "Encrypted  in crypto (theirs): " + cipher.doFinal(message.getBytes())+ "string : " + new String(encrypted));
+        Log.d("crypto", "Encrypted  in crypto (theirs): " + Arrays.toString(cipher.doFinal(message.getBytes())) + "string : " + new String(encrypted));
 
-        return android.util.Base64.encodeToString(cipher.doFinal(message.getBytes()),0);
+        return android.util.Base64.encodeToString(cipher.doFinal(message.getBytes()), 0);
     }
 
     //Decryption Method
@@ -56,7 +56,7 @@ public class Crypto {
         cipher.init(Cipher.DECRYPT_MODE, aesKey);
         String decrypted;
         byte[] decoded;
-        decoded = android.util.Base64.decode(encrypted_message.getBytes(),0);
+        decoded = android.util.Base64.decode(encrypted_message.getBytes(), 0);
         decrypted = new String(cipher.doFinal(decoded));
 
         //returning decrypted text

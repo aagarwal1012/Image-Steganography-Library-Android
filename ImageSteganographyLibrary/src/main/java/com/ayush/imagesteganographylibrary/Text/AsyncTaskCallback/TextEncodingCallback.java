@@ -8,8 +8,8 @@ import com.ayush.imagesteganographylibrary.Text.ImageSteganography;
 
 public interface TextEncodingCallback {
 
-    public void onStartTextEncoding();
+    void onStartTextEncoding();
 
-    public void onCompleteTextEncoding(ImageSteganography result);
+    void onCompleteTextEncoding(ImageSteganography result);
 
 }

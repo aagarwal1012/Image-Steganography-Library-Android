@@ -11,26 +11,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public class EncodeDecode {
+class EncodeDecode {
 
     private static final String TAG = EncodeDecode.class.getName();
-    private static int[] binary = {16, 8, 0};
-    private static byte[] andByte = {(byte) 0xC0, 0x30, 0x0C, 0x03};
-    private static int[] toShift = {6, 4, 2, 0};
-
     //start and end message constants
-    public static String END_MESSAGE_COSTANT = "#!@";
-    public static String START_MESSAGE_COSTANT = "@!#";
+    private static final String END_MESSAGE_COSTANT = "#!@";
+    private static final String START_MESSAGE_COSTANT = "@!#";
+    private static final int[] binary = {16, 8, 0};
+    private static final byte[] andByte = {(byte) 0xC0, 0x30, 0x0C, 0x03};
+    private static final int[] toShift = {6, 4, 2, 0};
 
     /**
      * This method represent the core of 2 bit Encoding
      *
+     * @return : byte encoded pixel array
      * @parameter :  integer_pixel_array {The integer RGB array}
      * @parameter : image_columns {Image width}
      * @parameter : image_rows {Image height}
      * @parameter : messageEncodingStatus {object}
      * @parameter : progressHandler {A handler interface, for the progress bar}
-     * @return : byte encoded pixel array
      */
 
     private static byte[] encodeMessage(int[] integer_pixel_array, int image_columns, int image_rows,
@@ -53,7 +52,7 @@ public class EncodeDecode {
                 //2D matrix in 1D
                 int element = row * image_columns + col;
 
-                byte tmp = 0;
+                byte tmp;
 
                 for (int channelIndex = 0; channelIndex < channels; channelIndex++) {
 
@@ -74,15 +73,13 @@ public class EncodeDecode {
 
                         if (messageEncodingStatus.getCurrentMessageIndex() == messageEncodingStatus.getByteArrayMessage().length) {
 
-                            messageEncodingStatus.setMessageEncoded(true);
+                            messageEncodingStatus.setMessageEncoded();
 
                             if (progressHandler != null)
                                 progressHandler.finished();
 
                         }
-                    }
-                    else
-                    {
+                    } else {
                         //Simply copy the integer to result array
                         tmp = (byte) ((((integer_pixel_array[element] >> binary[channelIndex]) & 0xFF)));
                     }
@@ -103,17 +100,17 @@ public class EncodeDecode {
     /**
      * This method implements the above method on the list of chunk image list.
      *
+     * @return : Encoded list of chunk images
      * @parameter : splitted_images {list of chunk images}
      * @parameter : encrypted_message {string}
      * @parameter : progressHandler {Progress bar handler}
-     * @return : Encoded list of chunk images
      */
     public static List<Bitmap> encodeMessage(List<Bitmap> splitted_images,
                                              String encrypted_message, ProgressHandler progressHandler) {
 
         //Making result method
 
-        List<Bitmap> result = new ArrayList<Bitmap>(splitted_images.size());
+        List<Bitmap> result = new ArrayList<>(splitted_images.size());
 
 
         //Adding start and end message constants to the encrypted message
@@ -125,11 +122,7 @@ public class EncodeDecode {
         byte[] byte_encrypted_message = encrypted_message.getBytes(Charset.forName("ISO-8859-1"));
 
         //Message Encoding Status
-        MessageEncodingStatus message = new MessageEncodingStatus();
-        message.setMessage(encrypted_message);
-        message.setByteArrayMessage(byte_encrypted_message);
-        message.setCurrentMessageIndex(0);
-        message.setMessageEncoded(false);
+        MessageEncodingStatus message = new MessageEncodingStatus(byte_encrypted_message, encrypted_message);
 
         //Progress Handler
         if (progressHandler != null) {
@@ -180,8 +173,7 @@ public class EncodeDecode {
 
                 result.add(encoded_Bitmap);
 
-            }
-            else {
+            } else {
                 //Just add the image chunk to the result
                 result.add(bitmap.copy(bitmap.getConfig(), false));
             }
@@ -193,37 +185,37 @@ public class EncodeDecode {
     /**
      * This is the decoding method of 2 bit encoding.
      *
+     * @return : Void
      * @parameter : byte_pixel_array {The byte array image}
      * @parameter : image_columns {Image width}
      * @parameter : image_rows {Image height}
      * @parameter : messageDecodingStatus {object}
-     * @return : Void
      */
     private static void decodeMessage(byte[] byte_pixel_array, int image_columns,
                                       int image_rows, MessageDecodingStatus messageDecodingStatus) {
 
         //encrypted message
-        Vector<Byte> byte_encrypted_message = new Vector<Byte>();
+        Vector<Byte> byte_encrypted_message = new Vector<>();
 
         int shiftIndex = 4;
 
         byte tmp = 0x00;
 
 
-        for (int i = 0; i < byte_pixel_array.length; i++) {
+        for (byte aByte_pixel_array : byte_pixel_array) {
 
 
             //get last two bits from byte_pixel_array
-            tmp = (byte) (tmp | ((byte_pixel_array[i] << toShift[shiftIndex
+            tmp = (byte) (tmp | ((aByte_pixel_array << toShift[shiftIndex
                     % toShift.length]) & andByte[shiftIndex++ % toShift.length]));
 
             if (shiftIndex % toShift.length == 0) {
                 //adding temp byte value
-                byte_encrypted_message.addElement(Byte.valueOf(tmp));
+                byte_encrypted_message.addElement(tmp);
 
 
                 //converting byte value to string
-                byte[] nonso = {(byte_encrypted_message.elementAt(byte_encrypted_message.size() - 1)).byteValue()};
+                byte[] nonso = {byte_encrypted_message.elementAt(byte_encrypted_message.size() - 1)};
                 String str = new String(nonso, Charset.forName("ISO-8859-1"));
 
                 if (messageDecodingStatus.getMessage().endsWith(END_MESSAGE_COSTANT)) {
@@ -243,12 +235,10 @@ public class EncodeDecode {
                     messageDecodingStatus.setMessage(stra.substring(0, stra.length() - 1));
                     //end fixing
 
-                    messageDecodingStatus.setEnded(true);
+                    messageDecodingStatus.setEnded();
 
                     break;
-                }
-                else
-                {
+                } else {
                     //just add the decoded message to the original message
                     messageDecodingStatus.setMessage(messageDecodingStatus.getMessage() + str);
 
@@ -256,8 +246,8 @@ public class EncodeDecode {
                     if (messageDecodingStatus.getMessage().length() == START_MESSAGE_COSTANT.length()
                             && !START_MESSAGE_COSTANT.equals(messageDecodingStatus.getMessage())) {
 
-                        messageDecodingStatus.setMessage(null);
-                        messageDecodingStatus.setEnded(true);
+                        messageDecodingStatus.setMessage("");
+                        messageDecodingStatus.setEnded();
 
                         break;
                     }
@@ -268,11 +258,16 @@ public class EncodeDecode {
 
         }
 
-        if (messageDecodingStatus.getMessage() != null)
+        if (!Utility.isStringEmpty(messageDecodingStatus.getMessage()))
             //removing start and end constants form message
-            messageDecodingStatus.setMessage(messageDecodingStatus.getMessage().substring(START_MESSAGE_COSTANT.length(), messageDecodingStatus.getMessage()
-                    .length()
-                    - END_MESSAGE_COSTANT.length()));
+
+            try {
+                messageDecodingStatus.setMessage(messageDecodingStatus.getMessage().substring(START_MESSAGE_COSTANT.length(), messageDecodingStatus.getMessage()
+                        .length()
+                        - END_MESSAGE_COSTANT.length()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
     }
@@ -280,8 +275,8 @@ public class EncodeDecode {
     /**
      * This method takes the list of encoded chunk images and decodes it.
      *
-     * @parameter : encodedImages {list of encode chunk images}
      * @return : encrypted message {String}
+     * @parameter : encodedImages {list of encode chunk images}
      */
 
     public static String decodeMessage(List<Bitmap> encodedImages) {
@@ -295,7 +290,7 @@ public class EncodeDecode {
             bit.getPixels(pixels, 0, bit.getWidth(), 0, 0, bit.getWidth(),
                     bit.getHeight());
 
-            byte[] b = null;
+            byte[] b;
 
             b = Utility.convertArray(pixels);
 
@@ -311,8 +306,8 @@ public class EncodeDecode {
     /**
      * Calculate the numbers of pixel needed
      *
-     * @parameter : message {Message to encode}
      * @return : The number of pixel {integer}
+     * @parameter : message {Message to encode}
      */
     public static int numberOfPixelForMessage(String message) {
         int result = -1;
@@ -328,11 +323,11 @@ public class EncodeDecode {
     //Progress handler class
     public interface ProgressHandler {
 
-        public void setTotal(int tot);
+        void setTotal(int tot);
 
-        public void increment(int inc);
+        void increment(int inc);
 
-        public void finished();
+        void finished();
     }
 
     private static class MessageDecodingStatus {
@@ -340,24 +335,24 @@ public class EncodeDecode {
         private String message;
         private boolean ended;
 
-        public MessageDecodingStatus() {
+        MessageDecodingStatus() {
             message = "";
             ended = false;
         }
 
-        public boolean isEnded() {
+        boolean isEnded() {
             return ended;
         }
 
-        public void setEnded(boolean ended) {
-            this.ended = ended;
+        void setEnded() {
+            this.ended = true;
         }
 
-        public String getMessage() {
+        String getMessage() {
             return message;
         }
 
-        public void setMessage(String message) {
+        void setMessage(String message) {
             this.message = message;
         }
 
@@ -370,7 +365,14 @@ public class EncodeDecode {
         private byte[] byteArrayMessage;
         private String message;
 
-        public void incrementMessageIndex() {
+        MessageEncodingStatus(byte[] byteArrayMessage, String message) {
+            this.messageEncoded = false;
+            this.currentMessageIndex = 0;
+            this.byteArrayMessage = byteArrayMessage;
+            this.message = message;
+        }
+
+        void incrementMessageIndex() {
             currentMessageIndex++;
         }
 
@@ -382,15 +384,15 @@ public class EncodeDecode {
             this.message = message;
         }
 
-        public boolean isMessageEncoded() {
+        boolean isMessageEncoded() {
             return messageEncoded;
         }
 
-        public void setMessageEncoded(boolean messageEncoded) {
-            this.messageEncoded = messageEncoded;
+        void setMessageEncoded() {
+            this.messageEncoded = true;
         }
 
-        public int getCurrentMessageIndex() {
+        int getCurrentMessageIndex() {
             return currentMessageIndex;
         }
 
@@ -398,7 +400,7 @@ public class EncodeDecode {
             this.currentMessageIndex = currentMessageIndex;
         }
 
-        public byte[] getByteArrayMessage() {
+        byte[] getByteArrayMessage() {
             return byteArrayMessage;
         }
 

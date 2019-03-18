@@ -2,6 +2,7 @@ package com.ayush.imagesteganographylibrary.Utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -12,19 +13,18 @@ This is the Utility Class containing some useful methods
  */
 public class Utility {
 
-    private final static String TAG = Utility.class.getName();
-
     //Taking the square block size constant
-    public static final int SQUARE_BLOCK_SIZE = 512;
+    private static final int SQUARE_BLOCK_SIZE = 512;
+    private final static String TAG = Utility.class.getName();
 
     /**
      * This method calculates the number of square block needed
      *
-    @parameter : number of pixels {Integer}
-    @return : number of Square blocks {Integer}
+     * @return : number of Square blocks {Integer}
+     * @parameter : number of pixels {Integer}
      */
     public static int squareBlockNeeded(int pixels) {
-        int result = 0;
+        int result;
 
         int quadratic = SQUARE_BLOCK_SIZE * SQUARE_BLOCK_SIZE;
         int divisor = pixels / (quadratic);
@@ -38,8 +38,8 @@ public class Utility {
     /**
      * This method splits the image into many images of ( SQUARE_BLOCK_SIZE * SQUARE_BLOCK_SIZE ) size.
      *
-    @parameter : Image {Bitmap}
-    @return : List of splitted images {List}
+     * @return : List of splitted images {List}
+     * @parameter : Image {Bitmap}
      */
     public static List<Bitmap> splitImage(Bitmap bitmap) {
 
@@ -47,7 +47,7 @@ public class Utility {
         int chunkHeight, chunkWidth;
 
         //To store all the small image chunks in bitmap format in this list
-        ArrayList<Bitmap> chunkedImages = new ArrayList<Bitmap>();
+        ArrayList<Bitmap> chunkedImages = new ArrayList<>();
 
         // Assume like a matrix in which the element is a Small Square block
         //Rows and columns of that matrix
@@ -56,7 +56,7 @@ public class Utility {
 
         int chunk_height_mod = bitmap.getHeight() % SQUARE_BLOCK_SIZE;
         int chunk_width_mod = bitmap.getWidth() % SQUARE_BLOCK_SIZE;
-        
+
         if (chunk_height_mod > 0)
             rows++;
         if (chunk_width_mod > 0)
@@ -97,9 +97,9 @@ public class Utility {
 
     /**
      * This method merge all the chunk image list into one single image
-     * 
-    @parameter : List {Bitmap}, Original Height {Integer}, Original Width {Integer}
-    @return : Merged Image {Bitmap}
+     *
+     * @return : Merged Image {Bitmap}
+     * @parameter : List {Bitmap}, Original Height {Integer}, Original Width {Integer}
      */
     public static Bitmap mergeImage(List<Bitmap> images, int original_height, int original_width) {
 
@@ -123,14 +123,12 @@ public class Utility {
         Canvas canvas = new Canvas(bitmap);
 
         int count = 0;
-        int chunkWidth = SQUARE_BLOCK_SIZE;
-        int chunkHeight = SQUARE_BLOCK_SIZE;
 
         for (int irows = 0; irows < rows; irows++) {
             for (int icols = 0; icols < cols; icols++) {
 
                 //Drawing all the chunk images of canvas
-                canvas.drawBitmap(images.get(count), (chunkWidth * icols), (chunkHeight * irows), null);
+                canvas.drawBitmap(images.get(count), (SQUARE_BLOCK_SIZE * icols), (SQUARE_BLOCK_SIZE * irows), new Paint());
                 count++;
 
             }
@@ -143,8 +141,8 @@ public class Utility {
     /**
      * This method converts the byte array to an integer array.
      *
-     @parameter : b {the byte array}
-     @return : Integer Array
+     * @return : Integer Array
+     * @parameter : b {the byte array}
      */
 
     public static int[] byteArrayToIntArray(byte[] b) {
@@ -175,8 +173,8 @@ public class Utility {
     /**
      * Convert the byte array to an int.
      *
-     @parameter :  b {the byte array}
-     @return : Integer
+     * @return : Integer
+     * @parameter :  b {the byte array}
      */
     public static int byteArrayToInt(byte[] b) {
 
@@ -187,10 +185,10 @@ public class Utility {
     /**
      * Convert the byte array to an int starting from the given offset.
      *
-     @parameter :  b {the byte array}, offset {integer}
-     @return :  Integer
+     * @return :  Integer
+     * @parameter :  b {the byte array}, offset {integer}
      */
-    public static int byteArrayToInt(byte[] b, int offset) {
+    private static int byteArrayToInt(byte[] b, int offset) {
 
         int value = 0x00000000;
 
@@ -208,8 +206,8 @@ public class Utility {
      * Convert integer array representing [argb] values to byte array
      * representing [rgb] values
      *
-     @parameter : Integer array representing [argb] values.
-     @return : byte Array representing [rgb] values.
+     * @return : byte Array representing [rgb] values.
+     * @parameter : Integer array representing [argb] values.
      */
     public static byte[] convertArray(int[] array) {
 
@@ -229,19 +227,17 @@ public class Utility {
     /**
      * This method is used to check whether the string is empty of not
      *
-    @parameter : String
-    @return : true or false {boolean}
+     * @return : true or false {boolean}
+     * @parameter : String
      */
-    public static boolean isStringEmpty(String str)
-    {
-        boolean result=true;
+    public static boolean isStringEmpty(String str) {
+        boolean result = true;
 
-        if(str==null);
-        else
-        {
-            str=str.trim();
-            if(str.length()>0 && !str.equals("undefined"))
-                result=false;
+        if (str == null) ;
+        else {
+            str = str.trim();
+            if (str.length() > 0 && !str.equals("undefined"))
+                result = false;
         }
 
         return result;
