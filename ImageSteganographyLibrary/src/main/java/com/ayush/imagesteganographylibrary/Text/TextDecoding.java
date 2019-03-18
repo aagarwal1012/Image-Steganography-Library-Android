@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
 import com.ayush.imagesteganographylibrary.Utils.Utility;
-import com.ayush.imagesteganographylibrary.Utils.Zipping;
 
 import java.util.List;
 
@@ -22,13 +21,10 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
     private final static String TAG = TextDecoding.class.getName();
 
     Activity activity;
-
-    private ProgressDialog progressDialog;
-
     ImageSteganography result;
-
     //Callback interface for AsyncTask
     TextDecodingCallback textDecodingCallback;
+    private ProgressDialog progressDialog;
 
     public TextDecoding(Activity activity, TextDecodingCallback textDecodingCallback) {
         super();
@@ -50,7 +46,7 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
         super.onPreExecute();
 
         //setting parameters of progress dialog
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.setMessage("Loading, Please Wait...");
             progressDialog.setTitle("Decoding Message");
             progressDialog.setIndeterminate(true);
@@ -65,7 +61,7 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
         super.onPostExecute(imageSteganography);
 
         //dismiss progress dialog
-        if(progressDialog != null)
+        if (progressDialog != null)
             progressDialog.dismiss();
 
         //sending result to callback
@@ -76,7 +72,7 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
     protected ImageSteganography doInBackground(ImageSteganography... imageSteganographies) {
 
         //If it is not already decoded
-        if (imageSteganographies.length > 0){
+        if (imageSteganographies.length > 0) {
 
             ImageSteganography imageSteganography = imageSteganographies[0];
 
@@ -93,10 +89,10 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
             //decoding encrypted zipped message
             String decoded_message = EncodeDecode.decodeMessage(srcEncodedList);
 
-            Log.d(TAG , "Decoded_Message : " + decoded_message);
+            Log.d(TAG, "Decoded_Message : " + decoded_message);
 
             //text decoded = true
-            if (!Utility.isStringEmpty(decoded_message)){
+            if (!Utility.isStringEmpty(decoded_message)) {
                 result.setDecoded(true);
             }
 
@@ -107,7 +103,7 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
             String decompressed_message = null;
 
             //If decrypted_message is null it means that the secret key is wrong otherwise secret key is right.
-            if (!Utility.isStringEmpty(decrypted_message)){
+            if (!Utility.isStringEmpty(decrypted_message)) {
 
                 //secret key provided is right
                 result.setSecretKeyWrong(false);

@@ -52,7 +52,7 @@ public class Zipping {
 
         String line;
 
-        while((line = br.readLine()) != null) {
+        while ((line = br.readLine()) != null) {
             sb.append(line);
         }
 

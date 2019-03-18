@@ -14,23 +14,22 @@ import java.util.Vector;
 public class EncodeDecode {
 
     private static final String TAG = EncodeDecode.class.getName();
+    //start and end message constants
+    public static String END_MESSAGE_COSTANT = "#!@";
+    public static String START_MESSAGE_COSTANT = "@!#";
     private static int[] binary = {16, 8, 0};
     private static byte[] andByte = {(byte) 0xC0, 0x30, 0x0C, 0x03};
     private static int[] toShift = {6, 4, 2, 0};
 
-    //start and end message constants
-    public static String END_MESSAGE_COSTANT = "#!@";
-    public static String START_MESSAGE_COSTANT = "@!#";
-
     /**
      * This method represent the core of 2 bit Encoding
      *
+     * @return : byte encoded pixel array
      * @parameter :  integer_pixel_array {The integer RGB array}
      * @parameter : image_columns {Image width}
      * @parameter : image_rows {Image height}
      * @parameter : messageEncodingStatus {object}
      * @parameter : progressHandler {A handler interface, for the progress bar}
-     * @return : byte encoded pixel array
      */
 
     private static byte[] encodeMessage(int[] integer_pixel_array, int image_columns, int image_rows,
@@ -80,9 +79,7 @@ public class EncodeDecode {
                                 progressHandler.finished();
 
                         }
-                    }
-                    else
-                    {
+                    } else {
                         //Simply copy the integer to result array
                         tmp = (byte) ((((integer_pixel_array[element] >> binary[channelIndex]) & 0xFF)));
                     }
@@ -103,10 +100,10 @@ public class EncodeDecode {
     /**
      * This method implements the above method on the list of chunk image list.
      *
+     * @return : Encoded list of chunk images
      * @parameter : splitted_images {list of chunk images}
      * @parameter : encrypted_message {string}
      * @parameter : progressHandler {Progress bar handler}
-     * @return : Encoded list of chunk images
      */
     public static List<Bitmap> encodeMessage(List<Bitmap> splitted_images,
                                              String encrypted_message, ProgressHandler progressHandler) {
@@ -176,8 +173,7 @@ public class EncodeDecode {
 
                 result.add(encoded_Bitmap);
 
-            }
-            else {
+            } else {
                 //Just add the image chunk to the result
                 result.add(bitmap.copy(bitmap.getConfig(), false));
             }
@@ -189,11 +185,11 @@ public class EncodeDecode {
     /**
      * This is the decoding method of 2 bit encoding.
      *
+     * @return : Void
      * @parameter : byte_pixel_array {The byte array image}
      * @parameter : image_columns {Image width}
      * @parameter : image_rows {Image height}
      * @parameter : messageDecodingStatus {object}
-     * @return : Void
      */
     private static void decodeMessage(byte[] byte_pixel_array, int image_columns,
                                       int image_rows, MessageDecodingStatus messageDecodingStatus) {
@@ -242,9 +238,7 @@ public class EncodeDecode {
                     messageDecodingStatus.setEnded(true);
 
                     break;
-                }
-                else
-                {
+                } else {
                     //just add the decoded message to the original message
                     messageDecodingStatus.setMessage(messageDecodingStatus.getMessage() + str);
 
@@ -267,13 +261,11 @@ public class EncodeDecode {
         if (!Utility.isStringEmpty(messageDecodingStatus.getMessage()))
             //removing start and end constants form message
 
-            try
-            {
-            messageDecodingStatus.setMessage(messageDecodingStatus.getMessage().substring(START_MESSAGE_COSTANT.length(), messageDecodingStatus.getMessage()
-                    .length()
-                    - END_MESSAGE_COSTANT.length()));
-            }
-            catch (Exception e){
+            try {
+                messageDecodingStatus.setMessage(messageDecodingStatus.getMessage().substring(START_MESSAGE_COSTANT.length(), messageDecodingStatus.getMessage()
+                        .length()
+                        - END_MESSAGE_COSTANT.length()));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -283,8 +275,8 @@ public class EncodeDecode {
     /**
      * This method takes the list of encoded chunk images and decodes it.
      *
-     * @parameter : encodedImages {list of encode chunk images}
      * @return : encrypted message {String}
+     * @parameter : encodedImages {list of encode chunk images}
      */
 
     public static String decodeMessage(List<Bitmap> encodedImages) {
@@ -314,8 +306,8 @@ public class EncodeDecode {
     /**
      * Calculate the numbers of pixel needed
      *
-     * @parameter : message {Message to encode}
      * @return : The number of pixel {integer}
+     * @parameter : message {Message to encode}
      */
     public static int numberOfPixelForMessage(String message) {
         int result = -1;

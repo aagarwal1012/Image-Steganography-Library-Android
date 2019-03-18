@@ -3,9 +3,9 @@ package com.ayush.steganography;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,20 +23,16 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
 
     private static final int SELECT_PICTURE = 100;
     private static final String TAG = "Decode Class";
-
-    private Uri filepath;
-
-    //Bitmap
-    private Bitmap original_image;
-
     //Initializing the UI components
     TextView textView;
     ImageView imageView;
     EditText message, secret_key;
     Button choose_image_button, decode_button;
-
     //ImageSteganography object
     ImageSteganography result;
+    private Uri filepath;
+    //Bitmap
+    private Bitmap original_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +62,7 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
         decode_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (filepath != null){
+                if (filepath != null) {
 
                     //Making the ImageSteganography object
                     ImageSteganography imageSteganography = new ImageSteganography(secret_key.getText().toString(),
@@ -84,7 +80,7 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
 
     }
 
-    void ImageChooser(){
+    void ImageChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -96,15 +92,14 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
         super.onActivityResult(requestCode, resultCode, data);
 
         //Image set to imageView
-        if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null){
+        if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             filepath = data.getData();
-            try{
+            try {
                 original_image = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
 
                 imageView.setImageBitmap(original_image);
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 Log.d(TAG, "Error : " + e);
             }
         }
@@ -123,20 +118,18 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
 
         this.result = result;
 
-        if (result != null){
+        if (result != null) {
             if (!result.isDecoded())
                 textView.setText("No message found");
-            else{
-                if (!result.isSecretKeyWrong()){
+            else {
+                if (!result.isSecretKeyWrong()) {
                     textView.setText("Decoded");
                     message.setText("" + result.getMessage());
-                }
-                else {
+                } else {
                     textView.setText("Wrong secret key");
                 }
             }
-        }
-        else {
+        } else {
             textView.setText("Select Image First");
         }
 

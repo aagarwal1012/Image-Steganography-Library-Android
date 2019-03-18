@@ -5,9 +5,6 @@ import android.util.Log;
 
 import com.ayush.imagesteganographylibrary.Utils.Crypto;
 import com.ayush.imagesteganographylibrary.Utils.Utility;
-import com.ayush.imagesteganographylibrary.Utils.Zipping;
-
-import java.io.UnsupportedEncodingException;
 
 /**
  * This main class of the text steganography
@@ -73,6 +70,61 @@ public class ImageSteganography {
         this.encrypted_message = "";
         this.encoded_image = Bitmap.createBitmap(600, 600, Bitmap.Config.ARGB_8888);
         this.encrypted_zip = new byte[0];
+    }
+
+    public static String encryptMessage(String message, String secret_key) {
+        Log.d(TAG, "Message : " + message);
+
+        String encrypted_message = "";
+        if (message != null) {
+            if (!Utility.isStringEmpty(secret_key)) {
+                try {
+                    encrypted_message = Crypto.encryptMessage(message, secret_key);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                encrypted_message = message;
+            }
+        }
+
+        Log.d(TAG, "Encrypted_message : " + encrypted_message);
+
+        return encrypted_message;
+    }
+
+    public static String decryptMessage(String message, String secret_key) {
+        String decrypted_message = "";
+        if (message != null) {
+            if (!Utility.isStringEmpty(secret_key)) {
+                try {
+                    decrypted_message = Crypto.decryptMessage(message, secret_key);
+                } catch (Exception e) {
+                    Log.d(TAG, "Error : " + e.getMessage() + " , may be due to wrong key.");
+                }
+            } else {
+                decrypted_message = message;
+            }
+        }
+
+        return decrypted_message;
+    }
+
+    public static String convertKeyTo128bit(String secret_key) {
+
+        String result = secret_key;
+
+        if (secret_key.length() <= 16) {
+            for (int i = 0; i < (16 - secret_key.length()); i++) {
+                result += "#";
+            }
+        } else {
+            result = result.substring(0, 15);
+        }
+
+        Log.d(TAG, "Secret Key Length : " + result.getBytes().length);
+
+        return result;
     }
 
     public Bitmap getEncoded_image() {
@@ -145,63 +197,5 @@ public class ImageSteganography {
 
     public void setSecretKeyWrong(Boolean secretKeyWrong) {
         this.secretKeyWrong = secretKeyWrong;
-    }
-
-    public static String encryptMessage(String message, String secret_key){
-        Log.d(TAG, "Message : " + message );
-
-        String encrypted_message = "";
-        if (message != null){
-            if (!Utility.isStringEmpty(secret_key)){
-                try {
-                    encrypted_message = Crypto.encryptMessage(message, secret_key);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            else {
-                encrypted_message = message;
-            }
-        }
-
-        Log.d(TAG, "Encrypted_message : " + encrypted_message );
-
-        return encrypted_message;
-    }
-
-    public static String decryptMessage(String message, String secret_key){
-        String decrypted_message = "";
-        if (message != null){
-            if (!Utility.isStringEmpty(secret_key)){
-                try {
-                    decrypted_message = Crypto.decryptMessage(message, secret_key);
-                } catch (Exception e) {
-                    Log.d(TAG, "Error : " + e.getMessage() + " , may be due to wrong key.");
-                }
-            }
-            else {
-                decrypted_message = message;
-            }
-        }
-
-        return decrypted_message;
-    }
-
-    public static String convertKeyTo128bit(String secret_key){
-
-        String result = secret_key;
-
-        if (secret_key.length() <= 16){
-            for (int i = 0; i < (16 - secret_key.length()); i++){
-                result += "#";
-            }
-        }
-        else {
-            result = result.substring(0, 15);
-        }
-
-        Log.d(TAG, "Secret Key Length : " + result.getBytes().length);
-
-        return result;
     }
 }

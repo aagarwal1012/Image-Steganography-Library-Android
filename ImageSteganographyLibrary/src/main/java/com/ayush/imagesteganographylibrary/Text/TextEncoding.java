@@ -22,15 +22,11 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
     private static String TAG = TextEncoding.class.getName();
 
     Activity activity;
-
-    private int maximumProgress;
-
-    private ProgressDialog progressDialog;
-
     ImageSteganography result;
-
     //Callback interface for AsyncTask
     TextEncodingCallback callbackInterface;
+    private int maximumProgress;
+    private ProgressDialog progressDialog;
 
     public TextEncoding(Activity activity, TextEncodingCallback callbackInterface) {
         super();
@@ -47,7 +43,7 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
         super.onPreExecute();
 
         //setting parameters of progress dialog
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.setMessage("Loading, Please Wait...");
             progressDialog.setTitle("Encoding Message");
             progressDialog.setIndeterminate(false);
@@ -61,7 +57,7 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
         super.onPostExecute(textStegnography);
 
         //dismiss progress dialog
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
 
@@ -74,7 +70,7 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
         super.onProgressUpdate(values);
 
         //Updating progress dialog
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.incrementProgressBy(values[0]);
         }
     }
@@ -86,7 +82,7 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
 
         maximumProgress = 0;
 
-        if (imageSteganographies.length > 0){
+        if (imageSteganographies.length > 0) {
 
             ImageSteganography textStegnography = imageSteganographies[0];
 
