@@ -31,6 +31,12 @@ public class ImageSteganography {
         this.encoded = false;
         this.decoded = false;
         this.secretKeyWrong = true;
+        this.message = "";
+        this.secret_key = "";
+        this.encrypted_message = "";
+        this.image = Bitmap.createBitmap(600, 600, Bitmap.Config.ARGB_8888);
+        this.encoded_image = Bitmap.createBitmap(600, 600, Bitmap.Config.ARGB_8888);
+        this.encrypted_zip = new byte[0];
     }
 
     public ImageSteganography(String message, String secret_key, Bitmap image) {
@@ -51,6 +57,8 @@ public class ImageSteganography {
         this.decoded = false;
         this.secretKeyWrong = true;
 
+        this.encoded_image = Bitmap.createBitmap(600, 600, Bitmap.Config.ARGB_8888);
+
     }
 
     public ImageSteganography(String secret_key, Bitmap image) {
@@ -60,6 +68,11 @@ public class ImageSteganography {
         this.encoded = false;
         this.decoded = false;
         this.secretKeyWrong = true;
+
+        this.message = "";
+        this.encrypted_message = "";
+        this.encoded_image = Bitmap.createBitmap(600, 600, Bitmap.Config.ARGB_8888);
+        this.encrypted_zip = new byte[0];
     }
 
     public Bitmap getEncoded_image() {
@@ -137,7 +150,7 @@ public class ImageSteganography {
     public static String encryptMessage(String message, String secret_key){
         Log.d(TAG, "Message : " + message );
 
-        String encrypted_message = null;
+        String encrypted_message = "";
         if (message != null){
             if (!Utility.isStringEmpty(secret_key)){
                 try {
@@ -157,7 +170,7 @@ public class ImageSteganography {
     }
 
     public static String decryptMessage(String message, String secret_key){
-        String decrypted_message = null;
+        String decrypted_message = "";
         if (message != null){
             if (!Utility.isStringEmpty(secret_key)){
                 try {

@@ -2,6 +2,7 @@ package com.ayush.imagesteganographylibrary.Utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -130,7 +131,7 @@ public class Utility {
             for (int icols = 0; icols < cols; icols++) {
 
                 //Drawing all the chunk images of canvas
-                canvas.drawBitmap(images.get(count), (chunkWidth * icols), (chunkHeight * irows), null);
+                canvas.drawBitmap(images.get(count), (chunkWidth * icols), (chunkHeight * irows), new Paint());
                 count++;
 
             }

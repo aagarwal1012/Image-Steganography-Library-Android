@@ -37,6 +37,8 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
         this.activity = activity;
         this.progressDialog = new ProgressDialog(activity);
         this.callbackInterface = callbackInterface;
+        //making result object
+        this.result = new ImageSteganography();
     }
 
     //pre execution of method
@@ -79,9 +81,6 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
 
     @Override
     protected ImageSteganography doInBackground(ImageSteganography... imageSteganographies) {
-
-        //making result object
-        result = new ImageSteganography();
 
         Crypto encryption = null;
 

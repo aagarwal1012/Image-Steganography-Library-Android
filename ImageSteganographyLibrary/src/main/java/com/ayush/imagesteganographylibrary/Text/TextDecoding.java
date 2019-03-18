@@ -35,6 +35,8 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
         this.activity = activity;
         this.progressDialog = new ProgressDialog(activity);
         this.textDecodingCallback = textDecodingCallback;
+        //making result object
+        this.result = new ImageSteganography();
     }
 
     //setting progress dialog if wanted
@@ -73,9 +75,6 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
     @Override
     protected ImageSteganography doInBackground(ImageSteganography... imageSteganographies) {
 
-        //making result object
-        result = new ImageSteganography();
-
         //If it is not already decoded
         if (imageSteganographies.length > 0){
 
@@ -85,8 +84,8 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
             Bitmap bitmap = imageSteganography.getImage();
 
             //return null if bitmap is null
-            if (bitmap == null)
-                return null;
+//            if (bitmap == null)
+//                return null;
 
             //splitting images
             List<Bitmap> srcEncodedList = Utility.splitImage(bitmap);

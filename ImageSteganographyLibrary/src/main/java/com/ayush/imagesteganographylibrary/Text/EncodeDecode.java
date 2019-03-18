@@ -125,11 +125,7 @@ public class EncodeDecode {
         byte[] byte_encrypted_message = encrypted_message.getBytes(Charset.forName("ISO-8859-1"));
 
         //Message Encoding Status
-        MessageEncodingStatus message = new MessageEncodingStatus();
-        message.setMessage(encrypted_message);
-        message.setByteArrayMessage(byte_encrypted_message);
-        message.setCurrentMessageIndex(0);
-        message.setMessageEncoded(false);
+        MessageEncodingStatus message = new MessageEncodingStatus(false, 0, byte_encrypted_message, encrypted_message);
 
         //Progress Handler
         if (progressHandler != null) {
@@ -256,7 +252,7 @@ public class EncodeDecode {
                     if (messageDecodingStatus.getMessage().length() == START_MESSAGE_COSTANT.length()
                             && !START_MESSAGE_COSTANT.equals(messageDecodingStatus.getMessage())) {
 
-                        messageDecodingStatus.setMessage(null);
+                        messageDecodingStatus.setMessage("");
                         messageDecodingStatus.setEnded(true);
 
                         break;
@@ -369,6 +365,13 @@ public class EncodeDecode {
         private int currentMessageIndex;
         private byte[] byteArrayMessage;
         private String message;
+
+        public MessageEncodingStatus(boolean messageEncoded, int currentMessageIndex, byte[] byteArrayMessage, String message) {
+            this.messageEncoded = messageEncoded;
+            this.currentMessageIndex = currentMessageIndex;
+            this.byteArrayMessage = byteArrayMessage;
+            this.message = message;
+        }
 
         public void incrementMessageIndex() {
             currentMessageIndex++;
