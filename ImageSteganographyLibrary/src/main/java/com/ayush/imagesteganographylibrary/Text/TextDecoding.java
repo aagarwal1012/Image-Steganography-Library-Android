@@ -96,7 +96,7 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
             Log.d(TAG , "Decoded_Message : " + decoded_message);
 
             //text decoded = true
-            if (decoded_message != null){
+            if (!Utility.isStringEmpty(decoded_message)){
                 result.setDecoded(true);
             }
 
@@ -107,7 +107,7 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
             String decompressed_message = null;
 
             //If decrypted_message is null it means that the secret key is wrong otherwise secret key is right.
-            if (decrypted_message != null){
+            if (!Utility.isStringEmpty(decrypted_message)){
 
                 //secret key provided is right
                 result.setSecretKeyWrong(false);

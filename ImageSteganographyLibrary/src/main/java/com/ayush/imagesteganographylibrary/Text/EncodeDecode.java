@@ -264,11 +264,18 @@ public class EncodeDecode {
 
         }
 
-        if (messageDecodingStatus.getMessage() != null)
+        if (!Utility.isStringEmpty(messageDecodingStatus.getMessage()))
             //removing start and end constants form message
+
+            try
+            {
             messageDecodingStatus.setMessage(messageDecodingStatus.getMessage().substring(START_MESSAGE_COSTANT.length(), messageDecodingStatus.getMessage()
                     .length()
                     - END_MESSAGE_COSTANT.length()));
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
 
 
     }
