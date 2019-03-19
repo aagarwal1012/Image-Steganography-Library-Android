@@ -2,9 +2,14 @@ package com.ayush.imagesteganographylibrary.Text;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.ayush.imagesteganographylibrary.Utils.Utility;
+
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -32,6 +37,8 @@ class EncodeDecode {
      * @parameter : progressHandler {A handler interface, for the progress bar}
      */
 
+    @RequiresNonNull({"integer_pixel_array", "image_columns", "image_rows", "messageEncodingStatus", "progressHandler"})
+    @EnsuresNonNull("result")
     private static byte[] encodeMessage(int[] integer_pixel_array, int image_columns, int image_rows,
                                         MessageEncodingStatus messageEncodingStatus, ProgressHandler progressHandler) {
 
@@ -105,8 +112,10 @@ class EncodeDecode {
      * @parameter : encrypted_message {string}
      * @parameter : progressHandler {Progress bar handler}
      */
+    @RequiresNonNull({"splitted_images", "encrypted_message"})
+    @EnsuresNonNull("result")
     public static List<Bitmap> encodeMessage(List<Bitmap> splitted_images,
-                                             String encrypted_message, ProgressHandler progressHandler) {
+                                             String encrypted_message, @Nullable ProgressHandler progressHandler) {
 
         //Making result method
 
@@ -191,8 +200,9 @@ class EncodeDecode {
      * @parameter : image_rows {Image height}
      * @parameter : messageDecodingStatus {object}
      */
-    private static void decodeMessage(byte[] byte_pixel_array, int image_columns,
-                                      int image_rows, MessageDecodingStatus messageDecodingStatus) {
+    @RequiresNonNull({"byte_pixel_array", "messageDecodingStatus"})
+    private static void decodeMessage(byte[] byte_pixel_array, @Nullable int image_columns,
+                                      @Nullable int image_rows, MessageDecodingStatus messageDecodingStatus) {
 
         //encrypted message
         Vector<Byte> byte_encrypted_message = new Vector<>();
@@ -279,7 +289,10 @@ class EncodeDecode {
      * @parameter : encodedImages {list of encode chunk images}
      */
 
-    public static String decodeMessage(List<Bitmap> encodedImages) {
+    @RequiresNonNull("encodedImages")
+    @EnsuresNonNull("messageDecodingStatus")
+    public static @Nullable
+    String decodeMessage(List<Bitmap> encodedImages) {
 
         //Creating object
         MessageDecodingStatus messageDecodingStatus = new MessageDecodingStatus();
@@ -309,7 +322,8 @@ class EncodeDecode {
      * @return : The number of pixel {integer}
      * @parameter : message {Message to encode}
      */
-    public static int numberOfPixelForMessage(String message) {
+    @EnsuresNonNull("result")
+    public static int numberOfPixelForMessage(@Nullable String message) {
         int result = -1;
         if (message != null) {
             message += END_MESSAGE_COSTANT;
@@ -323,8 +337,10 @@ class EncodeDecode {
     //Progress handler class
     public interface ProgressHandler {
 
+        @RequiresNonNull("tot")
         void setTotal(int tot);
 
+        @RequiresNonNull("inc")
         void increment(int inc);
 
         void finished();
@@ -332,14 +348,15 @@ class EncodeDecode {
 
     private static class MessageDecodingStatus {
 
-        private String message;
-        private boolean ended;
+        private @MonotonicNonNull String message;
+        private @MonotonicNonNull boolean ended;
 
         MessageDecodingStatus() {
             message = "";
             ended = false;
         }
 
+        @EnsuresNonNull("ended")
         boolean isEnded() {
             return ended;
         }
@@ -348,10 +365,12 @@ class EncodeDecode {
             this.ended = true;
         }
 
+        @EnsuresNonNull("message")
         String getMessage() {
             return message;
         }
 
+        @RequiresNonNull("message")
         void setMessage(String message) {
             this.message = message;
         }
@@ -360,11 +379,12 @@ class EncodeDecode {
     }
 
     private static class MessageEncodingStatus {
-        private boolean messageEncoded;
-        private int currentMessageIndex;
-        private byte[] byteArrayMessage;
-        private String message;
+        private @MonotonicNonNull boolean messageEncoded;
+        private @MonotonicNonNull int currentMessageIndex;
+        private @MonotonicNonNull byte[] byteArrayMessage;
+        private @MonotonicNonNull String message;
 
+        @RequiresNonNull({"byteArrayMessage", "message"})
         MessageEncodingStatus(byte[] byteArrayMessage, String message) {
             this.messageEncoded = false;
             this.currentMessageIndex = 0;
@@ -380,6 +400,7 @@ class EncodeDecode {
             return message;
         }
 
+        @RequiresNonNull("message")
         public void setMessage(String message) {
             this.message = message;
         }
@@ -396,6 +417,7 @@ class EncodeDecode {
             return currentMessageIndex;
         }
 
+        @RequiresNonNull("currentMessageIndex")
         public void setCurrentMessageIndex(int currentMessageIndex) {
             this.currentMessageIndex = currentMessageIndex;
         }
@@ -404,6 +426,7 @@ class EncodeDecode {
             return byteArrayMessage;
         }
 
+        @RequiresNonNull("byteArrayMessage")
         public void setByteArrayMessage(byte[] byteArrayMessage) {
             this.byteArrayMessage = byteArrayMessage;
         }
