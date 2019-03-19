@@ -9,6 +9,10 @@ import android.util.Log;
 import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
 import com.ayush.imagesteganographylibrary.Utils.Utility;
 
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
+
 import java.util.List;
 
 /**
@@ -20,13 +24,14 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
     //Tag for Log
     private static final String TAG = TextEncoding.class.getName();
 
-    private final ImageSteganography result;
+    private final @MonotonicNonNull ImageSteganography result;
     //Callback interface for AsyncTask
-    private final TextEncodingCallback callbackInterface;
+    private final @MonotonicNonNull TextEncodingCallback callbackInterface;
     private int maximumProgress;
-    private final ProgressDialog progressDialog;
+    private final @Nullable ProgressDialog progressDialog;
 
-    public TextEncoding(Activity activity, TextEncodingCallback callbackInterface) {
+    @RequiresNonNull("callbackInterface")
+    public TextEncoding(@Nullable Activity activity, TextEncodingCallback callbackInterface) {
         super();
         this.progressDialog = new ProgressDialog(activity);
         this.callbackInterface = callbackInterface;

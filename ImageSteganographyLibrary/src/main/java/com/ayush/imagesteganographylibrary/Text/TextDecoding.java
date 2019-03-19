@@ -9,6 +9,11 @@ import android.util.Log;
 import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
 import com.ayush.imagesteganographylibrary.Utils.Utility;
 
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
+
 import java.util.List;
 
 /**
@@ -20,12 +25,13 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
     //Tag for Log
     private final static String TAG = TextDecoding.class.getName();
 
-    private final ImageSteganography result;
+    private final @MonotonicNonNull ImageSteganography result;
     //Callback interface for AsyncTask
-    private final TextDecodingCallback textDecodingCallback;
-    private ProgressDialog progressDialog;
+    private final @MonotonicNonNull TextDecodingCallback textDecodingCallback;
+    private @Nullable ProgressDialog progressDialog;
 
-    public TextDecoding(Activity activity, TextDecodingCallback textDecodingCallback) {
+    @RequiresNonNull("textDecodingCallback")
+    public TextDecoding(@Nullable Activity activity, TextDecodingCallback textDecodingCallback) {
         super();
         this.progressDialog = new ProgressDialog(activity);
         this.textDecodingCallback = textDecodingCallback;
@@ -34,6 +40,7 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
     }
 
     //setting progress dialog if wanted
+    @RequiresNonNull("progressDialog")
     public void setProgressDialog(ProgressDialog progressDialog) {
         this.progressDialog = progressDialog;
     }
