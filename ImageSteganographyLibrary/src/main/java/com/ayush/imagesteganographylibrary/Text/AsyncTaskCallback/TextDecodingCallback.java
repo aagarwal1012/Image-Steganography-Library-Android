@@ -12,7 +12,7 @@ public interface TextDecodingCallback {
 
     void onStartTextEncoding();
 
-    @RequiresNonNull("result")
+    @RequiresNonNull("#1")
     void onCompleteTextEncoding(ImageSteganography result);
 
 }

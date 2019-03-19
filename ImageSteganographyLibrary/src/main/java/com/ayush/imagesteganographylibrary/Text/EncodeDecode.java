@@ -7,8 +7,6 @@ import android.util.Log;
 
 import com.ayush.imagesteganographylibrary.Utils.Utility;
 
-import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 
 import java.nio.charset.Charset;
@@ -37,10 +35,9 @@ class EncodeDecode {
      * @parameter : progressHandler {A handler interface, for the progress bar}
      */
 
-    @RequiresNonNull({"integer_pixel_array", "image_columns", "image_rows", "messageEncodingStatus", "progressHandler"})
-    @EnsuresNonNull("result")
+    @RequiresNonNull({"#1", "#4"})
     private static byte[] encodeMessage(int[] integer_pixel_array, int image_columns, int image_rows,
-                                        MessageEncodingStatus messageEncodingStatus, ProgressHandler progressHandler) {
+                                        MessageEncodingStatus messageEncodingStatus, @Nullable ProgressHandler progressHandler) {
 
         //denotes RGB channels
         int channels = 3;
@@ -112,8 +109,7 @@ class EncodeDecode {
      * @parameter : encrypted_message {string}
      * @parameter : progressHandler {Progress bar handler}
      */
-    @RequiresNonNull({"splitted_images", "encrypted_message"})
-    @EnsuresNonNull("result")
+    @RequiresNonNull({"#1"})
     public static List<Bitmap> encodeMessage(List<Bitmap> splitted_images,
                                              String encrypted_message, @Nullable ProgressHandler progressHandler) {
 
@@ -135,7 +131,9 @@ class EncodeDecode {
 
         //Progress Handler
         if (progressHandler != null) {
-            progressHandler.setTotal(encrypted_message.getBytes(Charset.forName("ISO-8859-1")).length);
+            //just a variable declaration, so as to remove the [contracts.precondition.not.satisfied] error.
+            int encryptedMessageByteArrayLength = encrypted_message.getBytes(Charset.forName("ISO-8859-1")).length;
+            progressHandler.setTotal(encryptedMessageByteArrayLength);
         }
 
         //Just a log to get the byte message length
@@ -200,9 +198,9 @@ class EncodeDecode {
      * @parameter : image_rows {Image height}
      * @parameter : messageDecodingStatus {object}
      */
-    @RequiresNonNull({"byte_pixel_array", "messageDecodingStatus"})
-    private static void decodeMessage(byte[] byte_pixel_array, @Nullable int image_columns,
-                                      @Nullable int image_rows, MessageDecodingStatus messageDecodingStatus) {
+    @RequiresNonNull({"#1", "#4"})
+    private static void decodeMessage(byte[] byte_pixel_array, int image_columns,
+                                      int image_rows, MessageDecodingStatus messageDecodingStatus) {
 
         //encrypted message
         Vector<Byte> byte_encrypted_message = new Vector<>();
@@ -241,8 +239,9 @@ class EncodeDecode {
 
                     String stra = new String(temp, Charset.forName("ISO-8859-1"));
 
-
-                    messageDecodingStatus.setMessage(stra.substring(0, stra.length() - 1));
+                    // just a variable declaration, , so as to remove the [contracts.precondition.not.satisfied] error.
+                    String straSubstring = stra.substring(0, stra.length() - 1);
+                    messageDecodingStatus.setMessage(straSubstring);
                     //end fixing
 
                     messageDecodingStatus.setEnded();
@@ -250,13 +249,20 @@ class EncodeDecode {
                     break;
                 } else {
                     //just add the decoded message to the original message
-                    messageDecodingStatus.setMessage(messageDecodingStatus.getMessage() + str);
+
+                    //Changed from source because compile error is there
+                    //{Unexpected FlowExpression}
+                    String temp = messageDecodingStatus.getMessage() + str;
+                    messageDecodingStatus.setMessage(temp);
 
                     //If there was no message there and only start and end message constant was there
                     if (messageDecodingStatus.getMessage().length() == START_MESSAGE_COSTANT.length()
                             && !START_MESSAGE_COSTANT.equals(messageDecodingStatus.getMessage())) {
 
-                        messageDecodingStatus.setMessage("");
+                        //Changed from source because compile error is there
+                        //{Unexpected FlowExpression}
+                        String emptyString = "";
+                        messageDecodingStatus.setMessage(emptyString);
                         messageDecodingStatus.setEnded();
 
                         break;
@@ -272,9 +278,12 @@ class EncodeDecode {
             //removing start and end constants form message
 
             try {
-                messageDecodingStatus.setMessage(messageDecodingStatus.getMessage().substring(START_MESSAGE_COSTANT.length(), messageDecodingStatus.getMessage()
-                        .length()
-                        - END_MESSAGE_COSTANT.length()));
+                // just the variable declarations, so as to remove the [contracts.precondition.not.satisfied] error.
+                String message = messageDecodingStatus.getMessage();
+                int decodedMessageLength = message.length();
+                String substring = message.substring(START_MESSAGE_COSTANT.length(), decodedMessageLength
+                        - END_MESSAGE_COSTANT.length());
+                messageDecodingStatus.setMessage(substring);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -289,10 +298,8 @@ class EncodeDecode {
      * @parameter : encodedImages {list of encode chunk images}
      */
 
-    @RequiresNonNull("encodedImages")
-    @EnsuresNonNull("messageDecodingStatus")
-    public static @Nullable
-    String decodeMessage(List<Bitmap> encodedImages) {
+    @RequiresNonNull("#1")
+    public static String decodeMessage(List<Bitmap> encodedImages) {
 
         //Creating object
         MessageDecodingStatus messageDecodingStatus = new MessageDecodingStatus();
@@ -322,7 +329,6 @@ class EncodeDecode {
      * @return : The number of pixel {integer}
      * @parameter : message {Message to encode}
      */
-    @EnsuresNonNull("result")
     public static int numberOfPixelForMessage(@Nullable String message) {
         int result = -1;
         if (message != null) {
@@ -337,10 +343,10 @@ class EncodeDecode {
     //Progress handler class
     public interface ProgressHandler {
 
-        @RequiresNonNull("tot")
+        @RequiresNonNull("#1")
         void setTotal(int tot);
 
-        @RequiresNonNull("inc")
+        //        @RequiresNonNull("#1")
         void increment(int inc);
 
         void finished();
@@ -348,15 +354,14 @@ class EncodeDecode {
 
     private static class MessageDecodingStatus {
 
-        private @MonotonicNonNull String message;
-        private @MonotonicNonNull boolean ended;
+        private String message;
+        private boolean ended;
 
         MessageDecodingStatus() {
             message = "";
             ended = false;
         }
 
-        @EnsuresNonNull("ended")
         boolean isEnded() {
             return ended;
         }
@@ -365,12 +370,11 @@ class EncodeDecode {
             this.ended = true;
         }
 
-        @EnsuresNonNull("message")
         String getMessage() {
             return message;
         }
 
-        @RequiresNonNull("message")
+        @RequiresNonNull("#1")
         void setMessage(String message) {
             this.message = message;
         }
@@ -379,12 +383,12 @@ class EncodeDecode {
     }
 
     private static class MessageEncodingStatus {
-        private @MonotonicNonNull boolean messageEncoded;
-        private @MonotonicNonNull int currentMessageIndex;
-        private @MonotonicNonNull byte[] byteArrayMessage;
-        private @MonotonicNonNull String message;
+        private boolean messageEncoded;
+        private int currentMessageIndex;
+        private byte[] byteArrayMessage;
+        private String message;
 
-        @RequiresNonNull({"byteArrayMessage", "message"})
+        @RequiresNonNull({"#1", "#2"})
         MessageEncodingStatus(byte[] byteArrayMessage, String message) {
             this.messageEncoded = false;
             this.currentMessageIndex = 0;
@@ -400,7 +404,7 @@ class EncodeDecode {
             return message;
         }
 
-        @RequiresNonNull("message")
+        @RequiresNonNull("#1")
         public void setMessage(String message) {
             this.message = message;
         }
@@ -417,7 +421,7 @@ class EncodeDecode {
             return currentMessageIndex;
         }
 
-        @RequiresNonNull("currentMessageIndex")
+        @RequiresNonNull("#1")
         public void setCurrentMessageIndex(int currentMessageIndex) {
             this.currentMessageIndex = currentMessageIndex;
         }
@@ -426,7 +430,7 @@ class EncodeDecode {
             return byteArrayMessage;
         }
 
-        @RequiresNonNull("byteArrayMessage")
+        @RequiresNonNull("#1")
         public void setByteArrayMessage(byte[] byteArrayMessage) {
             this.byteArrayMessage = byteArrayMessage;
         }

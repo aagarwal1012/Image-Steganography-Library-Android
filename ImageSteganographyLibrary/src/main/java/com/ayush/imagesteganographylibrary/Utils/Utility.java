@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
 
-import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 
@@ -27,8 +26,6 @@ public class Utility {
      * @return : number of Square blocks {Integer}
      * @parameter : number of pixels {Integer}
      */
-    @RequiresNonNull("#1")
-    @EnsuresNonNull("result")
     public static int squareBlockNeeded(int pixels) {
         int result;
 
@@ -48,7 +45,6 @@ public class Utility {
      * @parameter : Image {Bitmap}
      */
     @RequiresNonNull("#1")
-    @EnsuresNonNull("chunkedImages")
     public static List<Bitmap> splitImage(Bitmap bitmap) {
 
         //For height and width of the small image chunks
@@ -109,8 +105,7 @@ public class Utility {
      * @return : Merged Image {Bitmap}
      * @parameter : List {Bitmap}, Original Height {Integer}, Original Width {Integer}
      */
-    @RequiresNonNull({"#1", "#2", "#3"})
-    @EnsuresNonNull("bitmap")
+    @RequiresNonNull({"#1"})
     public static Bitmap mergeImage(List<Bitmap> images, int original_height, int original_width) {
 
         //Calculating number of Rows and columns of that matrix
@@ -156,7 +151,6 @@ public class Utility {
      */
 
     @RequiresNonNull("#1")
-    @EnsuresNonNull("result")
     public static int[] byteArrayToIntArray(byte[] b) {
 
         Log.v("Size byte array", b.length + "");
@@ -201,8 +195,7 @@ public class Utility {
      * @return :  Integer
      * @parameter :  b {the byte array}, offset {integer}
      */
-    @RequiresNonNull({"#1", "#2"})
-    @EnsuresNonNull("value")
+    @RequiresNonNull({"#1"})
     private static int byteArrayToInt(byte[] b, int offset) {
 
         int value = 0x00000000;
@@ -225,7 +218,6 @@ public class Utility {
      * @parameter : Integer array representing [argb] values.
      */
     @RequiresNonNull("#1")
-    @EnsuresNonNull("newarray")
     public static byte[] convertArray(int[] array) {
 
         byte[] newarray = new byte[array.length * 3];
@@ -247,7 +239,6 @@ public class Utility {
      * @return : true or false {boolean}
      * @parameter : String
      */
-    @EnsuresNonNull("result")
     public static boolean isStringEmpty(@Nullable String str) {
         boolean result = true;
 

@@ -9,7 +9,6 @@ import android.util.Log;
 import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
 import com.ayush.imagesteganographylibrary.Utils.Utility;
 
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 
@@ -24,16 +23,18 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
     //Tag for Log
     private static final String TAG = TextEncoding.class.getName();
 
-    private final @MonotonicNonNull ImageSteganography result;
+    private final ImageSteganography result;
     //Callback interface for AsyncTask
-    private final @MonotonicNonNull TextEncodingCallback callbackInterface;
+    private final TextEncodingCallback callbackInterface;
+    private @Nullable ProgressDialog progressDialog;
     private int maximumProgress;
-    private final @Nullable ProgressDialog progressDialog;
 
-    @RequiresNonNull("callbackInterface")
+    @RequiresNonNull("#2")
     public TextEncoding(@Nullable Activity activity, TextEncodingCallback callbackInterface) {
         super();
-        this.progressDialog = new ProgressDialog(activity);
+        if (activity != null) {
+            this.progressDialog = new ProgressDialog(activity);
+        }
         this.callbackInterface = callbackInterface;
         //making result object
         this.result = new ImageSteganography();
@@ -97,14 +98,17 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
             List<Bitmap> src_list = Utility.splitImage(bitmap);
 
             //encoding encrypted compressed message into image
-
-            List<Bitmap> encoded_list = EncodeDecode.encodeMessage(src_list, textStegnography.getEncrypted_message(), new EncodeDecode.ProgressHandler() {
+            //just a variable declaration,, so as to remove the [contracts.precondition.not.satisfied] error.
+            String encryptedMessage = textStegnography.getEncrypted_message();
+            List<Bitmap> encoded_list = EncodeDecode.encodeMessage(src_list, encryptedMessage, new EncodeDecode.ProgressHandler() {
 
                 //Progress Handler
                 @Override
                 public void setTotal(int tot) {
                     maximumProgress = tot;
-                    progressDialog.setMax(maximumProgress);
+                    if (progressDialog != null) {
+                        progressDialog.setMax(maximumProgress);
+                    }
                     Log.d(TAG, "Total Length : " + tot);
                 }
 
@@ -116,7 +120,9 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
                 @Override
                 public void finished() {
                     Log.d(TAG, "Message Encoding end....");
-                    progressDialog.setIndeterminate(true);
+                    if (progressDialog != null) {
+                        progressDialog.setIndeterminate(true);
+                    }
                 }
             });
 
