@@ -1,5 +1,8 @@
 package com.ayush.imagesteganographylibrary.Utils;
 
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,6 +24,8 @@ class Zipping {
     @return : Compressed byte array
      */
 
+    @RequiresNonNull("#1")
+    @EnsuresNonNull("compressed")
     public static byte[] compress(String string) throws Exception {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream(string.length());
@@ -41,6 +46,7 @@ class Zipping {
     @parameter : byte array
     @return : Uncompressed encrypted_message {String}
      */
+    @RequiresNonNull("#1")
     public static String decompress(byte[] compressed) throws Exception {
 
         ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
