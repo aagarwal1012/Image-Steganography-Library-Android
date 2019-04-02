@@ -131,9 +131,7 @@ class EncodeDecode {
 
         //Progress Handler
         if (progressHandler != null) {
-            //just a variable declaration, so as to remove the [contracts.precondition.not.satisfied] error.
-            int encryptedMessageByteArrayLength = encrypted_message.getBytes(Charset.forName("ISO-8859-1")).length;
-            progressHandler.setTotal(encryptedMessageByteArrayLength);
+            progressHandler.setTotal(encrypted_message.getBytes(Charset.forName("ISO-8859-1")).length);
         }
 
         //Just a log to get the byte message length
@@ -239,9 +237,7 @@ class EncodeDecode {
 
                     String stra = new String(temp, Charset.forName("ISO-8859-1"));
 
-                    // just a variable declaration, , so as to remove the [contracts.precondition.not.satisfied] error.
-                    String straSubstring = stra.substring(0, stra.length() - 1);
-                    messageDecodingStatus.setMessage(straSubstring);
+                    messageDecodingStatus.setMessage(stra.substring(0, stra.length() - 1));
                     //end fixing
 
                     messageDecodingStatus.setEnded();
@@ -249,20 +245,13 @@ class EncodeDecode {
                     break;
                 } else {
                     //just add the decoded message to the original message
-
-                    //Changed from source because compile error is there
-                    //{Unexpected FlowExpression}
-                    String temp = messageDecodingStatus.getMessage() + str;
-                    messageDecodingStatus.setMessage(temp);
+                    messageDecodingStatus.setMessage(messageDecodingStatus.getMessage() + str);
 
                     //If there was no message there and only start and end message constant was there
                     if (messageDecodingStatus.getMessage().length() == START_MESSAGE_COSTANT.length()
                             && !START_MESSAGE_COSTANT.equals(messageDecodingStatus.getMessage())) {
 
-                        //Changed from source because compile error is there
-                        //{Unexpected FlowExpression}
-                        String emptyString = "";
-                        messageDecodingStatus.setMessage(emptyString);
+                        messageDecodingStatus.setMessage("");
                         messageDecodingStatus.setEnded();
 
                         break;
@@ -278,12 +267,9 @@ class EncodeDecode {
             //removing start and end constants form message
 
             try {
-                // just the variable declarations, so as to remove the [contracts.precondition.not.satisfied] error.
-                String message = messageDecodingStatus.getMessage();
-                int decodedMessageLength = message.length();
-                String substring = message.substring(START_MESSAGE_COSTANT.length(), decodedMessageLength
-                        - END_MESSAGE_COSTANT.length());
-                messageDecodingStatus.setMessage(substring);
+                messageDecodingStatus.setMessage(messageDecodingStatus.getMessage().substring(START_MESSAGE_COSTANT.length(), messageDecodingStatus.getMessage().
+                        length()
+                        - END_MESSAGE_COSTANT.length()));
             } catch (Exception e) {
                 e.printStackTrace();
             }

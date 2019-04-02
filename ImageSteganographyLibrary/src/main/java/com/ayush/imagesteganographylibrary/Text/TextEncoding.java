@@ -98,9 +98,7 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
             List<Bitmap> src_list = Utility.splitImage(bitmap);
 
             //encoding encrypted compressed message into image
-            //just a variable declaration,, so as to remove the [contracts.precondition.not.satisfied] error.
-            String encryptedMessage = textStegnography.getEncrypted_message();
-            List<Bitmap> encoded_list = EncodeDecode.encodeMessage(src_list, encryptedMessage, new EncodeDecode.ProgressHandler() {
+            List<Bitmap> encoded_list = EncodeDecode.encodeMessage(src_list, textStegnography.getEncrypted_message(), new EncodeDecode.ProgressHandler() {
 
                 //Progress Handler
                 @Override
