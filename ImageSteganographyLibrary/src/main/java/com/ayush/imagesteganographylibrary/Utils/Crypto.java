@@ -16,7 +16,7 @@ public class Crypto {
     @parameter : Message {String}, Secret key {String}
     @return : Encrypted Message {String}
      */
-    @RequiresNonNull({"#1", "#2"})
+//    @RequiresNonNull({"#1", "#2"})
     public static String encryptMessage(String message, String secret_key) throws Exception {
 
         // Creating key and cipher
@@ -45,7 +45,7 @@ public class Crypto {
     @parameter : Encrypted Message {String}, Secret key {String}
     @return : Message {String}
      */
-    @RequiresNonNull({"#1", "#2"})
+//    @RequiresNonNull({"#1", "#2"})
     public static String decryptMessage(String encrypted_message, String secret_key) throws Exception {
 
         Log.d("Decrypt", "message: + " + encrypted_message);

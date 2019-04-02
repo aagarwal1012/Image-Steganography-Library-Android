@@ -29,7 +29,7 @@ public class TextEncoding extends AsyncTask<ImageSteganography, Integer, ImageSt
     private @Nullable ProgressDialog progressDialog;
     private int maximumProgress;
 
-    @RequiresNonNull("#2")
+//    @RequiresNonNull("#2")
     public TextEncoding(@Nullable Activity activity, TextEncodingCallback callbackInterface) {
         super();
         if (activity != null) {

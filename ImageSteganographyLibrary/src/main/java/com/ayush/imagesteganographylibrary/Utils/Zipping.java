@@ -23,7 +23,7 @@ class Zipping {
     @return : Compressed byte array
      */
 
-    @RequiresNonNull("#1")
+//    @RequiresNonNull("#1")
     public static byte[] compress(String string) throws Exception {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream(string.length());
@@ -44,7 +44,7 @@ class Zipping {
     @parameter : byte array
     @return : Uncompressed encrypted_message {String}
      */
-    @RequiresNonNull("#1")
+//    @RequiresNonNull("#1")
     public static String decompress(byte[] compressed) throws Exception {
 
         ByteArrayInputStream bis = new ByteArrayInputStream(compressed);

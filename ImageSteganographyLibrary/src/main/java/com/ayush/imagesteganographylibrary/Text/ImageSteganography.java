@@ -38,7 +38,7 @@ public class ImageSteganography {
         this.encrypted_zip = new byte[0];
     }
 
-    @RequiresNonNull({"#1", "#2", "#3"})
+//    @RequiresNonNull({"#1", "#2", "#3"})
     public ImageSteganography(String message, String secret_key, Bitmap image) {
 
         this.message = message;
@@ -61,7 +61,7 @@ public class ImageSteganography {
 
     }
 
-    @RequiresNonNull({"#1", "#2"})
+//    @RequiresNonNull({"#1", "#2"})
     public ImageSteganography(String secret_key, Bitmap image) {
         this.secret_key = convertKeyTo128bit(secret_key);
         this.image = image;
@@ -114,7 +114,7 @@ public class ImageSteganography {
         return decrypted_message;
     }
 
-    @RequiresNonNull("#1")
+//    @RequiresNonNull("#1")
     private static String convertKeyTo128bit(String secret_key) {
 
         StringBuilder result = new StringBuilder(secret_key);
@@ -136,7 +136,7 @@ public class ImageSteganography {
         return encoded_image;
     }
 
-    @RequiresNonNull("#1")
+//    @RequiresNonNull("#1")
     public void setEncoded_image(Bitmap encoded_image) {
         this.encoded_image = encoded_image;
     }
@@ -145,7 +145,7 @@ public class ImageSteganography {
         return message;
     }
 
-    @RequiresNonNull("#1")
+//    @RequiresNonNull("#1")
     public void setMessage(String message) {
         this.message = message;
     }
@@ -154,7 +154,7 @@ public class ImageSteganography {
         return secret_key;
     }
 
-    @RequiresNonNull("#1")
+//    @RequiresNonNull("#1")
     public void setSecret_key(String secret_key) {
         this.secret_key = secret_key;
     }
@@ -163,7 +163,7 @@ public class ImageSteganography {
         return encrypted_zip;
     }
 
-    @RequiresNonNull("#1")
+//    @RequiresNonNull("#1")
     public void setEncrypted_zip(byte[] encrypted_zip) {
         this.encrypted_zip = encrypted_zip;
     }
@@ -172,7 +172,7 @@ public class ImageSteganography {
         return encrypted_message;
     }
 
-    @RequiresNonNull("#1")
+//    @RequiresNonNull("#1")
     public void setEncrypted_message(String encrypted_message) {
         this.encrypted_message = encrypted_message;
     }
@@ -181,7 +181,7 @@ public class ImageSteganography {
         return image;
     }
 
-    @RequiresNonNull("#1")
+//    @RequiresNonNull("#1")
     public void setImage(Bitmap image) {
         this.image = image;
     }

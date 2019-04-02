@@ -28,7 +28,7 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
     private final TextDecodingCallback textDecodingCallback;
     private @Nullable ProgressDialog progressDialog;
 
-    @RequiresNonNull("#2")
+//    @RequiresNonNull("#2")
     public TextDecoding(@Nullable Activity activity, TextDecodingCallback textDecodingCallback) {
         super();
         if (activity != null) {
@@ -40,7 +40,7 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
     }
 
     //setting progress dialog if wanted
-    @RequiresNonNull("#1")
+//    @RequiresNonNull("#1")
     public void setProgressDialog(ProgressDialog progressDialog) {
         this.progressDialog = progressDialog;
     }

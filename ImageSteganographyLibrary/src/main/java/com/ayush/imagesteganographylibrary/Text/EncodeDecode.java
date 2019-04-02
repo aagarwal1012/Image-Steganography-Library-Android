@@ -35,7 +35,7 @@ class EncodeDecode {
      * @parameter : progressHandler {A handler interface, for the progress bar}
      */
 
-    @RequiresNonNull({"#1", "#4"})
+//    @RequiresNonNull({"#1", "#4"})
     private static byte[] encodeMessage(int[] integer_pixel_array, int image_columns, int image_rows,
                                         MessageEncodingStatus messageEncodingStatus, @Nullable ProgressHandler progressHandler) {
 
@@ -109,7 +109,7 @@ class EncodeDecode {
      * @parameter : encrypted_message {string}
      * @parameter : progressHandler {Progress bar handler}
      */
-    @RequiresNonNull({"#1"})
+//    @RequiresNonNull({"#1"})
     public static List<Bitmap> encodeMessage(List<Bitmap> splitted_images,
                                              String encrypted_message, @Nullable ProgressHandler progressHandler) {
 
@@ -196,7 +196,7 @@ class EncodeDecode {
      * @parameter : image_rows {Image height}
      * @parameter : messageDecodingStatus {object}
      */
-    @RequiresNonNull({"#1", "#4"})
+//    @RequiresNonNull({"#1", "#4"})
     private static void decodeMessage(byte[] byte_pixel_array, int image_columns,
                                       int image_rows, MessageDecodingStatus messageDecodingStatus) {
 
@@ -267,8 +267,8 @@ class EncodeDecode {
             //removing start and end constants form message
 
             try {
-                messageDecodingStatus.setMessage(messageDecodingStatus.getMessage().substring(START_MESSAGE_COSTANT.length(), messageDecodingStatus.getMessage().
-                        length()
+                messageDecodingStatus.setMessage(messageDecodingStatus.getMessage().substring(START_MESSAGE_COSTANT.length(), messageDecodingStatus.getMessage()
+                        .length()
                         - END_MESSAGE_COSTANT.length()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -284,7 +284,7 @@ class EncodeDecode {
      * @parameter : encodedImages {list of encode chunk images}
      */
 
-    @RequiresNonNull("#1")
+//    @RequiresNonNull("#1")
     public static String decodeMessage(List<Bitmap> encodedImages) {
 
         //Creating object
@@ -329,7 +329,7 @@ class EncodeDecode {
     //Progress handler class
     public interface ProgressHandler {
 
-        @RequiresNonNull("#1")
+//        @RequiresNonNull("#1")
         void setTotal(int tot);
 
         //        @RequiresNonNull("#1")
@@ -360,7 +360,7 @@ class EncodeDecode {
             return message;
         }
 
-        @RequiresNonNull("#1")
+//        @RequiresNonNull("#1")
         void setMessage(String message) {
             this.message = message;
         }
@@ -374,7 +374,7 @@ class EncodeDecode {
         private byte[] byteArrayMessage;
         private String message;
 
-        @RequiresNonNull({"#1", "#2"})
+//        @RequiresNonNull({"#1", "#2"})
         MessageEncodingStatus(byte[] byteArrayMessage, String message) {
             this.messageEncoded = false;
             this.currentMessageIndex = 0;
@@ -390,7 +390,7 @@ class EncodeDecode {
             return message;
         }
 
-        @RequiresNonNull("#1")
+//        @RequiresNonNull("#1")
         public void setMessage(String message) {
             this.message = message;
         }
@@ -407,7 +407,7 @@ class EncodeDecode {
             return currentMessageIndex;
         }
 
-        @RequiresNonNull("#1")
+//        @RequiresNonNull("#1")
         public void setCurrentMessageIndex(int currentMessageIndex) {
             this.currentMessageIndex = currentMessageIndex;
         }
@@ -416,7 +416,7 @@ class EncodeDecode {
             return byteArrayMessage;
         }
 
-        @RequiresNonNull("#1")
+//        @RequiresNonNull("#1")
         public void setByteArrayMessage(byte[] byteArrayMessage) {
             this.byteArrayMessage = byteArrayMessage;
         }
