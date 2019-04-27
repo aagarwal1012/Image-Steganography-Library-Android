@@ -1,5 +1,19 @@
 <div align="center"><img src="https://github.com/aagarwal1012/Image-Steganography-Library-Android/blob/master/images/cover.png?raw=true"/></div>  
-<div align= "center"><img src="https://img.shields.io/badge/platform-Android-brightgreen.svg" alt="Platform" /> <img src="https://img.shields.io/badge/API-16%2B-blue.svg" alt="API" /> <img src="https://img.shields.io/badge/License-MIT-red.svg" alt="License: MIT" /><img src="https://jitpack.io/v/aagarwal1012/Image-Steganography-Library-Android.svg" alt="version" />
+<div align= "center">
+	<img src="https://img.shields.io/badge/platform-Android-brightgreen.svg" alt="Platform" />
+	
+<img src="https://img.shields.io/badge/API-16%2B-blue.svg" alt="API" /> 
+	
+<a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/License-MIT-red.svg"
+      alt="License: MIT" />
+  </a>
+	<a href="https://jitpack.io/#aagarwal1012/Image-Steganography-Library-Android"><img src="https://jitpack.io/v/aagarwal1012/Image-Steganography-Library-Android.svg" alt="version" /></a>
+	<a href="https://www.paypal.me/aagarwal1012">
+    <img src="https://img.shields.io/badge/Donate-PayPal-green.svg"
+      alt="Donate" />
+  </a>
+	
 </div>
 
 # Image Steganography
@@ -210,6 +224,12 @@ There are two options `Encode` and `Decode`. In the encode section you can hide 
 
 This is the well `documented` library. I have documented each and every method that I have used, so have a good read to the code and suggest some changes and new feature to be added in the library.  
 Feel free to <a href = "https://github.com/aagarwal1012/Image-Steganography-Library-Android/issues">open an issue</a>.
+
+# Donate
+> If you found this project helpful or you learned something from the source code and want to thank me, consider buying me a cup of :coffee:
+>
+> - [PayPal](https://www.paypal.me/aagarwal1012/)
+
 
 # License
 **Image Steganography** is licensed under `MIT license`.
