@@ -47,7 +47,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    implementation 'com.android.support:support-annotations:28.0.0'
+    annotationProcessor 'com.android.support:support-annotations:28.0.0'
+
     implementation files("C:/Users/Ayush/ayush_files/gsoc/the-checker-framework/checker-framework/checker/dist/checker-qual.jar")
     annotationProcessor files("C:/Users/Ayush/ayush_files/gsoc/the-checker-framework/checker-framework/checker/dist/checker.jar")
     checkerFrameworkAnnotatedJDK files("C:/Users/Ayush/ayush_files/gsoc/the-checker-framework/checker-framework/checker/dist/jdk8.jar")
