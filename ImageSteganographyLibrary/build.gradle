@@ -34,12 +34,6 @@ android {
 
 }
 
-configurations {
-    checkerFrameworkAnnotatedJDK {
-        description = 'a copy of JDK classes with Checker Framework type qualifers inserted'
-    }
-}
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
@@ -49,17 +43,6 @@ dependencies {
 
     annotationProcessor 'com.android.support:support-annotations:28.0.0'
 
-    implementation files("C:/Users/Ayush/ayush_files/gsoc/the-checker-framework/checker-framework/checker/dist/checker-qual.jar")
-    annotationProcessor files("C:/Users/Ayush/ayush_files/gsoc/the-checker-framework/checker-framework/checker/dist/checker.jar")
-    checkerFrameworkAnnotatedJDK files("C:/Users/Ayush/ayush_files/gsoc/the-checker-framework/checker-framework/checker/dist/jdk8.jar")
-}
-
-gradle.projectsEvaluated {
-    tasks.withType(JavaCompile).all { compile ->
-        if (compile.name.contains("checkTypes")) {
-            compile.options.compilerArgs += [
-                    "-Xbootclasspath/p:${configurations.checkerFrameworkAnnotatedJDK.asPath}"
-            ]
-        }
-    }
+    implementation files("E:/gsoc-2019/the-checker-framework/checker-framework/checker/dist/checker-qual.jar")
+    annotationProcessor files("E:/gsoc-2019/the-checker-framework/checker-framework/checker/dist/checker.jar")
 }
