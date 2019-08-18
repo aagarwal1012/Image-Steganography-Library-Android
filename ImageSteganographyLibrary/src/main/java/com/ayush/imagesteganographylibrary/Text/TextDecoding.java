@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.support.annotation.UiThread;
+import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
@@ -34,6 +36,7 @@ public class TextDecoding extends AsyncTask<ImageSteganography, Void, ImageStega
     }
 
     //setting progress dialog if wanted
+    @UiThread
     public void setProgressDialog(ProgressDialog progressDialog) {
         this.progressDialog = progressDialog;
     }

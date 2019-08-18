@@ -3,6 +3,7 @@ package com.ayush.imagesteganographylibrary.Utils;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Utility {
      * @return : number of Square blocks {Integer}
      * @parameter : number of pixels {Integer}
      */
+    @WorkerThread
     public static int squareBlockNeeded(int pixels) {
         int result;
 
@@ -41,6 +43,7 @@ public class Utility {
      * @return : List of splitted images {List}
      * @parameter : Image {Bitmap}
      */
+    @WorkerThread
     public static List<Bitmap> splitImage(Bitmap bitmap) {
 
         //For height and width of the small image chunks
@@ -101,6 +104,7 @@ public class Utility {
      * @return : Merged Image {Bitmap}
      * @parameter : List {Bitmap}, Original Height {Integer}, Original Width {Integer}
      */
+    @WorkerThread
     public static Bitmap mergeImage(List<Bitmap> images, int original_height, int original_width) {
 
         //Calculating number of Rows and columns of that matrix
@@ -144,7 +148,7 @@ public class Utility {
      * @return : Integer Array
      * @parameter : b {the byte array}
      */
-
+    @WorkerThread
     public static int[] byteArrayToIntArray(byte[] b) {
 
         Log.v("Size byte array", b.length + "");
@@ -176,6 +180,7 @@ public class Utility {
      * @return : Integer
      * @parameter :  b {the byte array}
      */
+    @WorkerThread
     public static int byteArrayToInt(byte[] b) {
 
         return byteArrayToInt(b, 0);
@@ -188,6 +193,7 @@ public class Utility {
      * @return :  Integer
      * @parameter :  b {the byte array}, offset {integer}
      */
+    @WorkerThread
     private static int byteArrayToInt(byte[] b, int offset) {
 
         int value = 0x00000000;
@@ -209,6 +215,7 @@ public class Utility {
      * @return : byte Array representing [rgb] values.
      * @parameter : Integer array representing [argb] values.
      */
+    @WorkerThread
     public static byte[] convertArray(int[] array) {
 
         byte[] newarray = new byte[array.length * 3];
@@ -230,6 +237,7 @@ public class Utility {
      * @return : true or false {boolean}
      * @parameter : String
      */
+    @WorkerThread
     public static boolean isStringEmpty(String str) {
         boolean result = true;
 
