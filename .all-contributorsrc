@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "rhayes2",
+      "name": "Ryan Hayes",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/43277456?v=4",
+      "profile": "https://github.com/rhayes2",
+      "contributions": [
+        "maintenance",
+        "ideas",
+        "bug"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Image-Steganography-Library-Android",
+  "projectOwner": "aagarwal1012",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}
