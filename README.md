@@ -1,4 +1,5 @@
 <div align="center"><img src="https://github.com/aagarwal1012/Image-Steganography-Library-Android/blob/master/images/cover.png?raw=true"/></div>  
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 <div align= "center">
 	<img src="https://img.shields.io/badge/platform-Android-brightgreen.svg" alt="Platform" />
 	
@@ -258,3 +259,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/rhayes2"><img src="https://avatars3.githubusercontent.com/u/43277456?v=4" width="100px;" alt="Ryan Hayes"/><br /><sub><b>Ryan Hayes</b></sub></a><br /><a href="#maintenance-rhayes2" title="Maintenance">🚧</a> <a href="#ideas-rhayes2" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/aagarwal1012/Image-Steganography-Library-Android/issues?q=author%3Arhayes2" title="Bug reports">🐛</a></td>
+  </tr>
+</table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
