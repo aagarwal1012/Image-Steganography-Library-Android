@@ -5,6 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +44,7 @@ public class Utility {
      * @return : List of splitted images {List}
      * @parameter : Image {Bitmap}
      */
+//    @RequiresNonNull("#1")
     public static List<Bitmap> splitImage(Bitmap bitmap) {
 
         //For height and width of the small image chunks
@@ -101,6 +105,7 @@ public class Utility {
      * @return : Merged Image {Bitmap}
      * @parameter : List {Bitmap}, Original Height {Integer}, Original Width {Integer}
      */
+//    @RequiresNonNull({"#1"})
     public static Bitmap mergeImage(List<Bitmap> images, int original_height, int original_width) {
 
         //Calculating number of Rows and columns of that matrix
@@ -145,6 +150,7 @@ public class Utility {
      * @parameter : b {the byte array}
      */
 
+//    @RequiresNonNull("#1")
     public static int[] byteArrayToIntArray(byte[] b) {
 
         Log.v("Size byte array", b.length + "");
@@ -176,6 +182,7 @@ public class Utility {
      * @return : Integer
      * @parameter :  b {the byte array}
      */
+//    @RequiresNonNull("#1")
     public static int byteArrayToInt(byte[] b) {
 
         return byteArrayToInt(b, 0);
@@ -188,6 +195,7 @@ public class Utility {
      * @return :  Integer
      * @parameter :  b {the byte array}, offset {integer}
      */
+//    @RequiresNonNull({"#1"})
     private static int byteArrayToInt(byte[] b, int offset) {
 
         int value = 0x00000000;
@@ -209,6 +217,7 @@ public class Utility {
      * @return : byte Array representing [rgb] values.
      * @parameter : Integer array representing [argb] values.
      */
+//    @RequiresNonNull("#1")
     public static byte[] convertArray(int[] array) {
 
         byte[] newarray = new byte[array.length * 3];
@@ -230,7 +239,7 @@ public class Utility {
      * @return : true or false {boolean}
      * @parameter : String
      */
-    public static boolean isStringEmpty(String str) {
+    public static boolean isStringEmpty(@Nullable String str) {
         boolean result = true;
 
         if (str == null) ;

@@ -2,9 +2,12 @@ package com.ayush.imagesteganographylibrary.Text;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.ayush.imagesteganographylibrary.Utils.Utility;
+
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -32,8 +35,9 @@ class EncodeDecode {
      * @parameter : progressHandler {A handler interface, for the progress bar}
      */
 
+//    @RequiresNonNull({"#1", "#4"})
     private static byte[] encodeMessage(int[] integer_pixel_array, int image_columns, int image_rows,
-                                        MessageEncodingStatus messageEncodingStatus, ProgressHandler progressHandler) {
+                                        MessageEncodingStatus messageEncodingStatus, @Nullable ProgressHandler progressHandler) {
 
         //denotes RGB channels
         int channels = 3;
@@ -105,8 +109,9 @@ class EncodeDecode {
      * @parameter : encrypted_message {string}
      * @parameter : progressHandler {Progress bar handler}
      */
+//    @RequiresNonNull({"#1"})
     public static List<Bitmap> encodeMessage(List<Bitmap> splitted_images,
-                                             String encrypted_message, ProgressHandler progressHandler) {
+                                             String encrypted_message, @Nullable ProgressHandler progressHandler) {
 
         //Making result method
 
@@ -191,6 +196,7 @@ class EncodeDecode {
      * @parameter : image_rows {Image height}
      * @parameter : messageDecodingStatus {object}
      */
+//    @RequiresNonNull({"#1", "#4"})
     private static void decodeMessage(byte[] byte_pixel_array, int image_columns,
                                       int image_rows, MessageDecodingStatus messageDecodingStatus) {
 
@@ -230,7 +236,6 @@ class EncodeDecode {
 
 
                     String stra = new String(temp, Charset.forName("ISO-8859-1"));
-
 
                     messageDecodingStatus.setMessage(stra.substring(0, stra.length() - 1));
                     //end fixing
@@ -279,6 +284,7 @@ class EncodeDecode {
      * @parameter : encodedImages {list of encode chunk images}
      */
 
+//    @RequiresNonNull("#1")
     public static String decodeMessage(List<Bitmap> encodedImages) {
 
         //Creating object
@@ -309,7 +315,7 @@ class EncodeDecode {
      * @return : The number of pixel {integer}
      * @parameter : message {Message to encode}
      */
-    public static int numberOfPixelForMessage(String message) {
+    public static int numberOfPixelForMessage(@Nullable String message) {
         int result = -1;
         if (message != null) {
             message += END_MESSAGE_COSTANT;
@@ -323,8 +329,10 @@ class EncodeDecode {
     //Progress handler class
     public interface ProgressHandler {
 
+//        @RequiresNonNull("#1")
         void setTotal(int tot);
 
+        //        @RequiresNonNull("#1")
         void increment(int inc);
 
         void finished();
@@ -352,6 +360,7 @@ class EncodeDecode {
             return message;
         }
 
+//        @RequiresNonNull("#1")
         void setMessage(String message) {
             this.message = message;
         }
@@ -365,6 +374,7 @@ class EncodeDecode {
         private byte[] byteArrayMessage;
         private String message;
 
+//        @RequiresNonNull({"#1", "#2"})
         MessageEncodingStatus(byte[] byteArrayMessage, String message) {
             this.messageEncoded = false;
             this.currentMessageIndex = 0;
@@ -380,6 +390,7 @@ class EncodeDecode {
             return message;
         }
 
+//        @RequiresNonNull("#1")
         public void setMessage(String message) {
             this.message = message;
         }
@@ -396,6 +407,7 @@ class EncodeDecode {
             return currentMessageIndex;
         }
 
+//        @RequiresNonNull("#1")
         public void setCurrentMessageIndex(int currentMessageIndex) {
             this.currentMessageIndex = currentMessageIndex;
         }
@@ -404,6 +416,7 @@ class EncodeDecode {
             return byteArrayMessage;
         }
 
+//        @RequiresNonNull("#1")
         public void setByteArrayMessage(byte[] byteArrayMessage) {
             this.byteArrayMessage = byteArrayMessage;
         }
