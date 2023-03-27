@@ -1,6 +1,8 @@
 package com.ayush.imagesteganographylibrary.Text;
 
 import android.graphics.Bitmap;
+import android.support.annotation.AnyThread;
+import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import com.ayush.imagesteganographylibrary.Utils.Crypto;
@@ -36,6 +38,7 @@ public class ImageSteganography {
         this.encrypted_zip = new byte[0];
     }
 
+    @WorkerThread
     public ImageSteganography(String message, String secret_key, Bitmap image) {
 
         this.message = message;
@@ -58,6 +61,7 @@ public class ImageSteganography {
 
     }
 
+    @WorkerThread
     public ImageSteganography(String secret_key, Bitmap image) {
         this.secret_key = convertKeyTo128bit(secret_key);
         this.image = image;
@@ -72,6 +76,7 @@ public class ImageSteganography {
         this.encrypted_zip = new byte[0];
     }
 
+    @WorkerThread
     private static String encryptMessage(String message, String secret_key) {
         Log.d(TAG, "Message : " + message);
 
@@ -93,6 +98,7 @@ public class ImageSteganography {
         return encrypted_message;
     }
 
+    @WorkerThread
     public static String decryptMessage(String message, String secret_key) {
         String decrypted_message = "";
         if (message != null) {
@@ -110,6 +116,7 @@ public class ImageSteganography {
         return decrypted_message;
     }
 
+    @WorkerThread
     private static String convertKeyTo128bit(String secret_key) {
 
         StringBuilder result = new StringBuilder(secret_key);

@@ -1,5 +1,7 @@
 package com.ayush.imagesteganographylibrary.Utils;
 
+import android.support.annotation.WorkerThread;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -20,7 +22,7 @@ class Zipping {
     @parameter : Encrypted message {String}
     @return : Compressed byte array
      */
-
+    @WorkerThread
     public static byte[] compress(String string) throws Exception {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream(string.length());
@@ -41,6 +43,7 @@ class Zipping {
     @parameter : byte array
     @return : Uncompressed encrypted_message {String}
      */
+    @WorkerThread
     public static String decompress(byte[] compressed) throws Exception {
 
         ByteArrayInputStream bis = new ByteArrayInputStream(compressed);

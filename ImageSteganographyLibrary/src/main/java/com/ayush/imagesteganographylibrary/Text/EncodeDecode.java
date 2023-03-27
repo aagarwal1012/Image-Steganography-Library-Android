@@ -2,6 +2,7 @@ package com.ayush.imagesteganographylibrary.Text;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import com.ayush.imagesteganographylibrary.Utils.Utility;
@@ -32,6 +33,7 @@ class EncodeDecode {
      * @parameter : progressHandler {A handler interface, for the progress bar}
      */
 
+    @WorkerThread
     private static byte[] encodeMessage(int[] integer_pixel_array, int image_columns, int image_rows,
                                         MessageEncodingStatus messageEncodingStatus, ProgressHandler progressHandler) {
 
@@ -105,6 +107,7 @@ class EncodeDecode {
      * @parameter : encrypted_message {string}
      * @parameter : progressHandler {Progress bar handler}
      */
+    @WorkerThread
     public static List<Bitmap> encodeMessage(List<Bitmap> splitted_images,
                                              String encrypted_message, ProgressHandler progressHandler) {
 
@@ -191,6 +194,7 @@ class EncodeDecode {
      * @parameter : image_rows {Image height}
      * @parameter : messageDecodingStatus {object}
      */
+    @WorkerThread
     private static void decodeMessage(byte[] byte_pixel_array, int image_columns,
                                       int image_rows, MessageDecodingStatus messageDecodingStatus) {
 
@@ -278,7 +282,7 @@ class EncodeDecode {
      * @return : encrypted message {String}
      * @parameter : encodedImages {list of encode chunk images}
      */
-
+    @WorkerThread
     public static String decodeMessage(List<Bitmap> encodedImages) {
 
         //Creating object
@@ -309,6 +313,7 @@ class EncodeDecode {
      * @return : The number of pixel {integer}
      * @parameter : message {Message to encode}
      */
+    @WorkerThread
     public static int numberOfPixelForMessage(String message) {
         int result = -1;
         if (message != null) {
