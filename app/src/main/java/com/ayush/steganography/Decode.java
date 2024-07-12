@@ -5,29 +5,19 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
 import com.ayush.imagesteganographylibrary.Text.ImageSteganography;
 import com.ayush.imagesteganographylibrary.Text.TextDecoding;
-
+import com.ayush.steganography.databinding.ActivityDecodeBinding;
 import java.io.IOException;
 
 public class Decode extends AppCompatActivity implements TextDecodingCallback {
-
+    private ActivityDecodeBinding binding;
     private static final int SELECT_PICTURE = 100;
     private static final String TAG = "Decode Class";
-    //Initializing the UI components
-    private TextView textView;
-    private ImageView imageView;
-    private EditText message;
-    private EditText secret_key;
     private Uri filepath;
     //Bitmap
     private Bitmap original_image;
@@ -35,35 +25,24 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityDecodeBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         setContentView(R.layout.activity_decode);
-
-        //Instantiation of UI components
-        textView = findViewById(R.id.whether_decoded);
-
-        imageView = findViewById(R.id.imageview);
-
-        message = findViewById(R.id.message);
-        secret_key = findViewById(R.id.secret_key);
-
-        Button choose_image_button = findViewById(R.id.choose_image_button);
-        Button decode_button = findViewById(R.id.decode_button);
-
         //Choose Image Button
-        choose_image_button.setOnClickListener(new View.OnClickListener() {
+        binding.chooseImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ImageChooser();
             }
         });
-
         //Decode Button
-        decode_button.setOnClickListener(new View.OnClickListener() {
+        binding.decodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (filepath != null) {
 
                     //Making the ImageSteganography object
-                    ImageSteganography imageSteganography = new ImageSteganography(secret_key.getText().toString(),
+                    ImageSteganography imageSteganography = new ImageSteganography( binding.secretKey.getText().toString(),
                             original_image);
 
                     //Making the TextDecoding object
@@ -74,8 +53,6 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
                 }
             }
         });
-
-
     }
 
     private void ImageChooser() {
@@ -88,20 +65,16 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         //Image set to imageView
         if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
             filepath = data.getData();
             try {
                 original_image = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
-
-                imageView.setImageBitmap(original_image);
+                binding.imageview.setImageBitmap(original_image);
             } catch (IOException e) {
                 Log.d(TAG, "Error : " + e);
             }
         }
-
     }
 
     @Override
@@ -111,24 +84,19 @@ public class Decode extends AppCompatActivity implements TextDecodingCallback {
 
     @Override
     public void onCompleteTextEncoding(ImageSteganography result) {
-
-        //By the end of textDecoding
-
         if (result != null) {
             if (!result.isDecoded())
-                textView.setText("No message found");
+                binding.whetherDecoded.setText("No message found");
             else {
                 if (!result.isSecretKeyWrong()) {
-                    textView.setText("Decoded");
-                    message.setText("" + result.getMessage());
+                    binding.whetherDecoded.setText("Decoded");
+                    binding.message.setText("" + result.getMessage());
                 } else {
-                    textView.setText("Wrong secret key");
+                    binding.whetherDecoded.setText("Wrong secret key");
                 }
             }
         } else {
-            textView.setText("Select Image First");
+            binding.whetherDecoded.setText("Select Image First");
         }
-
-
     }
 }

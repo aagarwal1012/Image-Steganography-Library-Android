@@ -9,20 +9,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
 import com.ayush.imagesteganographylibrary.Text.ImageSteganography;
 import com.ayush.imagesteganographylibrary.Text.TextEncoding;
-
+import com.ayush.steganography.databinding.ActivityEncodeBinding;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -32,14 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Encode extends AppCompatActivity implements TextEncodingCallback {
-
+    private ActivityEncodeBinding binding;
     private static final int SELECT_PICTURE = 100;
     private static final String TAG = "Encode Class";
-    //Created variables for UI
-    private TextView whether_encoded;
-    private ImageView imageView;
-    private EditText message;
-    private EditText secret_key;
     //Objects needed for encoding
     private TextEncoding textEncoding;
     private ImageSteganography imageSteganography;
@@ -52,26 +42,11 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_encode);
-
-        //initialized the UI components
-
-        whether_encoded = findViewById(R.id.whether_encoded);
-
-        imageView = findViewById(R.id.imageview);
-
-        message = findViewById(R.id.message);
-        secret_key = findViewById(R.id.secret_key);
-
-        Button choose_image_button = findViewById(R.id.choose_image_button);
-        Button encode_button = findViewById(R.id.encode_button);
-        Button save_image_button = findViewById(R.id.save_image_button);
-
+        binding = ActivityEncodeBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         checkAndRequestPermissions();
-
-
         //Choose image button
-        choose_image_button.setOnClickListener(new View.OnClickListener() {
+        binding.chooseImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ImageChooser();
@@ -79,16 +54,16 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
         });
 
         //Encode Button
-        encode_button.setOnClickListener(new View.OnClickListener() {
+        binding.encodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                whether_encoded.setText("");
+                binding.whetherEncoded.setText("");
                 if (filepath != null) {
-                    if (message.getText() != null) {
+                    if (binding.message.getText() != null) {
 
                         //ImageSteganography Object instantiation
-                        imageSteganography = new ImageSteganography(message.getText().toString(),
-                                secret_key.getText().toString(),
+                        imageSteganography = new ImageSteganography(binding.message.getText().toString(),
+                                binding.secretKey.getText().toString(),
                                 original_image);
                         //TextEncoding object Instantiation
                         textEncoding = new TextEncoding(Encode.this, Encode.this);
@@ -100,7 +75,7 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
         });
 
         //Save image button
-        save_image_button.setOnClickListener(new View.OnClickListener() {
+        binding.saveImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final Bitmap imgToSave = encoded_image;
@@ -140,7 +115,7 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
             try {
                 original_image = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
 
-                imageView.setImageBitmap(original_image);
+                binding.imageview.setImageBitmap(original_image);
             } catch (IOException e) {
                 Log.d(TAG, "Error : " + e);
             }
@@ -162,8 +137,8 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
 
         if (result != null && result.isEncoded()) {
             encoded_image = result.getEncoded_image();
-            whether_encoded.setText("Encoded");
-            imageView.setImageBitmap(encoded_image);
+            binding.whetherEncoded.setText("Encoded");
+            binding.imageview.setImageBitmap(encoded_image);
         }
     }
 
@@ -176,7 +151,7 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fOut); // saving the Bitmap to a file
             fOut.flush(); // Not really required
             fOut.close(); // do not forget to close the stream
-            whether_encoded.post(new Runnable() {
+            binding.whetherEncoded.post(new Runnable() {
                 @Override
                 public void run() {
                     save.dismiss();
@@ -204,6 +179,4 @@ public class Encode extends AppCompatActivity implements TextEncodingCallback {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[0]), 1);
         }
     }
-
-
 }
